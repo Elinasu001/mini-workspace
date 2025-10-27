@@ -62,5 +62,23 @@ tmp/
 # =================
 # Server Configuration
 # =================
-servers/
+/Servers
+
+.DS_Store 
+#Mac용 운영체제파일
+Thumbs.db
+#Window용 운영체제파일
+
+.idea/
+*.iml
+# IntelliJ IDEA 관련 파일
+
+target/
+# Maven 빌드 아티팩트
+build/
+# Gradle 빌드 아티팩트
+
+
+
+
 
