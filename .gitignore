@@ -59,4 +59,8 @@ tmp/
 /logs/
 /Lambda/**
 
+# =================
+# Server Configuration
+# =================
+servers/
 
