@@ -1,7 +1,68 @@
-.metadata
-# 워크스페이스 설정폴더
+# =================
+# JAVA
+# =================
+
+# Compiled class files
+.class
+*.class
+
+# Log file
+.log
+
+# Package Files
+.jar
+*war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+
+# ====================
+
+# IDEs and Editors
+
+# ====================
+
+# Eclipse specific files
+.project
+.classpath
+.settings/
+.metadata/
+bin/
+tmp/
+
+# VS Code specific files
+.vscode/
+
+
+
+# =================
+# Others
+# =================
+
+# Environment variables
+.env
+.env.*
+
+# Backup files
+*.bak
+*swp
+
+
+# =================
+# Spring Boot Specific
+# =================
+
+# Spring Boot specific
+/logs/
+/Lambda/**
+
+# =================
+# Server Configuration
+# =================
 /Servers
-/서버폴더
 
 .DS_Store 
 #Mac용 운영체제파일
@@ -12,21 +73,7 @@ Thumbs.db
 *.iml
 # IntelliJ IDEA 관련 파일
 
-.settings/
-*.classpath
-*.project
-# Eclipse 관련 파일
-
 target/
 # Maven 빌드 아티팩트
 build/
 # Gradle 빌드 아티팩트
-
-# 로그 및 임시 파일
-logs/
-*.log
-tmp/
-
-*.jar
-*.war
-# 압축파일들
