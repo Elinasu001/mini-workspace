@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx.xsd
+           http://mybatis.org/schema/mybatis-spring https://mybatis.org/schema/mybatis-spring-1.2.xsd">
+
+	<!-- Oracle DB DataSource -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName"
+			value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url"
+			value="jdbc:oracle:thin:@115.90.212.20:10000:XE" />
+		<property name="username" value="BJG12" />
+		<property name="password" value="BJG121234" />
+		<!-- 선택: 연결 풀 성능 설정 -->
+		<property name="initialSize" value="5" />
+		<property name="maxActive" value="20" />
+		<property name="maxIdle" value="10" />
+		<property name="minIdle" value="5" />
+	</bean>
+
+	<!-- MyBatis SqlSessionFactory -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation"
+			value="classpath:mybatis-config.xml" />
+		<!-- 매퍼 XML 자동 등록 -->
+		<property name="mapperLocations"
+			value="classpath*:mapper/**/*.xml" />
+	</bean>
+
+	<!-- SqlSessionTemplate -->
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+
+	<!-- MyBatis Mapper 패키지 스캔 복수 패키지는 콤마가 아닌 여러 라인으로 작성하는 편이 안전 -->
+	<mybatis-spring:scan
+		base-package="com.kh.spring.member.model.dao" />
+	<mybatis-spring:scan
+		base-package="com.kh.spring.board.model.mapper" />
+
+	<!-- 파일 업로드 설정 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="104857600" />  <!-- 100 MB -->
+		<property name="maxInMemorySize" value="10485760" /> <!-- 10 MB -->
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+	<!-- 트랜잭션 매니저 추가 (선택 필수) -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:annotation-driven
+		transaction-manager="transactionManager" />
+
+</beans>
