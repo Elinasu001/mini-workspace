@@ -5,11 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>CarTalk</title>
 </head>
 <body>
-
-	<h1>하이하이</h1>
 
 </body>
 </html>

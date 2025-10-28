@@ -9,7 +9,5 @@
 </head>
 <body>
 
-	<h1>하이하이</h1>
-
 </body>
 </html>
