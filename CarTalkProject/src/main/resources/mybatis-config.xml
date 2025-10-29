@@ -17,6 +17,11 @@
 	 -->
 
 	<mappers>
+		<mapper resource="/mapper/board-mapper.xml"/>
+		<mapper resource="/mapper/event-mapper.xml"/>
+		<mapper resource="/mapper/gallery-mapper.xml"/>
+		<mapper resource="/mapper/main-mapper.xml"/>
 		<mapper resource="/mapper/member-mapper.xml"/>
+		<mapper resource="/mapper/used-mapper.xml"/>
 	</mappers>
 </configuration>
