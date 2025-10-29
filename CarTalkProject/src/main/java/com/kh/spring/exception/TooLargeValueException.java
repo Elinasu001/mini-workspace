@@ -1,0 +1,11 @@
+package com.kh.spring.exception;
+
+
+
+public class TooLargeValueException extends RuntimeException {
+	
+	public TooLargeValueException(String msg) {
+		super(msg);
+	}
+	
+}
