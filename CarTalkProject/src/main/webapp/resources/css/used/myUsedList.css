@@ -1,0 +1,68 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.main-wrap {
+  width: 1000px;
+  margin: 30px auto;
+}
+
+/* 필터 버튼 영역 */
+.filter {
+  margin-bottom: 20px;
+}
+
+.filter button {
+  border: 1px solid #aaa;
+  background: #fff;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.filter .active {
+  font-weight: bold;
+}
+
+/* 리스트 전체 */
+.car-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 개별 카드 */
+.car-card {
+  display: flex;
+  border: 1px solid #aaa;
+  padding: 10px;
+}
+
+/* 차량 정보 */
+.car-info {
+  flex: 1;
+}
+
+.car-info h3 {
+  margin: 5px 0;
+  font-size: 15px;
+}
+
+.car-info p {
+  margin: 3px 0;
+  font-size: 13px;
+}
+
+.car-info .meta {
+  font-size: 12px;
+  color: #555;
+}
+
+/* 차량 이미지 */
+.car-card img {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  margin-left: 15px;
+}
