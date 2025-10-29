@@ -7,6 +7,16 @@
 <title>Insert title here</title>
 </head>
 <style>
+	.main-title{
+		position:absolute;
+		z-index:2; 
+		left:100px;
+		top:120px;
+	}
+	.main-title h3{
+		font-size:var(--font36);
+		font-weight: var(--font-w-b);
+	}
     .MainSwiper {
         /* background-color: white; */
         background: linear-gradient(135deg, #f7f7f7, #d1d1d1);
@@ -17,10 +27,20 @@
     .MainSwiper .swiper-slide{
         display:flex;
         justify-content: center;
+        overflow: hidden;
     }
     .MainSwiper .swiper-slide img{
         max-width:600px;
+        object-fit: cover;
+		transform: translateX(50px);
+		opacity: 0;
+		transition: transform 1.2s ease, opacity 1.2s ease;
     }
+    
+    .MainSwiper .swiper-slide-active img {
+	  transform: translateX(0);
+	  opacity: 1;
+	}
     
     .MainSwiper .swiper-button-next:after, .swiper-button-prev:after {
         font-size:30px;
@@ -39,6 +59,12 @@
 		
 	 	<div class="contentWrap">
             <div class="contArea">
+            	<div class="main-title">
+            		<h3>
+            			차 이야기, <br/>
+            			함께 나누다
+            		</h3>
+            	</div>
                 <!-- Slider main container -->
                 <div class="swiper MainSwiper">
                     <!-- Additional required wrapper -->
