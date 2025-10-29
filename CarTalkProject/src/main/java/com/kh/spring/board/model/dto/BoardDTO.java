@@ -1,4 +1,4 @@
-package com.cartalk.board.model.dto;
+package com.kh.spring.board.model.dto;
 
 import java.sql.Date;
 

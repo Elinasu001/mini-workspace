@@ -1,17 +1,18 @@
-package com.cartalk.board.model.mapper;
+package com.kh.spring.board.model.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 
-import com.cartalk.board.model.dto.BoardDTO;
+import com.kh.spring.board.model.dto.BoardDTO;
 
 @Mapper
 public interface BoardMapper {
 	
-	int boardListCount();
+	int selectBoardCount();
 	
-	List<BoardDTO> selectBoardList();
+	List<BoardDTO> selectBoardList(RowBounds rb);
 	
 	List<BoardDTO> selectBoardListByKeyword();
 	
