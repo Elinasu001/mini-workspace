@@ -11,5 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("event")
 @RequiredArgsConstructor
 public class EventController {
-
+	
+	
 }
