@@ -1,0 +1,61 @@
+.navbar {
+    padding:16px 0;
+    background: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+}
+
+.navbar > div {
+    max-width:1200px;
+} 
+
+.offcanvas {
+    width: 250px; /* 모바일 메뉴 너비 */
+}
+
+.navbar-toggler{
+    border:0px white;
+    color: black;
+}
+
+.navbar-toggler:focus {
+    color: white;
+}
+.main {
+    background-color: #000;
+}
+
+.auth-links {
+    display: flex;
+    gap: 12px;
+    justify-content:flex-end;
+}
+
+.auth-links a {
+    text-decoration: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.auth-links .btn-login {
+    color: #007aff;
+}
+
+.auth-links .btn-login:hover {
+    background-color: #eef4ff;
+}
+
+.auth-links .btn-signup {
+    color: #007aff;
+}
+
+.auth-links .btn-signup:hover {
+    background-color: #eef4ff;
+}
+
+
+.line {position: relative;}
+.line::after{content: ""; position: absolute; width:1px; height:12px; top:50%; right:-7px; transform: translateY(-50%); background-color: #007aff;}
+
+
