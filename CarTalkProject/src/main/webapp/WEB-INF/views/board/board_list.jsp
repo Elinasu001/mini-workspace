@@ -1,9 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판 | CarTalk</title>
 </head>
 <style>
@@ -12,6 +14,11 @@
         height: 600px;
         margin: auto;
         align-content: center;
+    }
+
+    .boardPageButtons{
+        display: flex;
+        justify-content: center;
     }
 
     .boardListTable,
@@ -62,23 +69,30 @@
                     <th width="100">작성자</th>
                     <th width="80">조회수</th>
                     <th width="120">작성일</th>
-                    <th width="50">댓글수</th>
+                    <th width="50">좋아요수</th>
                 </tr>
             </thead>
             <tbody id="boardList">
+            <c:forEach var="board" items="${ map.boards }">
                 <tr>
-                    <td>1</td>
-                    <td>게시판 이용 수칙</td>
-                    <td>관리자</td>
-                    <td>1</td>
-                    <td>2025-10-27</td>
-                    <td>0</td>
+                    <td>${ board.boardNo }</td>
+                    <td>${ board.boardTitle }</td>
+                    <td>${ board.boardWriter }</td>
+                    <td>${ board.viewCount }</td> 
+                    <td>${ board.enrollDate }</td> 
+                    <td>${ board.likes }</td>
                 </tr>
-
+            </c:forEach>
             </tbody>
         </table>
-
         <div id="boardSearchArea">
+            <div class="boardPageButtons">
+            <button>이전</button>
+            <c:forEach var="i" begin="${ map.pi.startPage }" end="${ map.pi.endPage }">
+            <button onclick="location.href = 'board?page=${i}'">${i}</button>
+            </c:forEach>
+            <button>다음</button>
+            </div>
             <form action="" method="get">
                 <select name="condition">
                     <option>제목</option>
@@ -87,7 +101,6 @@
                 </select>
                 <input name="query" value=""/>
             </form>
-
         </div>
 
     </div>

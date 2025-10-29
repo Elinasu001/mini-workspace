@@ -20,8 +20,9 @@ public class BoardDTO {
 	private String boardTitle;
 	private String boardContent;
 	private String boardWriter;
-	private int count;
+	private int viewCount;
 	private String status;
-	private Date createDate;
+	private Date enrollDate;
+	private int likes;
 	
 }

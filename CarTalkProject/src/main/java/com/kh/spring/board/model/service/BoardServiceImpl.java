@@ -24,12 +24,6 @@ public class BoardServiceImpl implements BoardService {
 	private final BoardMapper boardMapper;
 	private final Pagination pagination;
 
-	@Override
-	public int selectBoardCount() {
-		
-		return 0;
-	}
-
 	/**
 	 * 페이지 번호를 인자값으로 전달받아서 
 	 * 화면에 표시할 List<Board>와 
@@ -44,12 +38,11 @@ public class BoardServiceImpl implements BoardService {
 		if(pageNo < 1) {
 			
 		}
-		int count = selectBoardCount();
-		
+		int count = boardMapper.selectBoardCount();
 		// 게시글이 존재하지 않을 경우 수행하지 않음
 		if(count > 0) {
 			//페이징 처리용 클래스
-			RowBounds rb = new RowBounds((pageNo.intValue() -1)*5, 5);
+			RowBounds rb = new RowBounds((pageNo.intValue() -1)*10, 10);
 			boards = boardMapper.selectBoardList(rb);
 		}
 		

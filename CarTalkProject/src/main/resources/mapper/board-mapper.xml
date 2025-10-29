@@ -4,7 +4,8 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.spring.board.model.mapper.BoardMapper">
 	
-	<select id="selectBoardCount">
+	<select id="selectBoardCount"
+			resultType="_int">
 		SELECT
 			   COUNT(*)
 		  FROM
@@ -13,9 +14,33 @@
 		       STATUS = 'Y'
 	</select>
 	
-	<select id="selectBoardlist">
+	<select id="selectBoardList" resultType="com.kh.spring.board.model.dto.BoardDTO">
 		SELECT
-		       BOARD
+		       BOARD_NO boardNo
+		     , CATEGORY_NAME category
+		     , NICKNAME boardWriter
+		     , BOARD_TITLE boardTitle
+		     , BOARD_CONTENT boardContent
+		     , VIEW_COUNT viewCount
+		     , CT_BOARD.ENROLL_DATE enrollDate
+		     , (SELECT 
+		               COUNT(*)
+		          FROM
+		               CT_BOARD_LIKE 
+		         WHERE
+		               CT_BOARD_LIKE.BOARD_NO = CT_BOARD.BOARD_NO) AS likes
+		  FROM
+		       CT_BOARD
+		  JOIN
+		       CT_MEMBER USING (USER_NO)
+		  JOIN
+		       CT_BOARD_CATEGORY USING (CATEGORY_NO)
+		 WHERE
+		       STATUS = 'Y'
+		 ORDER
+		    BY
+		       enrollDate DESC
 	</select>
+	<!-- 해야할 일 : 정렬 기준을 입력받아서 정렬 기준을 바꿔주기 + 값이 없을 경우 default = ENROLL_DATE-->
 
 </mapper>

@@ -20,11 +20,10 @@ public class BoardController {
 	private final BoardService boardService;
 	
 	@GetMapping
-	public String selectBoardList(@RequestParam Long pageNo, Model model){
+	public String selectBoardList(@RequestParam(name="page", defaultValue = "1") Long pageNo, Model model){
 		
 		Map<String, Object> map = boardService.selectBoardList(pageNo);
-		model.addAttribute("maps", map);
-		
+		model.addAttribute("map", map);
 		
 		return "board/board_list";
 	}
