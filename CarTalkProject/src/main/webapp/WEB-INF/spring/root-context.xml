@@ -38,9 +38,12 @@
 	</bean>
 
 	<!-- MyBatis Mapper 패키지 스캔 복수 패키지는 콤마가 아닌 여러 라인으로 작성하는 편이 안전 -->
-	<mybatis-spring:scan base-package="com.kh.spring.member.model.dao" />
+	<mybatis-spring:scan base-package="com.kh.spring.member.model.mapper" />
 	<mybatis-spring:scan base-package="com.kh.spring.board.model.mapper" />
 	<mybatis-spring:scan base-package="com.kh.spring.event.model.mapper"/>
+	<mybatis-spring:scan base-package="com.kh.spring.gallery.model.mapper"/>
+	<mybatis-spring:scan base-package="com.kh.spring.used.model.mapper"/>
+	<mybatis-spring:scan base-package="com.kh.spring.main.model.mapper"/>
 	
 	<!-- 파일 업로드 설정 -->
 	<bean id="multipartResolver"
