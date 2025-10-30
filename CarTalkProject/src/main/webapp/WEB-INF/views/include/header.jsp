@@ -1,26 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<!-- Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-<!-- swiper -->
-<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
-<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-
-<link rel="stylesheet" href="./resources/css/ui/com/layout.css">
-<link rel="stylesheet" href="./resources/css/ui/com/style.css">
-<link rel="stylesheet" href="./resources/css/ui/com/nav.css">
-
-<script type="text/javascript" src="./resources/js/ui/com/layout.js"></script>
-<title>Insert title here</title>
-</head>
-<body>
-	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
     <!-- 로고 -->
     <a class="navbar-brand fw-bold" href="#">CarTalk</a>
@@ -34,7 +15,7 @@
     <div class="collapse navbar-collapse d-none d-lg-flex justify-content-end">
         
         <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="#">이벤트 게시판</a></li>
+            <li class="nav-item"><a class="nav-link" href="/ct/event/list">이벤트 게시판</a></li>
             <li class="nav-item"><a class="nav-link" href="#">일반 게시판</a></li>
             <li class="nav-item"><a class="nav-link" href="#">사진 게시판</a></li>
             <li class="nav-item"><a class="nav-link" href="#">거래 게시판</a></li>
@@ -73,7 +54,7 @@
         </div>
         <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li class="nav-item"><a class="nav-link" href="#">이벤트 게시판</a></li>
+                <li class="nav-item"><a class="nav-link" href="/ct/event/list">이벤트 게시판</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">일반 게시판</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">사진 게시판</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">거래 게시판</a></li>
@@ -90,5 +71,3 @@
     </div>
     </div>
 </nav>
-</body>
-</html>
