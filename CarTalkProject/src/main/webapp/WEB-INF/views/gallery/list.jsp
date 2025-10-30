@@ -39,28 +39,30 @@
 			<!-- 실제 데이터 -->
 			
 			<script>
-				function toDetail(GalleryNo){
-					location.href`gallery/\${galleryNo}`;
-				}
+			    function toDetail(galleryNo){
+			        location.href = `gallery/\${galleryNo}`;
+			    }
 			</script>
+			
 			<c:choose>
-			<c:when test="${ not empty map.gallerys }">
-				<c:forEach var="gallery" items="${ map.gallerys }">
-					<div class="car-card" onclick="toDetail(${ gallery.galleryNo })">
-						<div class="car-info">
-							<div>${ gallery.categoryName }</div>
-							<h3>${ gallery.galleryTitle }</h3>
-							<p>${ gallery.thumnailPath }</p>
-							<div class="meta">${ gallery.nickname } | 댓글 (replyCount) | ${ gallery.enrollDate }</div>
-						</div>
-						<img src="${ gallery.thumnailPath }">
-					</div>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<h2>게시글이 존재하지 않습니다.</h2>
-			</c:otherwise>
+			    <c:when test="${not empty map.gallerys}">
+			        <c:forEach var="gallery" items="${map.gallerys}">
+			            <div class="car-card" onclick="toDetail(${gallery.galleryNo})">
+			                <div class="car-info">
+			                    <div>${gallery.categoryName}</div>
+			                    <h3>${gallery.galleryTitle}</h3>
+			                    <p>${gallery.thumnailPath}</p>
+			                    <div class="meta">${gallery.nickname} | 댓글 (replyCount) | ${gallery.enrollDate}</div>
+			                </div>
+			                <img src="${gallery.thumnailPath}">
+			            </div>
+			        </c:forEach>
+			    </c:when>
+			    <c:otherwise>
+			        <h2>게시글이 존재하지 않습니다.</h2>
+			    </c:otherwise>
 			</c:choose>
+
 
 		</div>
 
@@ -70,8 +72,9 @@
 			<c:forEach  begin="${ map.pi.startPage }"
 						end="${ map.pi.endPage }"
 						var="num">
-				<button class="active">
-					<a href="gallery?page=${ num }">${ num }</a>
+				<button class="active" 
+						onclick="location.href='gallery?page=${num}'">
+					${num}
 				</button>
 			</c:forEach>
 			<button>▶</button>
