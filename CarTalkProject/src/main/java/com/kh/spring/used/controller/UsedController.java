@@ -37,13 +37,15 @@ public class UsedController {
 						  ,Model model) {
 		
 		int listCount = usedService.selectListCount(keyword);
-		PageInfo pi = pagination.getPageInfo(listCount, currentPage, 10, 10);
+		PageInfo pi = pagination.getPageInfo(listCount, currentPage, 10, 8);
 		
 		List<UsedListDTO> usedList = usedService.selectUsedListAll(pi, keyword);
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("usedList", usedList);
 		model.addAttribute("keyword", keyword);
+		
+		System.out.println(pi);
 		
 		return "used/usedList";
 	}

@@ -62,9 +62,11 @@
 		</div>
 
 		<!-- 검색 -->
-		<div class="search-box">
-			<form action="${pageContext.request.contextPath}/used/list" method="get">
-				<input type="text" name="keyword" placeholder="검색어를 입력하세요." value="${keyword}">
+		<div class="search-wrap">
+			<a href="${pageContext.request.contextPath}/used/insert" class="btn-write">글쓰기</a>
+
+			<form action="${pageContext.request.contextPath}/used/list" method="get" class="search-box">
+				<input type="text" name="keyword" placeholder="검색할 차량이름을 입력하세요." value="${keyword}">
 				<button type="submit">검색</button>
 			</form>
 		</div>
