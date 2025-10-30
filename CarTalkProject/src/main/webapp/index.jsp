@@ -5,11 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<jsp:include page="/WEB-INF/views/include/meta.jsp"/>
 <title>CarTalk</title>
 </head>
 <body>
-
 	<jsp:include page="/WEB-INF/views/main.jsp"/>
-
 </body>
 </html>
