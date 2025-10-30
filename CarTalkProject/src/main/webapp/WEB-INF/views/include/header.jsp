@@ -1,6 +1,25 @@
+<%@page import="com.kh.spring.member.model.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<% 
+   Member member = (Member) session.getAttribute("loginInfo");
+   System.out.printf("header session : " + member);
+%>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+<script >
+$( document ).ready(function() {
+
+	var btObj = $("#loginBt");
+	
+	btObj.click(function () {
+		$('#frm').submit(); // end submit()
+	});
+
+});
+</script>
+<form name="frm"  id="frm" action="loginPage"> </form>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
     <!-- 로고 -->
@@ -29,12 +48,14 @@
             </li> -->
         </ul>
         <div class="auth-links">
-            <!--로그인 됐을 경우-->
-            <a href="#login" class="btn-login line">로그인</a>
-            <a href="#signup" class="btn-signup">마이페이지</a>
-            <!--로그인 안됐을 경우-->
-            <a href="#login" class="btn-login line">로그아웃</a>
+            <% if (member == null || "".equals(member.getUserId())) {%><!--로그인 됐을 경우-->
+            <a href="#" id="loginBt" class="btn-login line">로그인</a>
+            <a href="#myPage" class="btn-signup">마이페이지</a>
+            <%}else { %>
+            <%=member.getUserName() %>님 안녕하세요!
+            <a href="#logout" class="btn-login line">로그아웃</a>
             <a href="#signup" class="btn-signup">회원가입</a>
+            <%} %>
         </div>
     </div>
 
@@ -45,12 +66,15 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="auth-links">
-            <!--로그인 됐을 경우-->
-            <a href="#login" class="btn-login line">로그인</a>
-            <a href="#signup" class="btn-signup">마이페이지</a>
+            <% if (member == null || "".equals(member.getUserId())) {%><!--로그인 됐을 경우-->
+	            <a href="../login/login.jsp" class="btn-login line">로그인</a>
+	            <a href="#signup" class="btn-signup">마이페이지</a>
+            <%} else { %>
             <!--로그인 안됐을 경우-->
-            <a href="#login" class="btn-login line">로그아웃</a>
-            <a href="#signup" class="btn-signup">회원가입</a>
+            	<%=member.getUserName() %>님 안녕하세요!
+	            <a href="#login" class="btn-login line">로그아웃</a>
+	            <a href="#signup" class="btn-signup">회원가입</a>
+            <% }%>
         </div>
         <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
