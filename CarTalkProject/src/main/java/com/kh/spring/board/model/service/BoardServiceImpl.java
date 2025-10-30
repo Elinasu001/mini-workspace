@@ -1,8 +1,8 @@
-package com.cartalk.board.model.service;
+package com.kh.spring.board.model.service;
 
 import org.springframework.stereotype.Service;
 
-import com.cartalk.board.model.mapper.BoardMapper;
+import com.kh.spring.board.model.mapper.BoardMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
