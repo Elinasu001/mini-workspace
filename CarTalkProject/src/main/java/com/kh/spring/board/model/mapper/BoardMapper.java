@@ -14,7 +14,7 @@ public interface BoardMapper {
 	
 	List<BoardDTO> selectBoardList(RowBounds rb);
 	
-	List<BoardDTO> selectBoardListByKeyword();
+	List<BoardDTO> selectBoardListByKeyword(BoardDTO board);
 	
 	BoardDTO selectByBoardNo();
 	

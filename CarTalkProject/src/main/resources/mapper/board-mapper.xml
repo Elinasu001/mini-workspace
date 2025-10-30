@@ -4,17 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.spring.board.model.mapper.BoardMapper">
 	
-	<select id="selectBoardCount"
-			resultType="_int">
-		SELECT
-			   COUNT(*)
-		  FROM
-		       CT_BOARD
-		 WHERE
-		       STATUS = 'Y'
-	</select>
-	
-	<select id="selectBoardList" resultType="com.kh.spring.board.model.dto.BoardDTO">
+	<sql id="boardColumns">
 		SELECT
 		       BOARD_NO boardNo
 		     , CATEGORY_NAME category
@@ -29,6 +19,20 @@
 		               CT_BOARD_LIKE 
 		         WHERE
 		               CT_BOARD_LIKE.BOARD_NO = CT_BOARD.BOARD_NO) AS likes
+	</sql>
+	
+	<select id="selectBoardCount"
+			resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		       CT_BOARD
+		 WHERE
+		       STATUS = 'Y'
+	</select>
+	
+	<select id="selectBoardList" resultType="com.kh.spring.board.model.dto.BoardDTO">
+		<include refid="boardColumns"></include>
 		  FROM
 		       CT_BOARD
 		  JOIN
@@ -42,5 +46,69 @@
 		       enrollDate DESC
 	</select>
 	<!-- 해야할 일 : 정렬 기준을 입력받아서 정렬 기준을 바꿔주기 + 값이 없을 경우 default = ENROLL_DATE-->
+	
+	<resultMap type="com.kh.spring.board.model.dto.BoardDTO" id="selectBoardResult">
+		<id column="boardNo" property="boardNo"/>
+		<result column="boardTitle" property="boardTitle"/>
+		<result column="boardWriter" property="boardWriter"/>
+		<result column="viewCount" property="viewCount" />
+		<result column="category" property="category" />
+		<result column="boardEnrollDate" property="enrollDate" />
+		<result column="likes" property="likes" />
+		<collection property="replies" ofType="com.kh.spring.board.model.dto.ReplyDTO">
+			<id column="replyNo" property="replyNo"/>
+			<result column="replyContent" property="replyContent"/>
+			<result column="replyWriter" property="replyWriter"/>
+			<result column="replyEnrollDate" property="enrollDate"/>
+		</collection>
+		<collection property="attachment" ofType="com.kh.spring.board.model.dto.AttachmentDTO">
+			<id column="" property=""/>
+			<result column="" property=""/>
+			<result column="" property=""/>
+		</collection>
+	</resultMap>
+	  
+	  
+	<select id="selectByBoardNo" parameterType="long" resultMap="selectBoardResult">
+	SELECT
+	       CT_BOARD.BOARD_NO boardNo
+	     , BOARD_TITLE boardTitle
+	     , BOARD_CONTENT boardContent
+	     , NICKNAME boardWriter
+	     , VIEW_COUNT viewCount
+	     , CATEGORY_NAME category
+	     , CT_BOARD.ENROLL_DATE boardEnrollDate
+	     , ORIGIN_NAME orginName
+	     , CHANGE_NAME changeName
+	     , FILE_PATH filePath
+	     , REPLY_NO replyNo
+	     , REPLY_CONTENT replyContent
+	     , CT_BOARD_REPLY.USER_NO replyWriter
+	     , CT_BOARD_REPLY.ENROLL_DATE replyEnrollDate
+	     , (SELECT 
+	               COUNT(*)
+	     	  FROM
+	     	       CT_BOARD_LIKE
+	     	 WHERE
+	     	       CT_BOARD.BOARD_NO = CT_BOARD_LIKE.BOARD_NO) AS LIKES
+	  FROM
+	       CT_BOARD
+	  JOIN
+	       CT_BOARD_CATEGORY USING (CATEGORY_NO)
+	  JOIN
+	       CT_MEMBER USING (USER_NO)
+	  LEFT
+	  JOIN
+	       CT_BOARD_ATTACHMENT ON (BOARD_NO = REF_BNO) 
+	  LEFT
+	  JOIN 
+	       CT_BOARD_REPLY ON (CT_BOARD.BOARD_NO = CT_BOARD_REPLY.BOARD_NO)
+	 WHERE
+	       CT_BOARD.STATUS = 'Y'
+	   AND
+	       CT_BOARD.BOARD_NO = #{boardNo}
+	
+	</select>
+	
 
 </mapper>

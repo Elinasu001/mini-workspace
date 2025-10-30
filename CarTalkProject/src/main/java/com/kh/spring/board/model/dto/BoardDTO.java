@@ -1,6 +1,7 @@
 package com.kh.spring.board.model.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,5 +25,7 @@ public class BoardDTO {
 	private String status;
 	private Date enrollDate;
 	private int likes;
+	private List<ReplyDTO> replies;
+	private AttachmentDTO attachment;
 	
 }

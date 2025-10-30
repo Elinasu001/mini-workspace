@@ -1,0 +1,66 @@
+body {
+  font-family: sans-serif;
+  background: #f3f3f3;
+  margin: 20px;
+}
+
+.container {
+  width: 800px;
+  margin: auto;
+  background: #fff;
+  border: 1px solid #bbb;
+  padding: 20px;
+}
+
+h2 {
+  margin-bottom: 15px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.upload-box {
+  text-align: center;
+  border: 1px dashed #aaa;
+  padding: 25px;
+  background: #fdfdfd;
+}
+
+.upload-box img {
+  width: 40px;
+  height: 40px;
+  opacity: 0.6;
+}
+
+.upload-box span {
+  font-size: 13px;
+  color: #777;
+}
+
+button {
+  background: #666;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #777;
+}
