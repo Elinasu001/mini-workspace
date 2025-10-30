@@ -1,5 +1,9 @@
 package com.kh.spring.board.model.service;
 
-public interface BoardService {
+import java.util.Map;
 
+public interface BoardService {
+	
+	Map<String, Object> selectBoardList(Long pageNo);
+	
 }

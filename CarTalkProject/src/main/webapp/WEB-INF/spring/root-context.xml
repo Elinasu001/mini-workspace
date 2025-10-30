@@ -25,28 +25,26 @@
 	</bean>
 
 	<!-- MyBatis SqlSessionFactory -->
-	<bean id="sqlSessionFactory"
-		class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation"
-			value="classpath:mybatis-config.xml" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
 		<!-- 매퍼 XML 자동 등록 -->
-		<property name="mapperLocations"
-			value="classpath*:mapper/**/*.xml" />
+		<!-- <property name="mapperLocations" value="classpath*:mapper/**/*.xml" /> -->
 	</bean>
 
 	<!-- SqlSessionTemplate -->
-	<bean id="sqlSession"
-		class="org.mybatis.spring.SqlSessionTemplate">
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
 
 	<!-- MyBatis Mapper 패키지 스캔 복수 패키지는 콤마가 아닌 여러 라인으로 작성하는 편이 안전 -->
-	<mybatis-spring:scan
-		base-package="com.kh.spring.member.model.dao" />
-	<mybatis-spring:scan
-		base-package="com.kh.spring.board.model.mapper" />
-
+	<mybatis-spring:scan base-package="com.kh.spring.member.model.mapper" />
+	<mybatis-spring:scan base-package="com.kh.spring.board.model.mapper" />
+	<mybatis-spring:scan base-package="com.kh.spring.event.model.mapper"/>
+	<mybatis-spring:scan base-package="com.kh.spring.gallery.model.mapper"/>
+	<mybatis-spring:scan base-package="com.kh.spring.used.model.mapper"/>
+	<mybatis-spring:scan base-package="com.kh.spring.main.model.mapper"/>
+	
 	<!-- 파일 업로드 설정 -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -56,12 +54,10 @@
 	</bean>
 
 	<!-- 트랜잭션 매니저 추가 (선택 필수) -->
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<tx:annotation-driven
-		transaction-manager="transactionManager" />
+	<tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>
