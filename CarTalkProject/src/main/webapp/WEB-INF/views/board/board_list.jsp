@@ -6,8 +6,10 @@
 
 <head>
     <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>게시판 | CarTalk</title>
 </head>
+
 <style>
     .boardListPage {
         width: 1000px;
@@ -74,7 +76,7 @@
             </thead>
             <tbody id="boardList">
             <c:forEach var="board" items="${ map.boards }">
-                <tr>
+                <tr class="board" id="${ board.boardNo }">
                     <td>${ board.boardNo }</td>
                     <td>${ board.boardTitle }</td>
                     <td>${ board.boardWriter }</td>
@@ -85,6 +87,18 @@
             </c:forEach>
             </tbody>
         </table>
+        
+        <script>
+        	$('.board').click(e => {
+        		
+        		console.log(e);
+        		const boardNo = e.currentTarget.id;
+        		location.href = `/ct/board/\${boardNo}`;
+        		
+        	})
+        </script>
+        
+        
         <div id="boardSearchArea">
             <div class="boardPageButtons">
             <button>이전</button>

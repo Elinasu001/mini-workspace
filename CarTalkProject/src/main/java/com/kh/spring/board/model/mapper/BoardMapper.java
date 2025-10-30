@@ -16,7 +16,9 @@ public interface BoardMapper {
 	
 	List<BoardDTO> selectBoardListByKeyword(BoardDTO board);
 	
-	BoardDTO selectByBoardNo();
+	int increaseBoardCount(Long boardNo);
+	
+	BoardDTO selectByBoardNo(Long boardNo);
 	
 	int insertReply();
 	

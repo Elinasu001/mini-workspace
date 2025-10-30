@@ -1,12 +1,15 @@
 package com.kh.spring.board.controller;
+import java.io.Console;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.spring.board.model.dto.BoardDTO;
 import com.kh.spring.board.model.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,18 @@ public class BoardController {
 		model.addAttribute("map", map);
 		
 		return "board/board_list";
+	}
+	
+	@GetMapping("/{boardNo}")
+	public String selectByBoardNo(@PathVariable(name="boardNo") Long boardNo, Model model) {
+		
+		BoardDTO board = boardService.selectByBoardNo(boardNo);
+		
+		System.out.println(board);
+		
+		model.addAttribute("board",board);
+		
+		return "board/board_detail";
 	}
 	
 }

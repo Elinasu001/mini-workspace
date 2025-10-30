@@ -47,24 +47,37 @@
 	</select>
 	<!-- 해야할 일 : 정렬 기준을 입력받아서 정렬 기준을 바꿔주기 + 값이 없을 경우 default = ENROLL_DATE-->
 	
+	<update id="increaseBoardCount" parameterType="long">
+		UPDATE
+		       CT_BOARD
+		   SET
+		       VIEW_COUNT = VIEW_COUNT + 1
+		 WHERE
+		       BOARD_NO = #{boardNo}
+		   AND
+		       STATUS = 'Y'
+	</update>
+	
+	
 	<resultMap type="com.kh.spring.board.model.dto.BoardDTO" id="selectBoardResult">
 		<id column="boardNo" property="boardNo"/>
 		<result column="boardTitle" property="boardTitle"/>
+		<result column="boardContent" property="boardContent"/>
 		<result column="boardWriter" property="boardWriter"/>
-		<result column="viewCount" property="viewCount" />
-		<result column="category" property="category" />
-		<result column="boardEnrollDate" property="enrollDate" />
-		<result column="likes" property="likes" />
+		<result column="viewCount" property="viewCount"/>
+		<result column="category" property="category"/>
+		<result column="boardEnrollDate" property="enrollDate"/>
+		<result column="likes" property="likes"/>
+		<association property="attachment" javaType="com.kh.spring.board.model.dto.AttachmentDTO">
+			<result column="originName" property="originName"/>
+			<result column="changeName" property="changeName"/>
+			<result column="filePath" property="filePath"/>
+		</association>
 		<collection property="replies" ofType="com.kh.spring.board.model.dto.ReplyDTO">
 			<id column="replyNo" property="replyNo"/>
 			<result column="replyContent" property="replyContent"/>
 			<result column="replyWriter" property="replyWriter"/>
 			<result column="replyEnrollDate" property="enrollDate"/>
-		</collection>
-		<collection property="attachment" ofType="com.kh.spring.board.model.dto.AttachmentDTO">
-			<id column="" property=""/>
-			<result column="" property=""/>
-			<result column="" property=""/>
 		</collection>
 	</resultMap>
 	  
@@ -74,16 +87,16 @@
 	       CT_BOARD.BOARD_NO boardNo
 	     , BOARD_TITLE boardTitle
 	     , BOARD_CONTENT boardContent
-	     , NICKNAME boardWriter
+	     , BOARDMEMBER.NICKNAME boardWriter
 	     , VIEW_COUNT viewCount
 	     , CATEGORY_NAME category
 	     , CT_BOARD.ENROLL_DATE boardEnrollDate
-	     , ORIGIN_NAME orginName
+	     , ORIGIN_NAME originName
 	     , CHANGE_NAME changeName
 	     , FILE_PATH filePath
 	     , REPLY_NO replyNo
 	     , REPLY_CONTENT replyContent
-	     , CT_BOARD_REPLY.USER_NO replyWriter
+	     , REPLYMEMBER.NICKNAME replyWriter
 	     , CT_BOARD_REPLY.ENROLL_DATE replyEnrollDate
 	     , (SELECT 
 	               COUNT(*)
@@ -96,19 +109,23 @@
 	  JOIN
 	       CT_BOARD_CATEGORY USING (CATEGORY_NO)
 	  JOIN
-	       CT_MEMBER USING (USER_NO)
+	       CT_MEMBER BOARDMEMBER USING (USER_NO)
 	  LEFT
 	  JOIN
 	       CT_BOARD_ATTACHMENT ON (BOARD_NO = REF_BNO) 
 	  LEFT
 	  JOIN 
 	       CT_BOARD_REPLY ON (CT_BOARD.BOARD_NO = CT_BOARD_REPLY.BOARD_NO)
+	  LEFT
+	  JOIN
+	       CT_MEMBER REPLYMEMBER ON (REPLYMEMBER.USER_NO = CT_BOARD_REPLY.USER_NO)
 	 WHERE
 	       CT_BOARD.STATUS = 'Y'
 	   AND
 	       CT_BOARD.BOARD_NO = #{boardNo}
 	
 	</select>
-	
+	<!-- 댓글 작성자로 참조할 외래키 값이 USER_NO(NUMBER)라서 댓글 작성자의 NICKNAME 값을 따로 출력해 주기 위해
+		 CT_MEMBER를 한번 더 조인   -->
 
 </mapper>
