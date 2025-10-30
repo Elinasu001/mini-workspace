@@ -7,7 +7,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>중고 판매 목록 | CarTalk</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/used/usedList.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/used/usedList.css">
+<script>
+	
+</script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include/header.jsp" />
@@ -17,55 +21,54 @@
 		<!-- 차량 목록 -->
 		<div class="car-list">
 
-			<div class="car-card">
-				<div class="car-info">
-					<div>판매중 | SUV</div>
-					<h3>현대 팰리세이드 2.2 디젤 4WD 캘리그래피</h3>
-					<p>20.03년식 / 6.3만KM / 오토 / 디젤</p>
-					<div class="meta">가격: 4,290만원 | 댓글 5 | 1일 전</div>
-				</div>
-				<img src="https://via.placeholder.com/150x100?text=Palisade"
-					alt="팰리세이드">
-			</div>
-
-			<div class="car-card">
-				<div class="car-info">
-					<div>예약중 | 세단</div>
-					<h3>제네시스 G80 3.3 GDI AWD 럭셔리</h3>
-					<p>18.09년식 / 8.5만KM / 오토 / 가솔린</p>
-					<div class="meta">가격: 3,150만원 | 댓글 2 | 2일 전</div>
-				</div>
-				<img src="https://via.placeholder.com/150x100?text=G80"
-					alt="제네시스 G80">
-			</div>
-
-			<div class="car-card">
-				<div class="car-info">
-					<div>판매완료 | 소형 SUV</div>
-					<h3>기아 셀토스 1.6 디젤 트렌디</h3>
-					<p>21.05년식 / 2.9만KM / 오토 / 디젤</p>
-					<div class="meta">가격: 2,380만원 | 댓글 1 | 4일 전</div>
-				</div>
-				<img src="https://via.placeholder.com/150x100?text=Seltos" alt="셀토스">
-			</div>
-
+			<c:choose>
+				<c:when test="${ not empty usedList }">
+					<c:forEach var="car" items="${ usedList }">
+						<a href="${pageContext.request.contextPath}/used/detail?no=${car.usedNo}" class="car-link">
+							<div class="car-card">
+								<div class="car-info">
+									<div>${ car.status }| ${ car.category }</div>
+									<h3>${ car.usedTitle }</h3>
+									<p>${ car.carYear }/ ${ car.distance }KM / ${ car.transmission }
+										/ ${ car.fuelType }</p>
+									<div class="meta">가격: ${ car.usedPrice }만원 | 댓글 ${ car.viewCount }
+										| 등록일 ${ car.enrollDate }</div>
+								</div>
+								<img src="${ car.thumbnail }" alt="${ car.usedTitle }">
+							</div>
+						</a>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<tr>
+						<th>등록된 매물이 존재하지 않습니다.</th>
+					</tr>
+				</c:otherwise>
+			</c:choose>
 		</div>
 
 		<!-- 페이징 -->
 		<div class="pagination">
-			<button>▶</button>
-			<button class="active">1</button>
-			<button>2</button>
-			<button>3</button>
-			<button>4</button>
-			<button>5</button>
-			<button>▶</button>
+			<c:if test="${ pi.currentPage > 1}">
+				<a href="list?page=${ pi.currentPage -1 }">◀</a>
+			</c:if>
+
+			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+				<a href="list?page=${p}"
+					class=${ p == pi.currentPage ? 'active' : '' }">${p}</a>
+			</c:forEach>
+
+			<c:if test="${ pi.currentPage < pi.maxPage }">
+				<a href="list?page=${ pi.currentPage + 1 }">▶</a>
+			</c:if>
 		</div>
 
 		<!-- 검색 -->
 		<div class="search-box">
-			<input type="text" placeholder="검색어를 입력하세요.">
-			<button>검색</button>
+			<form action="${pageContext.request.contextPath}/used/list" method="get">
+				<input type="text" name="keyword" placeholder="검색어를 입력하세요." value="${keyword}">
+				<button type="submit">검색</button>
+			</form>
 		</div>
 
 	</main>

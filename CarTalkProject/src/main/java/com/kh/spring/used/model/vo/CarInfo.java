@@ -11,6 +11,7 @@ public class CarInfo {
 	private String transmission;
 	private String region;
 	private String carColor;
+	private String category;
 	private int usedNo;
 	private String phone;
 
