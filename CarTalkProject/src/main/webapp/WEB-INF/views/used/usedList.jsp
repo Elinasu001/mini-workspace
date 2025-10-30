@@ -9,12 +9,10 @@
 <title>중고 판매 목록 | CarTalk</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/used/usedList.css">
-<script>
-	
-</script>
+
+<jsp:include page="/WEB-INF/views/include/header.jsp" />
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/include/header.jsp" />
 	<main class="main-wrap">
 		<h2>중고 판매 목록</h2>
 
