@@ -2,8 +2,46 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kh.spring.board.model.mapper.BoardMapper">
+<mapper namespace="com.kh.spring.gallery.model.mapper.GalleryMapper">
 	
-
+	<select id="selectTotalcount"
+			resultType="_int">
+		SELECT
+				COUNT(*)
+		FROM
+				CT_GALLERY
+		WHERE
+				STATUS='Y'		
+	</select>
+	
+	
+	<select id="selectGalleryList"
+			parameterType="map"
+			resultType="com.kh.spring.gallery.model.dto.GalleryDTO">
+		SELECT 
+			      CT_GALLERY.GALLERY_NO galleryNo
+			    , CT_GALLERY_CATEGORY.CATEGORY_NAME categoryName
+			    , CT_MEMBER.NICKNAME nickname
+			    , CT_GALLERY.GALLERY_TITLE galleryTitle
+			    , CT_GALLERY.VIEW_COUNT viewCount
+			    , TO_CHAR(CT_GALLERY.ENROLL_DATE, 'YYYY-MM-DD') as enrollDate
+			    , CT_GALLERY_ATTACHMENT.FILE_PATH thumnailPath
+		FROM
+    			CT_GALLERY
+		JOIN
+		    	CT_GALLERY_CATEGORY ON CT_GALLERY.CATEGORY_NO = CT_GALLERY_CATEGORY.CATEGORY_NO
+		JOIN 
+		    	CT_MEMBER ON CT_GALLERY.USER_NO = CT_MEMBER.USER_NO
+		LEFT JOIN 
+		    	CT_GALLERY_ATTACHMENT ON CT_GALLERY.GALLERY_NO = CT_GALLERY_ATTACHMENT.GALLERY_NO
+		WHERE    
+		    	CT_GALLERY.STATUS = 'Y'
+		AND 
+				CT_GALLERY_ATTACHMENT.ORDER_NO = 1
+		ORDER
+		BY 
+				CT_GALLERY.GALLERY_NO DESC
+		OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+	</select>
 
 </mapper>
