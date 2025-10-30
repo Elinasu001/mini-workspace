@@ -38,4 +38,22 @@ public class EventController {
 		return "event/list";
 	}
 	
+	// 진행중인 이벤트 / 종료된 이벤트 _ ajax
+	@GetMapping("/ongoing")
+	public String selectOngoing(@RequestParam(name="page", defaultValue="1") Long page, Model model) {
+		log.info("진행중인 게시글 앞에서 넘어온 페이지 값: {}", page);
+		Map<String, Object> map = eventService.selectOngoing(page);
+	    model.addAttribute("map", map);
+	    log.info("진행중 이미지: {}", map);
+	    return "/event/listFragment";
+	}
+
+	@GetMapping("/ended")
+	public String selectEnded(@RequestParam(name="page", defaultValue="1") Long page, Model model) {
+		log.info("종료된 게시글 앞에서 넘어온 페이지 값: {}", page);
+		Map<String, Object> map = eventService.selectEnded(page);
+	    model.addAttribute("map", map);
+	    log.info("종료된 이미지: {}", map);
+	    return "/event/listFragment";
+	}
 }

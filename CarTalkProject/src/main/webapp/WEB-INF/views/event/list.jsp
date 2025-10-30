@@ -76,6 +76,7 @@
 		
 	 	<div class="contentWrap">
             <div class="contArea">
+            
             	<!-- Header-->
 		        <header class="eventBanner py-5">
 		            <div class="container px-lg-5">
@@ -98,18 +99,12 @@
 			    <div class="container py-5">
 				    <ul class="nav nav-tabs nav-fill pt-4" id="eventTabs" role="tablist">
 				        <li class="nav-item" role="presentation">
-				            <button 
-				                class="nav-link active fs-4 fs-md-3 px-4 px-md-5 py-3 py-md-4 fw-semibold"
-				                id="ongoing-tab" data-bs-toggle="tab" data-bs-target="#ongoing"
-				                type="button" role="tab" aria-controls="ongoing" aria-selected="true">
+				            <button  class="nav-link active fs-4 fs-md-3 px-4 px-md-5 py-3 py-md-4 fw-semibold" id="ongoing-tab" type="button">
 				                진행중 이벤트
 				            </button>
 				        </li>
 				        <li class="nav-item" role="presentation">
-				            <button 
-				                class="nav-link fs-4 fs-md-3 px-4 px-md-5 py-3 py-md-4 fw-semibold"
-				                id="ended-tab" data-bs-toggle="tab" data-bs-target="#ended"
-				                type="button" role="tab" aria-controls="ended" aria-selected="false">
+				            <button  class="nav-link fs-4 fs-md-3 px-4 px-md-5 py-3 py-md-4 fw-semibold" id="ended-tab" type="button" >
 				                종료된 이벤트
 				            </button>
 				        </li>
@@ -118,34 +113,15 @@
 
             	
 		       	<!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
-		        <!--<c:if test="${ not empty sessionScope.loginMember }">
+		        <!--<c:if test="${ not empty sessionScope.loginMember }">-->
 		        	<a class="btn btn-secondary" style="float:right;" href="event/form">등록하기</a>
-		        </c:if>-->
+		        <!--</c:if>-->
+		        
 		        <section class="pt-4" > 
 		        	<div class="container px-lg-5">
-		        		<div class="row gx-lg-5">  	
+		        		<div class="row gx-lg-5" id="eventArea">  <!-- 데이터 -->
 				       	<!-- Page Content-->
-				     		<c:choose>
-					     		<c:when test="${ not empty map.events }">
-									<c:forEach items="${ map.events }" var="event">
-							                <!-- Page Features-->
-						                    <div class="col-lg-6 col-xxl-4 mb-5" onclick="toDetail(${event.eventNo});">
-						                        <div class="card bg-light border-0 h-100">
-						                            <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-						                                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
-						                                	<img src="../${ event.filePath }/${ event.changeName }" alt="대표이미지">
-						                                </div>
-						                                <h2 class="fs-4 fw-bold">${ event.eventTitle }</h2>
-						                            	<p class="mb-0 pt-1">이벤트 기간 : <span>${ event.startDate }</span> ~ <span>${ event.endDate }</span></p>
-						                            </div>
-						                        </div>
-						                    </div>
-							        </c:forEach>
-								</c:when>
-								<c:otherwise>
-									등록된 게시글이 존재하지 않습니다.<br/>
-							   	</c:otherwise>
-					        </c:choose>
+				     		
 			           </div>
 		           </div>   
 		           
@@ -174,5 +150,36 @@
 function toDetail(eventNo){
 	location.href = "event/" + eventNo;
 }
+
+$(function() {
+	  // 기본 탭: 진행중 이벤트
+	  loadEvents("ongoing");
+
+	  $("#ongoing-tab").on("click", function() {
+	    $(".nav-link").removeClass("active");
+	    $(this).addClass("active");
+	    loadEvents("ongoing");
+	  });
+
+	  $("#ended-tab").on("click", function() {
+	    $(".nav-link").removeClass("active");
+	    $(this).addClass("active");
+	    loadEvents("ended");
+	  });
+
+	  function loadEvents(type) {
+	    $.ajax({
+	      url: "${pageContext.request.contextPath}/event/" + type,
+	      type: "GET",
+	      dataType: "html",
+	      success: function(data) {
+	        $("#eventArea").html(data);
+	      },
+	      error: function() {
+	        $("#eventArea").html("<p class='text-center text-danger py-5'>이벤트를 불러오는 중 오류가 발생했습니다.</p>");
+	      }
+	    });
+	  }
+	});
 </script>
 </html>

@@ -14,5 +14,12 @@ public interface EventMapper {
 	int selectEventCount();
 	
 	// 이벤트 게시글 목록조회 (페이징 포함 - MyBatis 페이징 도구 offset 과 limit 내부적으로 계산)
-	List<EventDTO> selectEventList(RowBounds rowBouds); 
+	List<EventDTO> selectEventList(RowBounds rb); 
+	
+	// 진행중인 이벤트 / 종료된 이벤트 _ ajax
+	int selectOngoingCount();
+	List<EventDTO> selectOngoing(RowBounds rb);
+
+	int selectEndedCount();
+	List<EventDTO> selectEnded(RowBounds rb);
 }

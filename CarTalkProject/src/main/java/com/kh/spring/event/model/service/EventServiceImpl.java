@@ -58,5 +58,53 @@ class EventServiceImpl implements EventService {
 		
 	}
 	
+	// 진행중인 이벤트 / 종료된 이벤트 _ ajax
+	@Override
+	public Map<String, Object> selectOngoing(Long page) {
+	    Map<String, Object> map = new HashMap<>();
+	    List<EventDTO> events = new ArrayList<>();
+
+	    if (page < 1) {
+	        throw new InvalidArgumentsException("잘못된 접근입니다.");
+	    }
+
+	    int viewCount = eventMapper.selectOngoingCount(); // 진행중인 이벤트 개수
+	    PageInfo pi = pagination.getPageInfo(viewCount, page.intValue(), 5, 5);
+
+	    if (viewCount > 0) {
+	        RowBounds rb = new RowBounds((page.intValue() - 1) * 5, 5);
+	        events = eventMapper.selectOngoing(rb);
+	    }
+	   
+	    map.put("pi", pi);
+	    map.put("events", events);
+
+	    return map;
+	}
+
+	@Override
+	public Map<String, Object> selectEnded(Long page) {
+	    Map<String, Object> map = new HashMap<>();
+	    List<EventDTO> events = new ArrayList<>();
+
+	    if (page < 1) {
+	        throw new InvalidArgumentsException("잘못된 접근입니다.");
+	    }
+
+	    int viewCount = eventMapper.selectEndedCount(); // 종료된 이벤트 개수
+	    PageInfo pi = pagination.getPageInfo(viewCount, page.intValue(), 5, 5);
+
+	    if (viewCount > 0) {
+	        RowBounds rb = new RowBounds((page.intValue() - 1) * 5, 5);
+	        events = eventMapper.selectEnded(rb);
+	    }
+	    log.info("종료된 게시글 개수: {}", viewCount);
+	    map.put("pi", pi);
+	    map.put("events", events);
+
+	    return map;
+	}
+
+	
 	
 }
