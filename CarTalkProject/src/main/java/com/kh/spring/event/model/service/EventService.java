@@ -16,5 +16,5 @@ public interface EventService {
 	Map<String, Object> selectEnded(Long page);
 	
 	// 이벤트 게시글 상세보기 (+ 조회수 증가)
-	//EventDTO selectByEnvetNo(Long eventNo);
+	EventDTO selectByEventNo(Long eventNo);
 }

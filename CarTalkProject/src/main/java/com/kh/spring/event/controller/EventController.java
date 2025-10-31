@@ -65,17 +65,16 @@ public class EventController {
 	    return "event/listFragment";
 	    
 	}
-	/*
+	
 	// 이벤트 게시글 상세보기 (+ 조회수 증가)
-	@GetMapping("/{id}")
-	public String selectByEnvetNo(@PathVariable(name="id") Long eventNo, Model model) {
+	 @GetMapping("/detail/{eventNo}")
+	public String selectByEventNo(@PathVariable("eventNo") Long eventNo, Model model) {
 		
-		log.info("게시글 번호 : {}, 카테고리 : {}", eventNo);
+		log.info("게시글 번호 : {}", eventNo);
 		EventDTO event = eventService.selectByEventNo(eventNo);
-		model.addAttribute("event", "event");
+		model.addAttribute("event", event);
 		
 		return "event/detail";
 		
 	}
-	*/
 }

@@ -108,29 +108,32 @@ class EventServiceImpl implements EventService {
 	    return map;
 	}
 	
-	/*
+
 	// 이벤트 게시글 상세조회 (+ 조회수 증가)
 	@Override 
-	public EventDTO selectByEnvetNo(Long eventNo) {
+	public EventDTO selectByEventNo(Long eventNo) {
 		
 		// 예외처리
-		if(eventNo < 1 ) {
+		if(eventNo == null || eventNo < 1 ) {
 			throw new InvalidArgumentsException("유효하지 않은 요청입니다.");
 		}
 		
 		// 최신 갱신된 데이터 조회
 		int result = eventMapper.increaseCount(eventNo);
-		
 		// 예외처리
 		if(result != 1) {
-			throw new BadRequestException("잘못된 요청입니다.");
+			throw new BadRequestException("조회수 증가 중 오류가 발생했습니다.");
 		}
 		
-		EventDTO event = eventMapper.selectEventAttachment(eventNo);
+		// 상세조회
+		EventDTO event = eventMapper.selectByEventNo(eventNo);
+		if (event == null) {
+            throw new BadRequestException("존재하지 않는 이벤트입니다.");
+        }
 		
 		return event;
 	}
-	*/
+
 	
 	
 }

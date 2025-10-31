@@ -24,9 +24,9 @@ public interface EventMapper {
 	List<EventDTO> selectEnded(RowBounds rb);
 	
 	// 조회수 증가
-	//int increaseCount(Long eventNo); 
+	int increaseCount(Long eventNo); 
 	// 이벤트 게시글 상세조회
-	//EventDTO selectByEventNo(Long eventNo);
+	EventDTO selectByEventNo(Long eventNo);
 	
 	
 	

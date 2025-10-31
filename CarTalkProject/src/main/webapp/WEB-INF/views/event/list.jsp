@@ -17,6 +17,7 @@
 	line-height:1.5;
 }
 .feature {
+	position: relative;
 	display:inline-flex;
 	align-items:center;
 	justify-content:center;
@@ -32,6 +33,24 @@
 	object-fit:cover;
 }
 
+/* 딤 오버레이 */
+.feature.ended::after {
+  content: "종료된 이벤트";
+  position: absolute;
+  left:50%;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  width:18rem;
+  height:18rem;
+}
+
 .category {
   color: var(--color-1);
   font-size: var(--font14);
@@ -39,7 +58,6 @@
   padding:6px 10px;
   border-radius:20px;
 }
-
 
 .row {
   --bs-gutter-x: 1.5rem;
@@ -192,6 +210,15 @@ $(function() {
 	           const pageNum = $(this).data("page");
 	           loadEvents(type, pageNum);
 	        });
+	       
+	       // 종료된 이벤트 전용 처리
+	       if (type === "ended") {
+	    	 // 1) 딤 클래스 추가
+	         $("#eventArea .feature").addClass("ended");
+	         // 2) 링크 클릭 막기
+	         $("#eventArea a, #eventArea .col-lg-6").css("pointer-events", "none");
+	         $("#eventArea .col-lg-6").css("cursor", "not-allowed");
+	       }
 	     },
 	     error: function() {
 	       $("#eventArea").html("<p class='text-center text-danger py-5'>이벤트를 불러오는 중 오류가 발생했습니다.</p>");
