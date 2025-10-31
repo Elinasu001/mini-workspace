@@ -16,7 +16,7 @@
   <div class="container">
     <h2>중고 판매 등록</h2>
 
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="${pageContext.request.contextPath}/used/list" method="post" enctype="multipart/form-data">
 
       <div class="section">
         <h3>상품 이미지</h3>
@@ -34,7 +34,7 @@
       <div class="section">
         <h3>카테고리</h3>
 
-        차급<input type="text" name="carType" value="" placeholder="차급 (예: 소형, 중형, 대형)">
+        차급<input type="text" name="category" value="" placeholder="차급 (예: 소형, 중형, 대형)">
         브랜드<input type="text" name="manufacturer" value="" placeholder="브랜드 (예: 현대, 기아, BMW)">
         모델명<input type="text" name="model" value="" placeholder="모델명 (예: 쏘나타, K5, 3시리즈)">
         판매 가격<input type="text" name="usedPrice" value="" placeholder="판매 가격 만원(₩)">
@@ -43,6 +43,7 @@
         변속기 <input type="text" name="transmission" value="" placeholder="변속기 (오토 / 수동)">
         사고 여부<input type="text" name="accident" value="" placeholder="사고 여부 (예: 무사고)">
         차량 색상<input type="text" name="carColor" value="" placeholder="차량 색상 (예: 흰색)">
+        판매자 연락처<input type="text" name="phone" value="" placeholder="-제외하고 입력해주세요.">
       </div>
 
       <div class="section">

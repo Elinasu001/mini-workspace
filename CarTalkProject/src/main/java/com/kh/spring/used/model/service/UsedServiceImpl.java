@@ -37,5 +37,6 @@ public class UsedServiceImpl implements UsedService {
 	public int selectListCount(String keyword) {
 		return usedMapper.selectListCount(keyword);
 	}
-
+	
+	
 }

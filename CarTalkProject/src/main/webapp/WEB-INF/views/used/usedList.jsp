@@ -16,8 +16,12 @@
 <jsp:include page="/WEB-INF/views/include/meta.jsp" />
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
 	<main class="main-wrap">
+		
+		<div class="top-area">
 		<h2>중고 판매 목록</h2>
-
+		
+		<a href="${pageContext.request.contextPath}/used/myList" class="btn-write">내 판매목록</a>
+		</div>
 		<!-- 차량 목록 -->
 		<div class="car-list">
 
@@ -31,7 +35,7 @@
 									<h3>${ car.usedTitle }</h3>
 									<p>${ car.carYear }/ ${ car.distance }KM / ${ car.transmission }
 										/ ${ car.fuelType }</p>
-									<div class="meta">가격: ${ car.usedPrice }만원 | 댓글 ${ car.viewCount }
+									<div class="meta">가격: ${ car.usedPrice }만원 | 조회수 ${ car.viewCount }
 										| 등록일 ${ car.enrollDate }</div>
 								</div>
 								<img src="${ car.thumbnail }" alt="${ car.usedTitle }">
