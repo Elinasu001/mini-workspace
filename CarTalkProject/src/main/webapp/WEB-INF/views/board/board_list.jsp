@@ -56,6 +56,7 @@
         <table class="boardListTable" style="margin-bottom: 25px;">
             <thead id="boardCategory">
                 <tr>
+                	<th width="100"><a href="">전체 게시판</a></th>
                     <th width="100"><a href="">자유 게시판</a></th>
                     <th width="100"><a href="">질문 게시판</a></th>
                     <th width="100"><a href="">정보 게시판</a></th>
@@ -101,11 +102,15 @@
         
         <div id="boardSearchArea">
             <div class="boardPageButtons">
-            <button>이전</button>
+            <c:if test="${ map.pi.currentPage gt 1 }">
+            <button onclick="location.href = 'board?page=${ map.pi.currentPage - 1 }'">이전</button>
+            </c:if>
             <c:forEach var="i" begin="${ map.pi.startPage }" end="${ map.pi.endPage }">
             <button onclick="location.href = 'board?page=${i}'">${i}</button>
             </c:forEach>
-            <button>다음</button>
+            <c:if test="${ map.pi.currentPage ne map.pi.maxPage }">
+            <button onclick="location.href = 'board?page=${map.pi.currentPage + 1}'">다음</button>
+            </c:if>
             </div>
             <form action="" method="get">
                 <select name="condition">
