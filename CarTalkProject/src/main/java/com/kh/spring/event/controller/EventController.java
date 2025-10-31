@@ -26,34 +26,34 @@ public class EventController {
 	public String selectEventList(@RequestParam(name="page", defaultValue="1") Long page, Model model) {
 		
 		log.info("앞에서 넘어온 페이지 값: {}", page);
-		
 		// 이벤트 목록(events) : 현재 페이지에 표시할 이벤트 게시글 리스트(List<EventDTO>) + 페이지 정보(pi) : 전체 게시글 수, 현재 페이지, 마지막 페이지 (PageInfo) + 
 		Map<String, Object> map = eventService.selectEventList(page);
-		
 		model.addAttribute("map", map);
-		
-		
 		log.info("이미지: {}", map);
-		
 		return "event/list";
 	}
 	
-	// 진행중인 이벤트 / 종료된 이벤트 _ ajax
+	// 진행중인 이벤트 _ AJAX
 	@GetMapping("/ongoing")
 	public String selectOngoing(@RequestParam(name="page", defaultValue="1") Long page, Model model) {
+		
 		log.info("진행중인 게시글 앞에서 넘어온 페이지 값: {}", page);
 		Map<String, Object> map = eventService.selectOngoing(page);
 	    model.addAttribute("map", map);
 	    log.info("진행중 이미지: {}", map);
-	    return "/event/listFragment";
+	    return "event/listFragment";
+	    
 	}
-
+	// 종료된 이벤트 _ AJAX
 	@GetMapping("/ended")
 	public String selectEnded(@RequestParam(name="page", defaultValue="1") Long page, Model model) {
+		
 		log.info("종료된 게시글 앞에서 넘어온 페이지 값: {}", page);
 		Map<String, Object> map = eventService.selectEnded(page);
 	    model.addAttribute("map", map);
 	    log.info("종료된 이미지: {}", map);
-	    return "/event/listFragment";
+	    return "event/listFragment";
+	    
 	}
+	
 }

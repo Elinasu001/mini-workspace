@@ -10,7 +10,8 @@ public interface EventService {
 	// 이벤트 게시글 목록조회
 	Map<String, Object> selectEventList(Long page);
 	
-	// 진행중인 이벤트 / 종료된 이벤트 _ ajax
+	// 진행중인 이벤트 _ AJAX
 	Map<String, Object> selectOngoing(Long page);
+	// 종료된 이벤트 _ AJAX
 	Map<String, Object> selectEnded(Long page);
 }

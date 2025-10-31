@@ -43,11 +43,11 @@ class EventServiceImpl implements EventService {
 		log.info("총 게시글 개수 : {}", viewCount);
 		
 		// 보여줄 게시글 수"와 "페이지 묶음 수"
-		PageInfo pi = pagination.getPageInfo(viewCount, page.intValue(), 5, 5);
+		PageInfo pi = pagination.getPageInfo(viewCount, page.intValue(), 6, 6);
 		
 		// 게시글 있을 경우
 		if(viewCount > 0) {
-			RowBounds rb = new RowBounds((page.intValue() - 1) * 5, 5);
+			RowBounds rb = new RowBounds((page.intValue() - 1) * 6, 6);
 			events = eventMapper.selectEventList(rb);
 		}
 		
@@ -58,7 +58,7 @@ class EventServiceImpl implements EventService {
 		
 	}
 	
-	// 진행중인 이벤트 / 종료된 이벤트 _ ajax
+	// 진행중인 이벤트 _ AJAX
 	@Override
 	public Map<String, Object> selectOngoing(Long page) {
 	    Map<String, Object> map = new HashMap<>();
@@ -69,10 +69,10 @@ class EventServiceImpl implements EventService {
 	    }
 
 	    int viewCount = eventMapper.selectOngoingCount(); // 진행중인 이벤트 개수
-	    PageInfo pi = pagination.getPageInfo(viewCount, page.intValue(), 5, 5);
+	    PageInfo pi = pagination.getPageInfo(viewCount, page.intValue(), 6, 6);
 
 	    if (viewCount > 0) {
-	        RowBounds rb = new RowBounds((page.intValue() - 1) * 5, 5);
+	        RowBounds rb = new RowBounds((page.intValue() - 1) * 6, 6);
 	        events = eventMapper.selectOngoing(rb);
 	    }
 	   
@@ -81,7 +81,8 @@ class EventServiceImpl implements EventService {
 
 	    return map;
 	}
-
+	
+	// 종료된 이벤트 _ AJAX
 	@Override
 	public Map<String, Object> selectEnded(Long page) {
 	    Map<String, Object> map = new HashMap<>();
@@ -92,10 +93,10 @@ class EventServiceImpl implements EventService {
 	    }
 
 	    int viewCount = eventMapper.selectEndedCount(); // 종료된 이벤트 개수
-	    PageInfo pi = pagination.getPageInfo(viewCount, page.intValue(), 5, 5);
+	    PageInfo pi = pagination.getPageInfo(viewCount, page.intValue(), 6, 6);
 
 	    if (viewCount > 0) {
-	        RowBounds rb = new RowBounds((page.intValue() - 1) * 5, 5);
+	        RowBounds rb = new RowBounds((page.intValue() - 1) * 6, 6);
 	        events = eventMapper.selectEnded(rb);
 	    }
 	    log.info("종료된 게시글 개수: {}", viewCount);

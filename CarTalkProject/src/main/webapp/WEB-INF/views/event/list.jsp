@@ -21,6 +21,8 @@
 	font-size:2rem;
 }
 .feature img {
+	width:100%;
+	height:100%;
 	object-fit:cover;
 }
 
@@ -72,6 +74,7 @@
 </style>
 <body>
 	<div id="wrap" class="">
+	
 		<jsp:include page="../include/header.jsp"/>
 		
 	 	<div class="contentWrap">
@@ -97,14 +100,14 @@
 		        
 		        <!-- 탭 영역 추가 -->
 			    <div class="container py-5">
-				    <ul class="nav nav-tabs nav-fill pt-4" id="eventTabs" role="tablist">
-				        <li class="nav-item" role="presentation">
-				            <button  class="nav-link active fs-4 fs-md-3 px-4 px-md-5 py-3 py-md-4 fw-semibold" id="ongoing-tab" type="button">
+				    <ul id="eventTabs" class="nav nav-tabs nav-fill pt-4" >
+				        <li class="nav-item">
+				            <button  id="ongoing-tab" class="nav-link active fs-4 fs-md-3 px-4 px-md-5 py-3 py-md-4 fw-semibold" type="button">
 				                진행중 이벤트
 				            </button>
 				        </li>
-				        <li class="nav-item" role="presentation">
-				            <button  class="nav-link fs-4 fs-md-3 px-4 px-md-5 py-3 py-md-4 fw-semibold" id="ended-tab" type="button" >
+				        <li class="nav-item">
+				            <button id="ended-tab" class="nav-link fs-4 fs-md-3 px-4 px-md-5 py-3 py-md-4 fw-semibold" type="button" >
 				                종료된 이벤트
 				            </button>
 				        </li>
@@ -119,23 +122,38 @@
 		        
 		        <section class="pt-4" > 
 		        	<div class="container px-lg-5">
-		        		<div class="row gx-lg-5" id="eventArea">  <!-- 데이터 -->
+		        		<div id="eventArea" class="row gx-lg-5" >
 				       	<!-- Page Content-->
+				       	<!-- [D] : 데이터 들어가는 자리 -->
 				     		
 			           </div>
 		           </div>   
 		           
 		           <div class="pagingArea py-3">
 	                <ul class="pagination justify-content-center my-5">
-	                    <li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
-	                    
-	                    <c:forEach begin="${ map.pi.startPage }" end="${ map.pi.endPage }" var="num">
-		                    <li class="page-item">
-		                   	 	<a class="page-link" href="event?page=${ num }">${ num }</a>
-		                    </li>
-	                    </c:forEach>
-	                    
-	                    <li class="page-item"><a class="page-link" href="#">다음</a></li>
+	                	
+	                 	<!-- 이전 페이지 -->
+						<c:if test="${map.pi.currentPage gt 1}">
+						    <li class="page-item">
+						        <a class="page-link" href="${pageContext.request.contextPath}/event/list?page=${map.pi.currentPage - 1}">이전</a>
+						    </li>
+						</c:if>
+						
+						<!-- 페이지 번호 -->
+						<c:forEach begin="${map.pi.startPage}" end="${map.pi.endPage}" var="num">
+						    <li class="page-item ${map.pi.currentPage eq num ? 'active' : ''}">
+						        <a class="page-link" href="${pageContext.request.contextPath}/event/list?page=${num}">${num}</a>
+						    </li>
+						</c:forEach>
+						
+						<!-- 다음 페이지 -->
+						<c:if test="${map.pi.currentPage lt map.pi.maxPage}">
+						    <li class="page-item">
+						        <a class="page-link" href="${pageContext.request.contextPath}/event/list?page=${map.pi.currentPage + 1}">다음</a>
+						    </li>
+						</c:if>
+
+                    	
 	                </ul>
 	            </div>	
            	  	</section>
