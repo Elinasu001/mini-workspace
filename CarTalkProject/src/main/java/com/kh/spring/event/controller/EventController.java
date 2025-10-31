@@ -5,9 +5,11 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.spring.event.model.dto.EventDTO;
 import com.kh.spring.event.model.service.EventService;
 
 import lombok.RequiredArgsConstructor;
@@ -54,6 +56,22 @@ public class EventController {
 	    log.info("종료된 이미지: {}", map);
 	    return "event/listFragment";
 	    
+	}
+	
+	// 이벤트 게시글 상세보기
+	@GetMapping("/{id}")
+	public String selectByEnvetNo(@PathVariable(name="id") Long eventNo, Model model) {
+		
+		log.info("게시글 번호 : {}, 카테고리 : {}", eventNo);
+		
+		// 조회수 증가
+		//EventDTO event = eventService.selectByEventNo(eventNo);
+		//model.addAttribute("event", "event");
+		
+		//return "event/detail";
+		return null;
+		// 2025-10-31작업중
+		
 	}
 	
 }

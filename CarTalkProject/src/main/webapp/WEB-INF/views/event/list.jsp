@@ -73,7 +73,7 @@
 
 </style>
 <body>
-	<div id="wrap" class="">
+	<div id="wrap">
 	
 		<jsp:include page="../include/header.jsp"/>
 		
@@ -95,8 +95,14 @@
 		                </div>
 		            </div>
 		            
-		            
 		        </header>
+		        
+	        	<!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
+		        <!--c:if test="${ not empty sessionScope.loginMember }">-->
+		        <!-- <div class="mx-3 my-4">
+		        	<a class="btn btn-secondary" href="event/form">등록하기</a>
+	        	</div>-->
+		        <!--/c:if>-->
 		        
 		        <!-- 탭 영역 추가 -->
 			    <div class="container py-5">
@@ -114,11 +120,6 @@
 				    </ul>
 				</div>
 
-            	
-		       	<!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
-		        <!--<c:if test="${ not empty sessionScope.loginMember }">-->
-		        	<a class="btn btn-secondary" style="float:right;" href="event/form">등록하기</a>
-		        <!--</c:if>-->
 		        
 		        <section class="pt-4" > 
 		        	<div class="container px-lg-5">
@@ -165,9 +166,11 @@
 	</div>
 </body>
 <script>
+<!--
 function toDetail(eventNo){
 	location.href = "event/" + eventNo;
 }
+-->
 
 $(function() {
 	  // 기본 탭: 진행중 이벤트
