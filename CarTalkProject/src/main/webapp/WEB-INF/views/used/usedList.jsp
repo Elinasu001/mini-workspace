@@ -10,9 +10,11 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/used/usedList.css">
 
-<jsp:include page="/WEB-INF/views/include/header.jsp" />
+
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/include/meta.jsp" />
+<jsp:include page="/WEB-INF/views/include/header.jsp" />
 	<main class="main-wrap">
 		<h2>중고 판매 목록</h2>
 
@@ -52,8 +54,7 @@
 			</c:if>
 
 			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-				<a href="list?page=${p}"
-					class=${ p == pi.currentPage ? 'active' : '' }">${p}</a>
+				<a href="list?page=${p}" class=${pi.currentPage}>${p}</a>
 			</c:forEach>
 
 			<c:if test="${ pi.currentPage < pi.maxPage }">
