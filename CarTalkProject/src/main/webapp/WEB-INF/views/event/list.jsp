@@ -16,8 +16,9 @@
 	display:inline-flex;
 	align-items:center;
 	justify-content:center;
-	height:20rem;
-	width:20rem;
+	height:18rem;
+	width:18rem;
+	overflow:hidden;
 	font-size:2rem;
 }
 .feature img {
@@ -122,7 +123,7 @@
 
 		        
 		        <section class="pt-4" > 
-		        	<div class="container px-lg-5">
+		        	<div class="container ">
 		        		<div id="eventArea" class="row gx-lg-5" >
 				       	<!-- Page Content-->
 				       	<!-- [D] : 데이터 들어가는 자리 -->
@@ -131,32 +132,30 @@
 		           </div>   
 		           
 		           <div class="pagingArea py-3">
-	                <ul class="pagination justify-content-center my-5">
-	                	
-	                 	<!-- 이전 페이지 -->
-						<c:if test="${map.pi.currentPage gt 1}">
-						    <li class="page-item">
-						        <a class="page-link" href="${pageContext.request.contextPath}/event/list?page=${map.pi.currentPage - 1}">이전</a>
-						    </li>
-						</c:if>
-						
-						<!-- 페이지 번호 -->
-						<c:forEach begin="${map.pi.startPage}" end="${map.pi.endPage}" var="num">
-						    <li class="page-item ${map.pi.currentPage eq num ? 'active' : ''}">
-						        <a class="page-link" href="${pageContext.request.contextPath}/event/list?page=${num}">${num}</a>
-						    </li>
-						</c:forEach>
-						
-						<!-- 다음 페이지 -->
-						<c:if test="${map.pi.currentPage lt map.pi.maxPage}">
-						    <li class="page-item">
-						        <a class="page-link" href="${pageContext.request.contextPath}/event/list?page=${map.pi.currentPage + 1}">다음</a>
-						    </li>
-						</c:if>
-
-                    	
-	                </ul>
-	            </div>	
+					  <ul class="pagination justify-content-center my-5">
+					    <!-- 이전 페이지 -->
+					    <c:if test="${map.pi.currentPage gt 1}">
+					      <li class="page-item">
+					        <a class="page-link" href="#" data-page="${map.pi.currentPage - 1}">이전</a>
+					      </li>
+					    </c:if>
+					
+					    <!-- 페이지 번호 -->
+					    <c:forEach begin="${map.pi.startPage}" end="${map.pi.endPage}" var="num">
+					      <li class="page-item ${map.pi.currentPage eq num ? 'active' : ''}">
+					        <a class="page-link" href="#" data-page="${num}">${num}</a>
+					      </li>
+					    </c:forEach>
+					
+					    <!-- 다음 페이지 -->
+					    <c:if test="${map.pi.currentPage lt map.pi.maxPage}">
+					      <li class="page-item">
+					        <a class="page-link" href="#" data-page="${map.pi.currentPage + 1}">다음</a>
+					      </li>
+					    </c:if>
+					  </ul>
+					</div>
+					
            	  	</section>
 	          	
 	            
@@ -173,34 +172,46 @@ function toDetail(eventNo){
 -->
 
 $(function() {
-	  // 기본 탭: 진행중 이벤트
-	  loadEvents("ongoing");
-
-	  $("#ongoing-tab").on("click", function() {
-	    $(".nav-link").removeClass("active");
-	    $(this).addClass("active");
-	    loadEvents("ongoing");
-	  });
-
-	  $("#ended-tab").on("click", function() {
-	    $(".nav-link").removeClass("active");
-	    $(this).addClass("active");
-	    loadEvents("ended");
-	  });
-
-	  function loadEvents(type) {
-	    $.ajax({
-	      url: "${pageContext.request.contextPath}/event/" + type,
-	      type: "GET",
-	      dataType: "html",
-	      success: function(data) {
-	        $("#eventArea").html(data);
-	      },
-	      error: function() {
-	        $("#eventArea").html("<p class='text-center text-danger py-5'>이벤트를 불러오는 중 오류가 발생했습니다.</p>");
-	      }
-	    });
-	  }
-	});
+	 // 기본 탭: 진행중 이벤트
+	 loadEvents("ongoing");
+	
+	
+	 // 진행중인 게시글
+	 $("#ongoing-tab").on("click", function() {
+	   $(".nav-link").removeClass("active");
+	   $(this).addClass("active");
+	   loadEvents("ongoing", 1);
+	 });
+	
+	 // 종료된 게시글
+	 $("#ended-tab").on("click", function() {
+	   $(".nav-link").removeClass("active");
+	   $(this).addClass("active");
+	   loadEvents("ended", 1);
+	 });
+	
+	 
+	 
+	 function loadEvents(type, page) {
+	   $.ajax({
+	     url: "${pageContext.request.contextPath}/event/" + type + "?page=" + page,
+	     type: "GET",
+	     dataType: "html",
+	     success: function(data) {
+	       $("#eventArea").html(data);
+	       
+	       // 페이징 클릭 이벤트 재바인딩
+	       $("#eventArea .pagination a").on("click", function(e) {
+	           e.preventDefault();
+	           const pageNum = $(this).data("page");
+	           loadEvents(type, pageNum);
+	        });
+	     },
+	     error: function() {
+	       $("#eventArea").html("<p class='text-center text-danger py-5'>이벤트를 불러오는 중 오류가 발생했습니다.</p>");
+	     }
+	   });
+  }
+});
 </script>
 </html>

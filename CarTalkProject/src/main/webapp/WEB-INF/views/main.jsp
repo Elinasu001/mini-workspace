@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<jsp:include page="/WEB-INF/views/include/meta.jsp"/>
 <title>Insert title here</title>
 </head>
 <style>
