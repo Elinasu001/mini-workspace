@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kh.spring.event.model.mapper.EventMapper">
 
-    <!-- 이벤트 게시글 전체 개수 조회 -->
+    <!--  페이징 처리용으로 게시글 전체 개수 -->
     <select id="selectEventCount" resultType="_int">
         SELECT
             COUNT(*)
@@ -14,5 +14,105 @@
         WHERE
             STATUS = 'Y'
     </select>
+    
+    
+  
+    
+    <select id="selectEventList" resultType="eventdto">
+	    SELECT
+	           EVENT_NO eventNo
+	         , EVENT_TITLE eventTitle
+	         , START_DATE startDate
+	         , END_DATE endDate
+	         , FILE_PATH filePath
+	         , ORIGIN_NAME originName
+	         , CHANGE_NAME changeName
+	    FROM
+	           CT_EVENT
+	    JOIN
+	           CT_EVENT_ATTACHMENT ON (REF_BNO = EVENT_NO)
+	    WHERE 
+	           CT_EVENT.STATUS = 'Y'
+	   	ORDER 
+	   	   BY
+	           EVENT_NO DESC
+    </select>
+    
+    
+    
+    
+    <!--  진행중인 이벤트 / 종료된 이벤트 _ ajax -->
+    
+     <select id="selectOngoingCount" resultType="_int">
+	    SELECT 
+	    	   COUNT(*)
+	      FROM 
+	           CT_EVENT
+	     WHERE 
+	           STATUS = 'Y'
+	       AND 
+	           END_DATE >= SYSDATE
+	</select>
+	
+	
+    <select id="selectOngoing" resultType="eventdto">
+	    SELECT
+	            EVENT_NO eventNo
+	          , EVENT_TITLE eventTitle
+	          , START_DATE startDate
+	          , END_DATE endDate
+	          , FILE_PATH filePath
+	          , ORIGIN_NAME originName
+	          , CHANGE_NAME changeName
+	       FROM  
+	            CT_EVENT
+	       JOIN 
+	            CT_EVENT_ATTACHMENT ON (REF_BNO = EVENT_NO)
+	      WHERE 
+	            CT_EVENT.STATUS = 'Y'
+	       AND 
+	            END_DATE >= SYSDATE
+	     ORDER 
+	        BY 
+	            EVENT_NO DESC
+	</select>
+	
+	
+	 <select id="selectEndedCount" resultType="_int">
+	    SELECT 
+	    	   COUNT(*)
+	      FROM 
+	           CT_EVENT
+	     WHERE 
+	           STATUS = 'Y'
+	       AND 
+	           END_DATE &lt; SYSDATE
+	 </select>
+	 
+	 
+	<select id="selectEnded" resultType="eventdto">
+	    SELECT
+	            EVENT_NO eventNo
+	          , EVENT_TITLE eventTitle
+	          , START_DATE startDate
+	          , END_DATE endDate
+	          , FILE_PATH filePath
+	          , ORIGIN_NAME originName
+	          , CHANGE_NAME changeName
+	       FROM  
+	            CT_EVENT
+	       JOIN 
+	            CT_EVENT_ATTACHMENT ON (REF_BNO = EVENT_NO)
+	      WHERE 
+	            CT_EVENT.STATUS = 'Y'
+	        AND 
+	            END_DATE &lt; SYSDATE
+	      ORDER
+	         BY 
+	            EVENT_NO DESC
+	</select>
+	
+	
+    
 
 </mapper>
