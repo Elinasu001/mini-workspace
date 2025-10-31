@@ -21,9 +21,9 @@ public class BoardController {
 	private final BoardService boardService;
 	
 	@GetMapping
-	public String selectBoardList(@RequestParam(name="page", defaultValue = "1") Long pageNo, Model model){
+	public String selectBoardList(@RequestParam(name="page", defaultValue = "1") Long pageNo,@RequestParam(name="searchBy", defaultValue="ENROLL_DATE") String searchBy,Model model){
 		
-		Map<String, Object> map = boardService.selectBoardList(pageNo);
+		Map<String, Object> map = boardService.selectBoardList(pageNo,searchBy);
 		model.addAttribute("map", map);
 		
 		return "board/board_list";

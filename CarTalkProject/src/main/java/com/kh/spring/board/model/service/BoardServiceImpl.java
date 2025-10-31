@@ -31,7 +31,7 @@ public class BoardServiceImpl implements BoardService {
 	 * 페이지 정보가 담긴 PageInfo를 Map에 담아서 반환하는 메서드
 	 */
 	@Override
-	public Map<String, Object> selectBoardList(Long pageNo) {
+	public Map<String, Object> selectBoardList(Long pageNo, String searchBy) {
 		Map<String, Object> map = new HashMap();
 		List<BoardDTO> boards = new ArrayList();
 		
@@ -44,7 +44,7 @@ public class BoardServiceImpl implements BoardService {
 		if(count > 0) {
 			//페이징 처리용 클래스
 			RowBounds rb = new RowBounds((pageNo.intValue() -1)*10, 10);
-			boards = boardMapper.selectBoardList(rb);
+			boards = boardMapper.selectBoardList(searchBy ,rb);
 		}
 		
 		PageInfo pi = pagination.getPageInfo(count, pageNo.intValue(), 10, 10);

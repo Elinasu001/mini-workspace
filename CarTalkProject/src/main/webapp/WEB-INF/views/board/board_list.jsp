@@ -34,6 +34,11 @@
     .boardListTable>*>*>td {
         border: 1px solid black;
     }
+    
+    .boardSearchBy:hover{
+    	background-color: gray;
+    	cursor : pointer;
+    }
 
     .boardListTable {
         border-collapse: collapse;
@@ -67,12 +72,12 @@
         <table class="boardListTable">
             <thead>
                 <tr style="border: 1px solid gray;">
-                    <th width="50">번호</th>
-                    <th width="400">제목</th>
-                    <th width="100">작성자</th>
-                    <th width="80">조회수</th>
-                    <th width="120">작성일</th>
-                    <th width="50">좋아요수</th>
+                    <th width="50" id="boardNo" class="boardSearchBy">번호</th>
+                    <th width="400" id="boardTitle" class="boardSearchBy">제목</th>
+                    <th width="100" id="boardWriter" class="boardSearchBy">작성자</th>
+                    <th width="80" id="viewCount" class="boardSearchBy">조회수</th>
+                    <th width="120" id="enrollDate" class="boardSearchBy">작성일</th>
+                    <th width="50" id="likes" class="boardSearchBy">좋아요수</th>
                 </tr>
             </thead>
             <tbody id="boardList">
@@ -90,9 +95,18 @@
         </table>
         
         <script>
+        	$('.boardSearchBy').click(e => {
+        		
+        		const searchBy = e.currentTarget.id;
+        		console.log(searchBy);
+        		location.href = `/ct/board?page=1&searchBy=\${searchBy}`
+        		
+        	})
+        	
+        
         	$('.board').click(e => {
         		
-        		console.log(e);
+        		//console.log(e);
         		const boardNo = e.currentTarget.id;
         		location.href = `/ct/board/\${boardNo}`;
         		

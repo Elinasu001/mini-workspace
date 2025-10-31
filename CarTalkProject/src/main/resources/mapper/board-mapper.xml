@@ -31,7 +31,7 @@
 		       STATUS = 'Y'
 	</select>
 	
-	<select id="selectBoardList" resultType="com.kh.spring.board.model.dto.BoardDTO">
+	<select id="selectBoardList" resultType="com.kh.spring.board.model.dto.BoardDTO" parameterType="string">
 		<include refid="boardColumns"></include>
 		  FROM
 		       CT_BOARD
@@ -43,7 +43,26 @@
 		       STATUS = 'Y'
 		 ORDER
 		    BY
-		       enrollDate DESC
+		       <choose>
+		        <when test="searchBy == 'likes'">
+		         likes DESC
+		        </when>
+		        <when test="searchBy == 'boardTitle'">
+		         boardTitle ASC
+		        </when>
+		        <when test="searchBy == 'viewCount'">
+		         viewCount DESC
+		        </when>
+		        <when test="searchBy == 'boardWriter'">
+		         boardWriter ASC
+		        </when>
+		        <when test="searchBy == 'boardNo'" >
+		         boardNo DESC
+		        </when>
+		       	<otherwise>
+		       	 enrollDate DESC 
+		       	</otherwise>
+		       </choose>
 	</select>
 	<!-- 해야할 일 : 정렬 기준을 입력받아서 정렬 기준을 바꿔주기 + 값이 없을 경우 default = ENROLL_DATE-->
 	

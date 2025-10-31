@@ -12,7 +12,7 @@ public interface BoardMapper {
 	
 	int selectBoardCount();
 	
-	List<BoardDTO> selectBoardList(RowBounds rb);
+	List<BoardDTO> selectBoardList(String searchBy, RowBounds rb);
 	
 	List<BoardDTO> selectBoardListByKeyword(BoardDTO board);
 	
