@@ -33,6 +33,7 @@
 	object-fit:cover;
 }
 
+
 /* 딤 오버레이 */
 .feature.ended::after {
   content: "종료된 이벤트";
@@ -216,8 +217,11 @@ $(function() {
 	    	 // 1) 딤 클래스 추가
 	         $("#eventArea .feature").addClass("ended");
 	         // 2) 링크 클릭 막기
-	         $("#eventArea a, #eventArea .col-lg-6").css("pointer-events", "none");
-	         $("#eventArea .col-lg-6").css("cursor", "not-allowed");
+	         $("#eventArea .card-body a").css({
+	           "pointer-events": "none",
+	           "cursor": "not-allowed"
+	         });
+	        
 	       }
 	     },
 	     error: function() {

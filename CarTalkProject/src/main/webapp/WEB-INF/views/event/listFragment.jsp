@@ -7,7 +7,7 @@
 <c:choose>
   <c:when test="${not empty map.events}">
     <c:forEach items="${map.events}" var="event">
-      <div class="col-lg-6 col-xxl-4 mb-5" onclick="toDetail(${event.eventNo});">
+      <div class="col-lg-6 col-xxl-4 mb-5" data-eventno="${event.eventNo}">
         <div class="card border-0 h-100">
           <div class="card-body text-center p-4 pt-0 pt-lg-0">
             <a href="${pageContext.request.contextPath}/event/detail/${event.eventNo}">
