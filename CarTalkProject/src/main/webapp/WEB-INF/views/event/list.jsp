@@ -20,6 +20,7 @@
 	width:18rem;
 	overflow:hidden;
 	font-size:2rem;
+	background-color:var(--bs-gray-200);
 }
 .feature img {
 	width:100%;
@@ -130,33 +131,7 @@
 				     		
 			           </div>
 		           </div>   
-		           
-		           <div class="pagingArea py-3">
-					  <ul class="pagination justify-content-center my-5">
-					    <!-- 이전 페이지 -->
-					    <c:if test="${map.pi.currentPage gt 1}">
-					      <li class="page-item">
-					        <a class="page-link" href="#" data-page="${map.pi.currentPage - 1}">이전</a>
-					      </li>
-					    </c:if>
-					
-					    <!-- 페이지 번호 -->
-					    <c:forEach begin="${map.pi.startPage}" end="${map.pi.endPage}" var="num">
-					      <li class="page-item ${map.pi.currentPage eq num ? 'active' : ''}">
-					        <a class="page-link" href="#" data-page="${num}">${num}</a>
-					      </li>
-					    </c:forEach>
-					
-					    <!-- 다음 페이지 -->
-					    <c:if test="${map.pi.currentPage lt map.pi.maxPage}">
-					      <li class="page-item">
-					        <a class="page-link" href="#" data-page="${map.pi.currentPage + 1}">다음</a>
-					      </li>
-					    </c:if>
-					  </ul>
-					</div>
-					
-           	  	</section>
+           	    </section>
 	          	
 	            
             </div>
