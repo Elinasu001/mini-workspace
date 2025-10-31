@@ -11,7 +11,7 @@
         <div class="card border-0 h-100">
           <div class="card-body text-center p-4 pt-0 pt-lg-0">
             <a href="${pageContext.request.contextPath}/event/detail/${event.eventNo}">
-              <p class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
+              <p class="feature rounded-3 mb-4 mt-n4">
                 <c:choose>
                   <c:when test="${not empty event.filePath and not empty event.changeName}">
                     <img src="<c:url value='/${event.filePath}/${event.changeName}' />" alt="대표이미지">
@@ -22,7 +22,7 @@
                 </c:choose>
               </p>
               <h2 class="fs-4 fw-bold">${event.eventTitle}</h2>
-              <span class="mb-0 pt-1">이벤트 기간 : ${event.startDate} ~ ${event.endDate}</span>
+              <p class="info-txt my-3"><span class="category  me-2">${event.categoryName}</span> : <span class="ms-2">${event.startDate} ~ ${event.endDate}</span></p>
             </a>
           </div>
         </div>

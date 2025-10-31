@@ -12,6 +12,10 @@
 .eventBanner{
 	 background: rgba(223, 228, 216, 1);
 }
+
+.eventBanner p {
+	line-height:1.5;
+}
 .feature {
 	display:inline-flex;
 	align-items:center;
@@ -27,6 +31,15 @@
 	height:100%;
 	object-fit:cover;
 }
+
+.category {
+  color: var(--color-1);
+  font-size: var(--font14);
+  background-color:rgb(13 110 253 / 18%);
+  padding:6px 10px;
+  border-radius:20px;
+}
+
 
 .row {
   --bs-gutter-x: 1.5rem;
@@ -83,12 +96,12 @@
             <div class="contArea">
             
             	<!-- Header-->
-		        <header class="eventBanner py-5">
+		        <header class="eventBanner">
 		            <div class="container px-lg-5">
 		                <div class="p-4 p-lg-5 rounded-3 text-center">
-		                    <div class="m-4 m-lg-5">
+		                    <div class="m-4 m-lg-6">
 		                        <h1 class="display-5 fw-bold pb-3">이벤트 게시판</h1>
-		                        <p class="fs-4 pb-5">
+		                        <p class="fs-4">
 		                        다양한 이벤트와 혜택을 한눈에!<br/>
 		                        참여하고, 즐기고, 특별한 선물을 만나보세요.
 		                        </p>

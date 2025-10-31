@@ -22,4 +22,12 @@ public interface EventMapper {
 	// 종료된 이벤트 _ AJAX
 	int selectEndedCount();
 	List<EventDTO> selectEnded(RowBounds rb);
+	
+	// 조회수 증가
+	//int increaseCount(Long eventNo); 
+	// 이벤트 게시글 상세조회
+	//EventDTO selectByEventNo(Long eventNo);
+	
+	
+	
 }

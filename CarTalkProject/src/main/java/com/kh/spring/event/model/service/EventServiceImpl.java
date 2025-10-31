@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.spring.event.model.dto.EventDTO;
 import com.kh.spring.event.model.mapper.EventMapper;
+import com.kh.spring.exception.BadRequestException;
 import com.kh.spring.exception.InvalidArgumentsException;
 import com.kh.spring.util.PageInfo;
 import com.kh.spring.util.Pagination;
@@ -106,7 +107,30 @@ class EventServiceImpl implements EventService {
 
 	    return map;
 	}
-
+	
+	/*
+	// 이벤트 게시글 상세조회 (+ 조회수 증가)
+	@Override 
+	public EventDTO selectByEnvetNo(Long eventNo) {
+		
+		// 예외처리
+		if(eventNo < 1 ) {
+			throw new InvalidArgumentsException("유효하지 않은 요청입니다.");
+		}
+		
+		// 최신 갱신된 데이터 조회
+		int result = eventMapper.increaseCount(eventNo);
+		
+		// 예외처리
+		if(result != 1) {
+			throw new BadRequestException("잘못된 요청입니다.");
+		}
+		
+		EventDTO event = eventMapper.selectEventAttachment(eventNo);
+		
+		return event;
+	}
+	*/
 	
 	
 }
