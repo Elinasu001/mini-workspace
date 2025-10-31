@@ -1,5 +1,4 @@
 package com.kh.spring.board.controller;
-import java.io.Console;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
