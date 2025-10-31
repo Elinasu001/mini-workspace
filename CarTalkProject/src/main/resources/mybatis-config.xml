@@ -5,16 +5,15 @@
 <configuration>
 
 	<settings>
-		<setting name="jdbcTypeForNull" value="NULL"/>
+		<setting name="jdbcTypeForNull" value="NULL" />
 	</settings>
-		
+
 	<typeAliases>
-		<typeAlias type="com.kh.spring.event.model.dto.EventDTO" alias="eventdto"/>
+		<typeAlias type="com.kh.spring.event.model.dto.EventDTO"
+			alias="eventdto" />
 	</typeAliases>
-	
-	<!-- 
-		 environment, dataSource, data Source => 연결정보
-	 -->
+
+	<!-- environment, dataSource, data Source => 연결정보 -->
 
 	<mappers>
 		<mapper resource="mapper/member-mapper.xml"/>
