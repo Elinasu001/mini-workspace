@@ -24,15 +24,22 @@ public class EventController {
 	private final EventService eventService;
 	
 	// 이벤트 게시글 목록조회
-	
+	/*
 	@GetMapping("/list")
 	public String selectEventList(@RequestParam(name="page", defaultValue="1") Long page, Model model) {
 		
 		log.info("앞에서 넘어온 페이지 값: {}", page);
 		// 이벤트 목록(events) : 현재 페이지에 표시할 이벤트 게시글 리스트(List<EventDTO>) + 페이지 정보(pi) : 전체 게시글 수, 현재 페이지, 마지막 페이지 (PageInfo) + 
-		//Map<String, Object> map = eventService.selectEventList(page);
-		//model.addAttribute("map", map);
-		//log.info("이미지: {}", map);
+		Map<String, Object> map = eventService.selectEventList(page);
+		model.addAttribute("map", map);
+		log.info("이미지: {}", map);
+		return "event/list";
+	}
+	*/
+	
+	// 이벤트 게시글 목록조회페이지
+	@GetMapping("/list")
+	public String selectEventPage() {
 		return "event/list";
 	}
 	
@@ -60,17 +67,18 @@ public class EventController {
 	}
 	
 	// 이벤트 게시글 상세보기
+	/*
 	@GetMapping("/{id}")
 	public String selectByEnvetNo(@PathVariable(name="id") Long eventNo, Model model) {
 		
 		log.info("게시글 번호 : {}, 카테고리 : {}", eventNo);
 		
 		// 조회수 증가
-		//EventDTO event = eventService.selectByEventNo(eventNo);
-		//model.addAttribute("event", "event");
+		EventDTO event = eventService.selectByEventNo(eventNo);
+		model.addAttribute("event", "event");
 		
-		return null;
+		return "event/detail";
 		
 	}
-	
+	*/
 }

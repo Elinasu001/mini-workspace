@@ -5,6 +5,7 @@
 <mapper namespace="com.kh.spring.event.model.mapper.EventMapper">
 
     <!--  페이징 처리용으로 게시글 전체 개수 -->
+    <!-- 
     <select id="selectEventCount" resultType="_int">
         SELECT
                COUNT(*)
@@ -36,7 +37,7 @@
 	   	   BY
 	           EVENT_NO DESC
     </select>
-    
+    -->
     
     
     

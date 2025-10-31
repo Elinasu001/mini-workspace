@@ -24,7 +24,7 @@ class EventServiceImpl implements EventService {
 	
 	private final EventMapper eventMapper;
 	private final Pagination pagination;
-	
+	/*
 	@Override
 	public Map<String, Object> selectEventList(Long page){
 		
@@ -57,6 +57,7 @@ class EventServiceImpl implements EventService {
 		return map;
 		
 	}
+	*/
 	
 	// 진행중인 이벤트 _ AJAX
 	@Override

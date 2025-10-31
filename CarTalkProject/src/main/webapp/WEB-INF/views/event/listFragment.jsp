@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-
+<!-- 이벤트 리스트 카드 -->
 <c:choose>
   <c:when test="${not empty map.events}">
     <c:forEach items="${map.events}" var="event">
@@ -29,7 +29,7 @@
       </div>
     </c:forEach>
 
-    <!-- 페이지네이션 추가 -->
+    <!-- 페이지네이션 -->
     <div class="pagingArea py-3 col-12">
       <ul class="pagination justify-content-center my-5">
         <c:if test="${map.pi.currentPage gt 1}">

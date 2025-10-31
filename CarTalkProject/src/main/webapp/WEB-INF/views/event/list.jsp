@@ -172,9 +172,7 @@ function toDetail(eventNo){
 -->
 
 $(function() {
-	 // 기본 탭: 진행중 이벤트
-	 loadEvents("ongoing");
-	
+	 loadEvents("ongoing", 1); // 기본 탭: 진행중 이벤트
 	
 	 // 진행중인 게시글
 	 $("#ongoing-tab").on("click", function() {
@@ -189,7 +187,7 @@ $(function() {
 	   $(this).addClass("active");
 	   loadEvents("ended", 1);
 	 });
-	
+	 
 	 
 	 
 	 function loadEvents(type, page) {

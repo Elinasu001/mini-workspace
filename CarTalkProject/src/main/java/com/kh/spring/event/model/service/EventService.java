@@ -8,7 +8,7 @@ import com.kh.spring.event.model.dto.EventDTO;
 public interface EventService {
 
 	// 이벤트 게시글 목록조회
-	Map<String, Object> selectEventList(Long page);
+	//Map<String, Object> selectEventList(Long page);
 	
 	// 진행중인 이벤트 _ AJAX
 	Map<String, Object> selectOngoing(Long page);
