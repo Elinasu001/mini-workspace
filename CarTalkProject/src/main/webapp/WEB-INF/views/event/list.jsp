@@ -16,6 +16,7 @@
 .eventBanner p {
 	line-height:1.5;
 }
+
 .feature {
 	position: relative;
 	display:inline-flex;
@@ -33,9 +34,21 @@
 	object-fit:cover;
 }
 
+.card:hover:not(.ended) img {
+  transform: scale(1.05);
+  transition: transform 0.4s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.20);
+  cursor: pointer;
+}
+
+/*커서 방지*/
+.card.ended .card-body a{
+	pointer-events: none;
+    cursor: not-allowed;
+}
 
 /* 딤 오버레이 */
-.feature.ended::after {
+.card.ended .feature::after {
   content: "종료된 이벤트";
   position: absolute;
   left:50%;
@@ -51,6 +64,8 @@
   width:18rem;
   height:18rem;
 }
+
+
 
 .category {
   color: var(--color-1);
@@ -214,14 +229,7 @@ $(function() {
 	       
 	       // 종료된 이벤트 전용 처리
 	       if (type === "ended") {
-	    	 // 1) 딤 클래스 추가
-	         $("#eventArea .feature").addClass("ended");
-	         // 2) 링크 클릭 막기
-	         $("#eventArea .card-body a").css({
-	           "pointer-events": "none",
-	           "cursor": "not-allowed"
-	         });
-	        
+	         $("#eventArea .card").addClass("ended");
 	       }
 	     },
 	     error: function() {
