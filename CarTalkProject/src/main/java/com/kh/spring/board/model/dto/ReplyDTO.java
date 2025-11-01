@@ -19,6 +19,6 @@ public class ReplyDTO {
 	private Long refBno;
 	private String replyContent;
 	private String replyWriter;
-	private Date createDate;
+	private Date enrollDate;
 	private String status;
 }
