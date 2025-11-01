@@ -12,6 +12,9 @@
 .eventBanner{
 	 background: rgba(223, 228, 216, 1);
 }
+.eventBanner .text-center p{
+	color: var(--bs-secondary);
+}
 
 .eventBanner p {
 	line-height:1.5;
