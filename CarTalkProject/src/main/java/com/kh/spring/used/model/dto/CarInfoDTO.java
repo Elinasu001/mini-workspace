@@ -1,6 +1,9 @@
 package com.kh.spring.used.model.dto;
 
 import java.sql.Date;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,19 +14,18 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class insertUsedDTO {
+public class CarInfoDTO {
 	
-	private String usedTitle;
-	private String category;
+	private Long carNo;
+	private Long usedNo;
 	private String manufacturer;
 	private String model;
-	private int usedPrice;
 	private String carYear;
 	private int distance;
 	private String transmission;
-	private String accident;
-	private String carColor;
-	private String usedContent;
+	private String fuelType;
 	private String region;
+	private String carColor;
+	private String phone;
 
 }

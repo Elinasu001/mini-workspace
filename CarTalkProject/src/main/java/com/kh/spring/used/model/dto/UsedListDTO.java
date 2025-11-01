@@ -30,5 +30,6 @@ public class UsedListDTO {
     private String phone;
     private String thumbnail;
     private String category;
+    private String categoryName;
 
 }

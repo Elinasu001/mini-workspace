@@ -11,6 +11,9 @@
 	<typeAliases>
 		<typeAlias type="com.kh.spring.event.model.dto.EventDTO"
 			alias="eventdto" />
+			<typeAlias type="com.kh.spring.used.model.dto.UsedDTO" alias="UsedDTO"/>
+			<typeAlias type="com.kh.spring.used.model.dto.CarInfoDTO" alias="CarInfoDTO"/>
+			<typeAlias type="com.kh.spring.used.model.dto.UsedAttachmentDTO" alias="UsedAttachmentDTO"/>
 	</typeAliases>
 
 	<!-- environment, dataSource, data Source => 연결정보 -->

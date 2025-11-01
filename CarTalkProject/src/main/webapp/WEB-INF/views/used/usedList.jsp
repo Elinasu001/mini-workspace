@@ -20,7 +20,9 @@
 		<div class="top-area">
 		<h2>중고 판매 목록</h2>
 		
+		<c:if test="${ not empty sessionScope.loginMember }">
 		<a href="${pageContext.request.contextPath}/used/myList" class="btn-write">내 판매목록</a>
+		</c:if>
 		</div>
 		<!-- 차량 목록 -->
 		<div class="car-list">
@@ -31,7 +33,7 @@
 						<a href="${pageContext.request.contextPath}/used/detail?no=${car.usedNo}" class="car-link">
 							<div class="car-card">
 								<div class="car-info">
-									<div>${ car.status }| ${ car.category }</div>
+									<div>${ car.status }| ${ car.categoryName }</div>
 									<h3>${ car.usedTitle }</h3>
 									<p>${ car.carYear }/ ${ car.distance }KM / ${ car.transmission }
 										/ ${ car.fuelType }</p>
@@ -68,6 +70,11 @@
 
 		<!-- 검색 -->
 		<div class="search-wrap">
+	<!-- 로그인이 안됐을 경우 글쓰기 기능 막음 (로그인 구현되면 활성화) 
+		<c:if test="${ not empty sessionScope.loginMember }">
+			<a href="${pageContext.request.contextPath}/used/insert" class="btn-write">글쓰기</a>
+		</c:if>  -->
+		<!-- 로그인 구현시 밑에 항목 삭제 -->
 			<a href="${pageContext.request.contextPath}/used/insert" class="btn-write">글쓰기</a>
 
 			<form action="${pageContext.request.contextPath}/used/list" method="get" class="search-box">

@@ -31,12 +31,14 @@
 					       , C.REGION region
 					       , C.CAR_COLOR carColor
 					       , C.PHONE phone
-					       , U.CATEGORY category          
+					       , CAT.CATEGORY_NAME categoryName          
 					       , ATT.CHANGE_NAME thumbnail
 					    FROM
 					         CT_USED_LISTING U
 					    JOIN
 					         CT_CAR_INFO C ON U.USED_NO = C.USED_NO
+					    JOIN
+					         CT_USED_CATEGORY CAT ON U.CATEGORY = CAT.CATEGORY_NO
 					    LEFT
 					    JOIN
 		                     (
@@ -78,5 +80,67 @@
 	</if>     
 	</select>
 	
+	<select id="getNextUsedNo" resultType="long">
+    	SELECT SEQ_USED.NEXTVAL FROM DUAL
+	</select>
+	
+	<insert id="insertUsed"
+			parameterType="UsedDTO">
+		INSERT
+		  INTO
+		       CT_USED_LISTING
+		VALUES
+			   (
+			   #{usedNo}
+		     , #{userNo}
+		     , #{usedTitle}
+		     , #{usedContent}
+		     , #{usedPrice}
+		     , '판매중'
+		     , SYSDATE
+		     , DEFAULT
+		     , #{category}
+		     , #{thumbnail}
+		       ) 
+	</insert>
+	
+	
+	<insert id="insertCarInfo"
+			parameterType="CarInfoDTO">
+		INSERT
+		  INTO
+		       CT_CAR_INFO
+		VALUES
+		       (
+		       SEQ_CAR_INFO.NEXTVAL
+		     , #{manufacturer}
+		     , #{model}
+		     , #{carYear}
+		     , #{distance}
+		     , #{fuelType}
+		     , #{transmission}
+		     , #{region}
+		     , #{carColor}
+		     , #{usedNo}
+		     , #{phone}
+		       )  
+	</insert>
+	
+	<insert id="insertAttachment"
+			parameterType="UsedAttachmentDTO">
+		INSERT
+		  INTO
+		       CT_USED_ATTACHMENT
+		VALUES
+		       (
+		       SEQ_USED_FILE_NO.NEXTVAL
+		     , #{refBno}
+		     , #{originName}
+		     , #{changeName}
+		     , #{filePath}
+		     , SYSDATE
+		     , 'Y'
+		       )       
+	</insert>
 
 </mapper>
