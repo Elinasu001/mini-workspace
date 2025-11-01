@@ -16,14 +16,14 @@ public class EventDTO {
 	private Long eventNo;         // 이벤트 번호 (PK)
 	private int categoryNo;       // 카테고리 번호(FK, CT_EVENT_CATEGORY 참조)
 	private String categoryName;  // 카테고리 이름 (1 : 시즌 이벤트 / 2 : 회원 이벤트 / 3: 리뷰 이벤트 / 4: 출석 이벤트)
+	private String eventTitle;    // 이벤트 제목
+	private String eventContent;  // 이벤트 내용
 	private Date startDate;       // 이벤트 시작일
 	private Date endDate;         // 이벤트 종료일
+	private int userNo;           // 작성자 번호 (FK, CT_MEMBER 참조)
 	private String filePath;	  // 파일 경로
-    private String eventTitle;    // 이벤트 제목
-    private String eventContent;  // 이벤트 내용
     private int viewCount;        // 조회수
     private String status;        // 게시글 상태 (Y: 게시, N: 삭제)
-    private int userNo;           // 작성자 번호 (FK, CT_MEMBER 참조)
     private Date enrollDate;      // 등록일 (기본값: SYSDATE)
     
     /* 첨부파일 관련 필드 */

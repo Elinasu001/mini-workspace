@@ -155,7 +155,74 @@
 	       AND E.STATUS = 'Y'
 	</select>
 
+	<!-- 게시글 등록하기 -->
+	<insert id="insertEvent" parameterType="eventdto">
+
+    <!-- 시퀀스 미리 조회해서 eventNo에 세팅 -->
+    <selectKey resultType="long" keyProperty="eventNo" order="BEFORE">
+        SELECT SEQ_EVENT.NEXTVAL FROM DUAL
+    </selectKey>
+
+	    INSERT 
+	      INTO 
+	           CT_EVENT 
+	           (
+	           EVENT_NO
+	         , CATEGORY_NO
+	         , EVENT_TITLE
+	         , EVENT_CONTENT
+	         , START_DATE
+	         , END_DATE
+	         , STATUS
+	         , USER_NO
+	         , ENROLL_DATE
+	    	   )
+	    VALUES (
+	           #{eventNo}
+	         , #{categoryNo}
+	         , #{eventTitle}
+	         , #{eventContent}
+	         , #{startDate}
+	         , #{endDate}
+	         , 'Y'
+	         , #{userNo}
+	         , DEFAULT
+	    	   )
+	</insert>
+
 	
+	<insert id="insertEventAttachment" parameterType="com.kh.spring.event.model.dto.EventAttachmentDTO">
+
+    <!-- 파일 시퀀스 자동 부여 -->
+    <selectKey resultType="long" keyProperty="fileNo" order="BEFORE">
+        SELECT SEQ_EVENT_FILE_NO.NEXTVAL FROM DUAL
+    </selectKey>
+
+    INSERT 
+      INTO 
+           CT_EVENT_ATTACHMENT 
+           (
+           FILE_NO
+         , REF_BNO
+         , ORIGIN_NAME
+         , CHANGE_NAME
+         , FILE_PATH
+         , FILE_LEVEL
+         , UPLOAD_DATE
+         , STATUS
+    	   ) 
+    VALUES (
+           #{fileNo}
+         , #{refBno}
+         , #{originName}
+         , #{changeName}
+         , #{filePath}
+         , #{fileLevel}
+         , DEFAULT
+         , 'Y'
+           )
+</insert>
+
 	
     
 

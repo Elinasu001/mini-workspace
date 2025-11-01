@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -10,10 +9,10 @@
 </head>
 <style>
 .eventBanner{
-	 background: rgba(223, 228, 216, 1);
+	 background:rgb(216 221 228);
 }
 .eventBanner .text-center p{
-	color: var(--bs-secondary);
+	color: #343a40;
 }
 
 .eventBanner p {
@@ -88,23 +87,17 @@
   margin-left: calc(-0.5 * var(--bs-gutter-x));
 }
 
-
-/* 탭 아래쪽 실선 더 두껍고 진하게 */
-.nav-tabs {
-  border-bottom: 3px solid rgba(33, 37, 41, 0.3) !important; /* 기존보다 진하게 */
-}
-
 /* 비활성 탭 텍스트 */
 .nav-tabs .nav-link {
   color: #444;
   border: none;
+  background-color: rgba(0, 0, 0, 0.125) !important;
   border-bottom: 3px solid transparent; /* hover 시 살짝 밑줄 효과 */
   transition: all 0.3s ease;
 }
 
 /* hover 시 효과 */
 .nav-tabs .nav-link:hover {
-  border-bottom-color: rgba(33, 37, 41, 0.3);
   color: #212529;
 }
 
@@ -148,13 +141,14 @@
 		            </div>
 		            
 		        </header>
-		        
-	        	<!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
-		        <!--c:if test="${ not empty sessionScope.loginMember }">-->
-		        <!-- <div class="mx-3 my-4">
-		        	<a class="btn btn-secondary" href="event/form">등록하기</a>
-	        	</div>-->
-		        <!--/c:if>-->
+		         
+	        	<!-- 관리자료그인 상태일 경우만 보여지는 글쓰기 버튼 -->
+		      	<c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.manager eq 'Y'}">
+					<div class="mx-3 my-4">
+						<a class="btn btn-secondary" href="ct/event/insertForm">등록하기</a>
+					</div>
+				</c:if>
+
 		        
 		        <!-- 탭 영역 추가 -->
 			    <div class="container py-5">
@@ -190,14 +184,10 @@
 	</div>
 </body>
 <script>
-<!--
-function toDetail(eventNo){
-	location.href = "event/" + eventNo;
-}
--->
 
 $(function() {
-	 loadEvents("ongoing", 1); // 기본 탭: 진행중 이벤트
+	// 기본 탭: 진행중 이벤트
+	 loadEvents("ongoing", 1); 
 	
 	 // 진행중인 게시글
 	 $("#ongoing-tab").on("click", function() {

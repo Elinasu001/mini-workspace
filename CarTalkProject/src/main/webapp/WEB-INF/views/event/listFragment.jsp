@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -22,7 +21,7 @@
                 </c:choose>
               </p>
               <h2 class="fs-4 fw-bold">${event.eventTitle}</h2>
-              <p class="info-txt my-3"><span class="category  me-2">${event.categoryName}</span> : <span class="ms-2">${event.startDate} ~ ${event.endDate}</span></p>
+              <p class="info-txt my-3"><span class="category  me-2">${event.categoryName}</span> <span>${event.startDate} ~ ${event.endDate}</span></p>
             </a>
           </div>
         </div>

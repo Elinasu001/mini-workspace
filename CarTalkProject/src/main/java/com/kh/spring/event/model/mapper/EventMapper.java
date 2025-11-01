@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import com.kh.spring.event.model.dto.EventAttachmentDTO;
 import com.kh.spring.event.model.dto.EventDTO;
 
 @Mapper
@@ -28,6 +29,8 @@ public interface EventMapper {
 	// 이벤트 게시글 상세조회
 	EventDTO selectByEventNo(Long eventNo);
 	
-	
+	// 게시글 등록
+	int insertEvent(EventDTO event);
+    int insertEventAttachment(EventAttachmentDTO attach);
 	
 }

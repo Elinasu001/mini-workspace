@@ -12,7 +12,8 @@
 
 <style>
 .detailBanner {
-  background: rgba(223, 228, 216, 1);
+   background:rgb(216 221 228);
+
 }
 
 .detailBanner p {

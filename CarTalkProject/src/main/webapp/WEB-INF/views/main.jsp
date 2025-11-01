@@ -57,11 +57,26 @@
 	    font-size: clamp(1rem, 3vw, 1.8rem);
 	  }
 	}
-
+	/*
     .MainSwiper {
-        /* background-color: white; */
+   	 	position: relative;
+        background-color: white;
         background: linear-gradient(135deg, #f7f7f7, #d1d1d1);
+       background: radial-gradient(
+	    ellipse at 50% 60%,       
+	    rgba(120, 120, 120, 0.03) 0%,  
+	    rgba(120, 120, 120, 0.03) 00%,  
+	    rgba(215, 215, 215, 1.3) 30% 
+	   );
+	 	 background-repeat: no-repeat;
+      
     }
+    */
+    
+    .MainSwiper{
+    	background: linear-gradient(135deg, #f7f7f7, #d1d1d1);
+    }
+    
     .MainSwiper .swiper-wrapper{
         align-items: center;
     }
@@ -127,8 +142,6 @@
                     <div class="swiper-button-prev"></div>
                     <div class="swiper-button-next"></div>
                 
-                    <!-- If we need scrollbar -->
-                    <div class="swiper-scrollbar"></div>
                 </div>
             </div>
         </div>
