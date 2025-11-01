@@ -2,8 +2,81 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kh.spring.board.model.mapper.BoardMapper">
-	
+<mapper namespace="com.kh.spring.used.model.mapper.UsedMapper">
 
+	<select id="selectUsedListAll"
+			parameterType="map" 
+			resultType="com.kh.spring.used.model.dto.UsedListDTO">
+		 SELECT
+		        *
+		   FROM (
+		       SELECT
+		              ROWNUM AS RNUM
+		            , B.*
+		         FROM     
+					  (		 
+		 			  SELECT
+						     U.USED_NO usedNo
+			        	   , U.USED_TITLE usedTitle
+			        	   , U.USED_PRICE usedPrice
+			        	   , U.STATUS status
+			        	   , U.ENROLL_DATE enrollDate
+			        	   , U.VIEW_COUNT viewCount
+			        	   , C.MANUFACTURER manufacturer
+					       , C.MODEL model
+					       , C.CAR_YEAR carYear
+					       , C.DISTANCE distance
+					       , C.TRANSMISSION transmission
+					       , C.FUEL_TYPE fuelType
+					       , C.REGION region
+					       , C.CAR_COLOR carColor
+					       , C.PHONE phone
+					       , U.CATEGORY category          
+					       , ATT.CHANGE_NAME thumbnail
+					    FROM
+					         CT_USED_LISTING U
+					    JOIN
+					         CT_CAR_INFO C ON U.USED_NO = C.USED_NO
+					    LEFT
+					    JOIN
+		                     (
+		                     SELECT
+		                            REF_BNO
+		                          , CHANGE_NAME
+		                       FROM
+					                CT_USED_ATTACHMENT		          
+		                      WHERE
+		                            STATUS = 'Y'
+		                        AND
+		                            ROWNUM = 1         
+		                     ) ATT ON ATT.REF_BNO = U.USED_NO
+	<if test="keyword != null and keyword != ''">
+		                     WHERE
+		                           U.USED_TITLE LIKE '%' || #{keyword} || '%'
+	</if>
+		                     ORDER
+		                        BY
+		                           U.USED_NO DESC
+		                           ) B
+		                     )
+		                     WHERE
+			                       RNUM BETWEEN #{startRow} 
+	                           AND 
+	                               #{endRow}     
+	</select>
+	
+	<select id="selectListCount"
+			parameterType="string"
+			resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM
+		       CT_USED_LISTING
+	<if test="keyword != null and keyword != ''">
+		WHERE
+			  USED_TITLE LIKE '%' || #{keyword} || '%'
+	</if>     
+	</select>
+	
 
 </mapper>
