@@ -46,7 +46,7 @@ public class UsedController {
 						  ,HttpSession session) {
 		
 		int listCount = usedService.selectListCount(keyword);
-		PageInfo pi = pagination.getPageInfo(listCount, currentPage, 10, 8);
+		PageInfo pi = pagination.getPageInfo(listCount, currentPage, 10, 7);
 		
 		List<UsedListDTO> usedList = usedService.selectUsedListAll(pi, keyword);
 		

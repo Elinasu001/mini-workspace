@@ -32,7 +32,7 @@
 					       , C.CAR_COLOR carColor
 					       , C.PHONE phone
 					       , CAT.CATEGORY_NAME categoryName          
-					       , ATT.CHANGE_NAME thumbnail
+					       , ATT.FILE_PATH thumbnail
 					    FROM
 					         CT_USED_LISTING U
 					    JOIN
@@ -44,7 +44,7 @@
 		                     (
 		                     SELECT
 		                            REF_BNO
-		                          , CHANGE_NAME
+		                          , FILE_PATH
 		                       FROM
 					                CT_USED_ATTACHMENT		          
 		                      WHERE
@@ -96,10 +96,10 @@
 		     , #{usedTitle}
 		     , #{usedContent}
 		     , #{usedPrice}
+		     , #{category}
 		     , '판매중'
 		     , SYSDATE
 		     , DEFAULT
-		     , #{category}
 		     , #{thumbnail}
 		       ) 
 	</insert>

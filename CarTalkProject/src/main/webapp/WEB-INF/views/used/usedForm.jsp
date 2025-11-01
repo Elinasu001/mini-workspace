@@ -21,7 +21,7 @@
       <div class="section">
         <h3>상품 이미지</h3>
         <div class="upload-box">
-          <input type="file" name="upfile[]" id="upfile" accept="image/*" multiple>
+          <input type="file" name="upfile" id="upfile" accept="image/*" multiple>
           <p class="upload-count"><span id="file-count">0</span> / 5</p>
         </div>
       </div>
@@ -51,7 +51,6 @@
       <div class="section">
         <h3>카테고리</h3>
 
-        차급<input type="text" name="category" placeholder="차급 (예: 소형, 중형, 대형)">
         브랜드<input type="text" name="manufacturer" placeholder="브랜드 (예: 현대, 기아, BMW)">
         모델명<input type="text" name="model" placeholder="모델명 (예: 쏘나타, K5, 3시리즈)">
         판매 가격<input type="number" name="usedPrice" value="0" required placeholder="판매 가격 만원(₩)">
@@ -70,29 +69,51 @@
       </div>
 
       <div class="section">
-        <h3>거래 지역</h3>
-        <select name="region">
-          <option selected disabled>지역을 선택하세요</option>
-          <option value="서울">서울</option>
-          <option value="경기 북부">경기 북부</option>
-          <option value="경기 남부">경기 남부</option>
-          <option value="인천">인천</option>
-          <option value="강원">강원</option>
-          <option value="대전">대전</option>
-          <option value="세종">세종</option>
-          <option value="충북">충북</option>
-          <option value="충남">충남</option>
-          <option value="광주">광주</option>
-          <option value="전북">전북</option>
-          <option value="전남">전남</option>
-          <option value="부산">부산</option>
-          <option value="울산">울산</option>
-          <option value="대구">대구</option>
-          <option value="경북">경북</option>
-          <option value="경남">경남</option>
-          <option value="제주">제주</option>
-        </select>
-      </div>
+  		<h3>거래 지역 / 자동차 분류</h3>
+  			<div class="form-row">
+    			<div class="form-group">
+    			  <label for="region">거래 지역</label>
+      				<select name="region" id="region">
+				       <option selected disabled>지역을 선택하세요</option>
+				       <option value="서울">서울</option>
+				       <option value="경기 북부">경기 북부</option>
+				       <option value="경기 남부">경기 남부</option>
+				       <option value="인천">인천</option>
+				       <option value="강원">강원</option>
+				       <option value="대전">대전</option>
+				       <option value="세종">세종</option>
+				       <option value="충북">충북</option>
+				       <option value="충남">충남</option>
+				       <option value="광주">광주</option>
+				       <option value="전북">전북</option>
+				       <option value="전남">전남</option>
+				       <option value="부산">부산</option>
+				       <option value="울산">울산</option>
+				       <option value="대구">대구</option>
+				       <option value="경북">경북</option>
+				       <option value="경남">경남</option>
+				       <option value="제주">제주</option>
+     				</select>
+    			</div>
+
+   			 <div class="form-group">
+     			 <label for="category">자동차 분류</label>
+			      <select name="category" id="category">
+			        <option selected disabled>분류</option>
+			        <option value="1">세단</option>
+			        <option value="2">수입차</option>
+			        <option value="3">SUV</option>
+			        <option value="4">승용차</option>
+			        <option value="5">트럭/상용</option>
+			        <option value="6">스포츠카</option>
+			        <option value="7">경차</option>
+			        <option value="8">전기차</option>
+			        <option value="9">오토바이</option>
+			        <option value="10">기타</option>
+			      </select>
+			    </div>
+			  </div>
+			</div>
 
       <button type="submit">등록하기</button>
     </form>

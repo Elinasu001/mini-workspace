@@ -51,8 +51,14 @@ public class UsedServiceImpl implements UsedService {
 	public Long insertUsed(UsedDTO used, List<MultipartFile> files, HttpSession session) {
 		Long usedNo = usedMapper.getNextUsedNo();
 		used.setUsedNo(usedNo);
+		
+		int result1 = usedMapper.insertUsed(used);
+		if (result1 == 0) return null;
 
 		String savePath = session.getServletContext().getRealPath("/resources/upfiles/used/");
+		File folder = new File(savePath);
+		if(!folder.exists())folder.mkdirs();
+		
 		String thumbnailPath = null;
 		int result3 = 1;
 
@@ -68,6 +74,7 @@ public class UsedServiceImpl implements UsedService {
 				String changeName = "USED_" + currentTime + "_" + randomNum + ext;
 
 				File targetFile = new File(savePath, changeName);
+				
 				try {
 					mf.transferTo(targetFile);
 				} catch (IOException e) {
@@ -76,6 +83,7 @@ public class UsedServiceImpl implements UsedService {
 				}
 
 				String dbPath = "/resources/upfiles/used/" + changeName;
+				
 				if (thumbnailPath == null) {
 					thumbnailPath = dbPath;
 				}
@@ -85,6 +93,7 @@ public class UsedServiceImpl implements UsedService {
 				attach.setOriginName(originName);
 				attach.setChangeName(changeName);
 				attach.setFilePath(dbPath);
+				attach.setStatus("Y");
 
 				result3 *= usedMapper.insertAttachment(attach);
 			}
@@ -92,10 +101,7 @@ public class UsedServiceImpl implements UsedService {
 
 		used.setThumbnail(thumbnailPath);
 
-		int result1 = usedMapper.insertUsed(used);
-		if (result1 == 0)
-			return null;
-
+		
 		CarInfoDTO car = new CarInfoDTO();
 		car.setUsedNo(usedNo);
 		car.setManufacturer(used.getManufacturer());

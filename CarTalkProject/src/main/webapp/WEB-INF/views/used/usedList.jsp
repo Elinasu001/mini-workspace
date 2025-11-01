@@ -40,7 +40,7 @@
 									<div class="meta">가격: ${ car.usedPrice }만원 | 조회수 ${ car.viewCount }
 										| 등록일 ${ car.enrollDate }</div>
 								</div>
-								<img src="${ car.thumbnail }" alt="${ car.usedTitle }">
+								<img src="${pageContext.request.contextPath}${car.thumbnail}" alt="썸네일 이미지" width="120" height="80">
 							</div>
 						</a>
 					</c:forEach>
