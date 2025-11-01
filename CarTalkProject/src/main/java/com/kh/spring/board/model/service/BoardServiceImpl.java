@@ -31,7 +31,7 @@ public class BoardServiceImpl implements BoardService {
 	 * 페이지 정보가 담긴 PageInfo를 Map에 담아서 반환하는 메서드
 	 */
 	@Override
-	public Map<String, Object> selectBoardList(Long pageNo, String searchBy) {
+	public Map<String, Object> selectBoardList(Long pageNo, Map<String, Object> searchBy) {
 		Map<String, Object> map = new HashMap();
 		List<BoardDTO> boards = new ArrayList();
 		
@@ -39,12 +39,12 @@ public class BoardServiceImpl implements BoardService {
 		if(pageNo < 1) {
 			
 		}
-		int count = boardMapper.selectBoardCount();
+		int count = boardMapper.selectBoardCount(searchBy);
 		// 게시글이 존재하지 않을 경우 수행하지 않음
 		if(count > 0) {
 			//페이징 처리용 클래스
 			RowBounds rb = new RowBounds((pageNo.intValue() -1)*10, 10);
-			boards = boardMapper.selectBoardList(searchBy ,rb);
+			boards = boardMapper.selectBoardList(rb, searchBy);
 		}
 		
 		PageInfo pi = pagination.getPageInfo(count, pageNo.intValue(), 10, 10);
@@ -54,6 +54,32 @@ public class BoardServiceImpl implements BoardService {
 		
 		return map;
 	}
+	
+	public Map<String, Object> selectBoardListByKeyword(Long pageNo, Map<String, Object> searchBy) {
+		Map<String, Object> map = new HashMap();
+		List<BoardDTO> boards = new ArrayList();
+		
+		// 페이지 번호가 1보다 낮은 경우 예외 발생
+		if(pageNo < 1) {
+			
+		}
+		int count = boardMapper.selectBoardCountByKeyword(searchBy);
+		// 게시글이 존재하지 않을 경우 수행하지 않음
+		if(count > 0) {
+			//페이징 처리용 클래스
+			RowBounds rb = new RowBounds((pageNo.intValue() -1)*10, 10);
+			boards = boardMapper.selectBoardListByKeyword(rb, searchBy);
+		}
+		
+		PageInfo pi = pagination.getPageInfo(count, pageNo.intValue(), 10, 10);
+		
+		map.put("boards", boards);
+		map.put("pi", pi);
+		
+		return map;
+	}
+	
+	
 
 	@Override
 	public BoardDTO selectByBoardNo(Long boardNo) {

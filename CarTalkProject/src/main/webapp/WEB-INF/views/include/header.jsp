@@ -1,26 +1,27 @@
+<%@page import="com.kh.spring.member.model.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<!-- Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-<!-- swiper -->
-<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
-<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script >
+$( document ).ready(function() {
 
-<link rel="stylesheet" href="./resources/css/ui/com/layout.css">
-<link rel="stylesheet" href="./resources/css/ui/com/style.css">
-<link rel="stylesheet" href="./resources/css/ui/com/nav.css">
+	var btObj = $("#loginBt");
+	
+	btObj.click(function () {
+		$("#frm").attr("action", "loginPage").submit();
+		
+	});
+	
+	$("#logOutBt").click(function () {
+		$("#frm").attr("action", "logout").submit();
+	});
+	
 
-<script type="text/javascript" src="./resources/js/ui/com/layout.js"></script>
-<title>Insert title here</title>
-</head>
-<body>
-	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+});
+</script>
+<form name="frm" method="post" id="frm" action="loginPage"> </form>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
     <!-- 로고 -->
     <a class="navbar-brand fw-bold" href="#">CarTalk</a>
@@ -34,10 +35,10 @@
     <div class="collapse navbar-collapse d-none d-lg-flex justify-content-end">
         
         <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="#">이벤트 게시판</a></li>
+            <li class="nav-item"><a class="nav-link" href="/ct/event/list">이벤트 게시판</a></li>
             <li class="nav-item"><a class="nav-link" href="#">일반 게시판</a></li>
             <li class="nav-item"><a class="nav-link" href="#">사진 게시판</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">거래 게시판</a></li>
+            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/used/list">거래 게시판</a></li>
             <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Dropdown</a>
                 <ul class="dropdown-menu">
@@ -48,12 +49,21 @@
             </li> -->
         </ul>
         <div class="auth-links">
-            <!--로그인 됐을 경우-->
-            <a href="#login" class="btn-login line">로그인</a>
-            <a href="#signup" class="btn-signup">마이페이지</a>
-            <!--로그인 안됐을 경우-->
-            <a href="#login" class="btn-login line">로그아웃</a>
-            <a href="#signup" class="btn-signup">회원가입</a>
+        	
+        	<c:choose>
+        	<c:when test="${ empty sessionScope.loginMember }">
+            	<!--로그인 안됐을 경우-->
+           		<a href="#login" id="loginBt"class="btn-login line">로그인</a>
+           	 	<a href="#signup" class="btn-signup">회원가입</a>
+           	</c:when>
+           	<c:otherwise>
+	            <!--로그인 됐을 경우-->
+	            ${ sessionScope.loginMember.userName } 환영합니다.
+	            <a href="#logout" id="logOutBt" class="btn-login line">로그아웃</a>
+	            <a href="#myPage" class="btn-signup">마이페이지</a>
+	            
+            </c:otherwise>
+            </c:choose>
         </div>
     </div>
 
@@ -64,19 +74,20 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="auth-links">
-            <!--로그인 됐을 경우-->
-            <a href="#login" class="btn-login line">로그인</a>
-            <a href="#signup" class="btn-signup">마이페이지</a>
+            <<!--로그인 됐을 경우-->
+	            <a href="#" id="loginBt" class="btn-login line">로그인</a>
+	            <a href="#" class="btn-signup">회원가입</a>
             <!--로그인 안됐을 경우-->
-            <a href="#login" class="btn-login line">로그아웃</a>
-            <a href="#signup" class="btn-signup">회원가입</a>
+            	님 안녕하세요!
+	            <a href="#" class="btn-login line">로그아웃</a>
+	            <a href="#" class="btn-signup">마이페이지</a>
         </div>
         <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li class="nav-item"><a class="nav-link" href="#">이벤트 게시판</a></li>
+                <li class="nav-item"><a class="nav-link" href="/ct/event/list">이벤트 게시판</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">일반 게시판</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">사진 게시판</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">거래 게시판</a></li>
+                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/used/list">거래 게시판</a></li>
                 <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Dropdown</a>
                 <!-- <ul class="dropdown-menu">
@@ -90,5 +101,3 @@
     </div>
     </div>
 </nav>
-</body>
-</html>

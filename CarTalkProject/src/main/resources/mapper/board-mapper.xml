@@ -19,20 +19,6 @@
 		               CT_BOARD_LIKE 
 		         WHERE
 		               CT_BOARD_LIKE.BOARD_NO = CT_BOARD.BOARD_NO) AS likes
-	</sql>
-	
-	<select id="selectBoardCount"
-			resultType="_int">
-		SELECT
-			   COUNT(*)
-		  FROM
-		       CT_BOARD
-		 WHERE
-		       STATUS = 'Y'
-	</select>
-	
-	<select id="selectBoardList" resultType="com.kh.spring.board.model.dto.BoardDTO" parameterType="string">
-		<include refid="boardColumns"></include>
 		  FROM
 		       CT_BOARD
 		  JOIN
@@ -41,22 +27,51 @@
 		       CT_BOARD_CATEGORY USING (CATEGORY_NO)
 		 WHERE
 		       STATUS = 'Y'
+	</sql>
+	
+	<sql id="boardCount">
+		SELECT
+			   COUNT(*)
+		  FROM
+		       CT_BOARD
+		  JOIN
+		       CT_MEMBER USING (USER_NO)
+		 WHERE
+		       STATUS = 'Y'
+	</sql>
+	
+	
+	<select id="selectBoardCount"
+			resultType="_int" parameterType="hashmap">
+		<include refid="boardCount"/>		
+		<if test="category != 0">
+		   AND 
+		       CATEGORY_NO = #{category}
+		 </if>
+	</select>
+	
+	<select id="selectBoardList" resultType="com.kh.spring.board.model.dto.BoardDTO" parameterType="hashmap">
+		<include refid="boardColumns"></include>
+		 <if test="category != 0">
+		   AND 
+		       CATEGORY_NO = #{category}
+		 </if>
 		 ORDER
 		    BY
 		       <choose>
-		        <when test="searchBy == 'likes'">
+		        <when test="orderBy == 'likes'">
 		         likes DESC
 		        </when>
-		        <when test="searchBy == 'boardTitle'">
+		        <when test="orderBy == 'boardTitle'">
 		         boardTitle ASC
 		        </when>
-		        <when test="searchBy == 'viewCount'">
+		        <when test="orderBy == 'viewCount'">
 		         viewCount DESC
 		        </when>
-		        <when test="searchBy == 'boardWriter'">
+		        <when test="orderBy == 'boardWriter'">
 		         boardWriter ASC
 		        </when>
-		        <when test="searchBy == 'boardNo'" >
+		        <when test="orderBy == 'boardNo'" >
 		         boardNo DESC
 		        </when>
 		       	<otherwise>
@@ -64,7 +79,72 @@
 		       	</otherwise>
 		       </choose>
 	</select>
-	<!-- 해야할 일 : 정렬 기준을 입력받아서 정렬 기준을 바꿔주기 + 값이 없을 경우 default = ENROLL_DATE-->
+	
+	<select id="selectBoardCountByKeyword"
+			resultType="_int" parameterType="hashmap">
+		<include refid="boardCount"/>
+		<if test="category != 0">
+		   AND 
+		       CATEGORY_NO = #{category}
+		 </if>
+		   AND
+		   <choose>
+			<when test ="condition == 'title'">
+		 	   BOARD_TITLE
+		 	</when>
+		 	<when test="condition == 'content'">
+		 	   BOARD_CONTENT
+		 	</when>
+		 	<otherwise>
+		 	   NICKNAME
+		 	</otherwise>
+		 	</choose>
+		   	   LIKE '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="selectBoardListByKeyword" resultType="com.kh.spring.board.model.dto.BoardDTO" parameterType="hashmap">
+		<include refid="boardColumns" />
+		 <if test="category != 0">
+		   AND 
+		       CATEGORY_NO = #{category}
+		 </if>
+		   AND
+		 <choose>
+		 	<when test ="condition == 'title'">
+		 	   BOARD_TITLE 
+		 	</when>
+		 	<when test="condition == 'content'">
+		 	   BOARD_CONTENT
+		 	</when>
+		 	<otherwise>
+		 	   NICKNAME
+		 	</otherwise>
+		 </choose>
+		       LIKE '%' || #{keyword} || '%'
+		 ORDER
+		    BY
+		       <choose>
+		        <when test="orderBy == 'likes'">
+		         likes DESC
+		        </when>
+		        <when test="orderBy == 'boardTitle'">
+		         boardTitle ASC
+		        </when>
+		        <when test="orderBy == 'viewCount'">
+		         viewCount DESC
+		        </when>
+		        <when test="orderBy == 'boardWriter'">
+		         boardWriter ASC
+		        </when>
+		        <when test="orderBy == 'boardNo'" >
+		         boardNo DESC
+		        </when>
+		       	<otherwise>
+		       	 enrollDate DESC 
+		       	</otherwise>
+		       </choose>
+	</select>
+	
 	
 	<update id="increaseBoardCount" parameterType="long">
 		UPDATE
