@@ -31,9 +31,9 @@ public class EventDTO {
     private String changeName;    // 저장 파일명 (경로 포함)
     
     /* 작성자 아이디만 표시용으로 사용 */
-    private String userId;       // 작성자 아이디 (CT_MEMBER.USER_ID)
+    private String userId;        // 작성자 아이디 (CT_MEMBER.USER_ID)
     
     /* 편의 필드 */
-    private String shareUrl;       // 공유하기 링크 (프론트에서 조합)
+    private String shareUrl;      // 공유하기 링크 (프론트에서 조합)
     
 }

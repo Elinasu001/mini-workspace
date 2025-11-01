@@ -2,44 +2,8 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kh.spring.event.model.mapper.EventMapper">
 
-    <!--  페이징 처리용으로 게시글 전체 개수 -->
-    <!-- 
-    <select id="selectEventCount" resultType="_int">
-        SELECT
-               COUNT(*)
-        FROM
-               CT_EVENT
-        WHERE
-               STATUS = 'Y'
-    </select>
-    
-    
-  
-    
-    <select id="selectEventList" resultType="eventdto">
-	    SELECT
-	           EVENT_NO eventNo
-	         , EVENT_TITLE eventTitle
-	         , START_DATE startDate
-	         , END_DATE endDate
-	         , FILE_PATH filePath
-	         , ORIGIN_NAME originName
-	         , CHANGE_NAME changeName
-	    FROM
-	           CT_EVENT
-	    JOIN
-	           CT_EVENT_ATTACHMENT ON (REF_BNO = EVENT_NO)
-	    WHERE 
-	           CT_EVENT.STATUS = 'Y'
-	   	ORDER 
-	   	   BY
-	           EVENT_NO DESC
-    </select>
-    -->
-    
-    
+<mapper namespace="com.kh.spring.event.model.mapper.EventMapper">
     
     <!-- 진행중인 이벤트 조회수 증가 -->
     <select id="selectOngoingCount" resultType="_int">
@@ -190,7 +154,7 @@
 	    	   )
 	</insert>
 
-	
+	<!-- 파일 첨부 -->
 	<insert id="insertEventAttachment" parameterType="com.kh.spring.event.model.dto.EventAttachmentDTO">
 
     <!-- 파일 시퀀스 자동 부여 -->

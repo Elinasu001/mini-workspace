@@ -29,27 +29,13 @@ public class EventController {
 	
 	private final EventService eventService;
 	
-	// 이벤트 게시글 목록조회
-	/*
-	@GetMapping("/list")
-	public String selectEventList(@RequestParam(name="page", defaultValue="1") Long page, Model model) {
-		
-		log.info("앞에서 넘어온 페이지 값: {}", page);
-		// 이벤트 목록(events) : 현재 페이지에 표시할 이벤트 게시글 리스트(List<EventDTO>) + 페이지 정보(pi) : 전체 게시글 수, 현재 페이지, 마지막 페이지 (PageInfo) + 
-		Map<String, Object> map = eventService.selectEventList(page);
-		model.addAttribute("map", map);
-		log.info("이미지: {}", map);
-		return "event/list";
-	}
-	*/
-	
-	// 이벤트 게시글 목록조회페이지
+	// 이벤트 게시글 목록페이지
 	@GetMapping("/list")
 	public String selectEventPage() {
 		return "event/list";
 	}
 	
-	// 진행중인 이벤트 _ AJAX
+	// 진행중인 이벤트 조회
 	@GetMapping("/ongoing")
 	public String selectOngoing(@RequestParam(name="page", defaultValue="1") Long page, Model model) {
 		
@@ -60,7 +46,7 @@ public class EventController {
 	    return "event/listFragment";
 	    
 	}
-	// 종료된 이벤트 _ AJAX
+	// 종료된 이벤트 조회
 	@GetMapping("/ended")
 	public String selectEnded(@RequestParam(name="page", defaultValue="1") Long page, Model model) {
 		
@@ -72,14 +58,13 @@ public class EventController {
 	    
 	}
 	
-	// 이벤트 게시글 상세보기 (+ 조회수 증가)
+	// 이벤트 게시글 상세보기
 	@GetMapping("/detail/{eventNo}")
 	public String selectByEventNo(@PathVariable("eventNo") Long eventNo, Model model) {
 		
 		log.info("게시글 번호 : {}", eventNo);
 		EventDTO event = eventService.selectByEventNo(eventNo);
 		model.addAttribute("event", event);
-		
 		return "event/detail";
 		
 	}
@@ -87,8 +72,8 @@ public class EventController {
 	// 이벤트 게시글 등록페이지
 	@GetMapping("/insertForm")
 	public String insertEventForm(HttpSession session){
+		 /*테스트중*/
 		if (session.getAttribute("loginMember") == null) {
-	        /*테스트중*/
 			com.kh.spring.member.model.dto.MemberDTO dummyAdmin = new com.kh.spring.member.model.dto.MemberDTO();
 	        dummyAdmin.setUserNo(1);
 	        dummyAdmin.setUserId("admin");
@@ -96,7 +81,6 @@ public class EventController {
 	        dummyAdmin.setManager("Y"); // 관리자 여부
 	        session.setAttribute("loginMember", dummyAdmin);
 	    }
-		
 		return "event/insertForm";
 	}
 	

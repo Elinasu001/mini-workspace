@@ -11,17 +11,15 @@ import com.kh.spring.event.model.dto.EventDTO;
 
 public interface EventService {
 
-	// 이벤트 게시글 목록조회
-	//Map<String, Object> selectEventList(Long page);
-	
-	// 진행중인 이벤트 _ AJAX
+	// 진행중인 이벤트 조회
 	Map<String, Object> selectOngoing(Long page);
-	// 종료된 이벤트 _ AJAX
+	
+	// 종료된 이벤트 조회
 	Map<String, Object> selectEnded(Long page);
 	
-	// 이벤트 게시글 상세보기 (+ 조회수 증가)
+	// 이벤트 게시글 상세보기
 	EventDTO selectByEventNo(Long eventNo);
 	
-	// 등록하기
+	// 게시글 등록하기
     int insertEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session);
 }

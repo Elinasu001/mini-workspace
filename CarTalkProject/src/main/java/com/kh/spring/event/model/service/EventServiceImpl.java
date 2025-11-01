@@ -36,42 +36,9 @@ class EventServiceImpl implements EventService {
 	
 	private final EventMapper eventMapper;
 	private final Pagination pagination;
-	/*
-	@Override
-	public Map<String, Object> selectEventList(Long page){
-		
-		Map<String, Object> map = new HashMap();
-		List<EventDTO> events = new ArrayList();
-		
-		// 유효성검증
-		if(page < 1) {
-			throw new InvalidArgumentsException("잘못된 접근입니다.");
-		}
-		
-		// 조회수
-		int viewCount = eventMapper.selectEventCount();
-		
-		// 확인
-		log.info("총 게시글 개수 : {}", viewCount);
-		
-		// 보여줄 게시글 수"와 "페이지 묶음 수"
-		PageInfo pi = pagination.getPageInfo(viewCount, page.intValue(), 6, 6);
-		
-		// 게시글 있을 경우
-		if(viewCount > 0) {
-			RowBounds rb = new RowBounds((page.intValue() - 1) * 6, 6);
-			events = eventMapper.selectEventList(rb);
-		}
-		
-		map.put("pi", pi);
-		map.put("events", events);
-		
-		return map;
-		
-	}
-	*/
 	
-	// 진행중인 이벤트 _ AJAX
+	
+	// 진행중인 이벤트 조회
 	@Override
 	public Map<String, Object> selectOngoing(Long page) {
 	    Map<String, Object> map = new HashMap<>();
@@ -95,7 +62,7 @@ class EventServiceImpl implements EventService {
 	    return map;
 	}
 	
-	// 종료된 이벤트 _ AJAX
+	// 종료된 이벤트 조회
 	@Override
 	public Map<String, Object> selectEnded(Long page) {
 	    Map<String, Object> map = new HashMap<>();
@@ -120,7 +87,7 @@ class EventServiceImpl implements EventService {
 	}
 	
 
-	// 이벤트 게시글 상세조회 (+ 조회수 증가)
+	// 이벤트 게시글 상세조회 
 	@Override 
 	public EventDTO selectByEventNo(Long eventNo) {
 		
@@ -151,7 +118,7 @@ class EventServiceImpl implements EventService {
 
 		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 
-	    // 로그인 안 되어 있거나, 작성자와 로그인 사용자가 다르면 예외
+	    // 로그인 안 되어 있거나, 작성자와 로그인 사용자가 다르면 예외 _  /*테스트중 : member 소스 개인 적용 후 테스트 가능*/ 
 	    if (loginMember == null || !"Y".equals(loginMember.getManager())) {
 	        throw new AuthenticationException("관리자만 접근 가능합니다.");
 	    }
@@ -177,22 +144,22 @@ class EventServiceImpl implements EventService {
 	@Override
 	public int insertEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session) {
 
-	    // 1️⃣ 권한검증
+	    // 1️ 권한검증
 	    validateUser(event, session);
 
-	    // 2️⃣ 유효성검증
+	    // 2 유효성검증
 	    if (event.getEventTitle() == null || event.getEventTitle().trim().isEmpty()
 	            || event.getEventContent() == null || event.getEventContent().trim().isEmpty()) {
 	        throw new InvalidArgumentsException("제목 또는 내용이 비어 있습니다.");
 	    }
 
-	    // 3️⃣ 이벤트 등록 (selectKey로 eventNo 자동 주입)
+	    // 3️ 이벤트 등록 (selectKey로 eventNo 자동 주입)
 	    int result = eventMapper.insertEvent(event);
 	    if (result != 1) throw new BadRequestException("이벤트 등록 실패");
 
 	    int eventNo = event.getEventNo().intValue(); // 자동 세팅된 시퀀스 값 사용
 
-	    // 4️⃣ 파일 업로드
+	    // 4️ 파일 업로드
 	    if (thumbnail != null && !thumbnail.isEmpty()) {
 	        saveAttachment(thumbnail, eventNo, session, 0);
 	    }
@@ -206,7 +173,7 @@ class EventServiceImpl implements EventService {
 
    
 
-    /** 파일 저장 + DB 등록 */
+    /** 파일 저장 + DB 등록 **/
     private void saveAttachment(MultipartFile file, int eventNo, HttpSession session, int fileLevel) {
 
         String originName = file.getOriginalFilename();
