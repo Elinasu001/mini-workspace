@@ -43,7 +43,7 @@
 	<mybatis-spring:scan base-package="com.kh.spring.event.model.mapper"/>
 	<mybatis-spring:scan base-package="com.kh.spring.gallery.model.mapper"/>
 	<mybatis-spring:scan base-package="com.kh.spring.used.model.mapper"/>
-	<mybatis-spring:scan base-package="com.kh.spring.main.model.mapper"/>
+	<!-- <mybatis-spring:scan base-package="com.kh.spring.main.model.mapper"/> -->
 	
 	<!-- 파일 업로드 설정 -->
 	<bean id="multipartResolver"

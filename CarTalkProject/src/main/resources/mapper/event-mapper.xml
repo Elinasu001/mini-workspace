@@ -4,70 +4,36 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kh.spring.event.model.mapper.EventMapper">
-
-    <!--  페이징 처리용으로 게시글 전체 개수 -->
-    <select id="selectEventCount" resultType="_int">
-        SELECT
-            COUNT(*)
-        FROM
-            CT_EVENT
-        WHERE
-            STATUS = 'Y'
-    </select>
     
-    
-  
-    
-    <select id="selectEventList" resultType="eventdto">
-	    SELECT
-	           EVENT_NO eventNo
-	         , EVENT_TITLE eventTitle
-	         , START_DATE startDate
-	         , END_DATE endDate
-	         , FILE_PATH filePath
-	         , ORIGIN_NAME originName
-	         , CHANGE_NAME changeName
-	    FROM
-	           CT_EVENT
-	    JOIN
-	           CT_EVENT_ATTACHMENT ON (REF_BNO = EVENT_NO)
-	    WHERE 
-	           CT_EVENT.STATUS = 'Y'
-	   	ORDER 
-	   	   BY
-	           EVENT_NO DESC
-    </select>
-    
-    
-    
-    
-    <!--  진행중인 이벤트 / 종료된 이벤트 _ ajax -->
-    
-     <select id="selectOngoingCount" resultType="_int">
-	    SELECT 
-	    	   COUNT(*)
-	      FROM 
-	           CT_EVENT
-	     WHERE 
-	           STATUS = 'Y'
-	       AND 
-	           END_DATE >= SYSDATE
+    <!-- 진행중인 이벤트 조회수 증가 -->
+    <select id="selectOngoingCount" resultType="_int">
+    SELECT 
+    	   COUNT(*)
+      FROM 
+           CT_EVENT
+     WHERE 
+           STATUS = 'Y'
+       AND 
+           END_DATE >= SYSDATE
 	</select>
 	
-	
+	<!-- 진행중인 이벤트 조회 -->
     <select id="selectOngoing" resultType="eventdto">
 	    SELECT
-	            EVENT_NO eventNo
-	          , EVENT_TITLE eventTitle
-	          , START_DATE startDate
-	          , END_DATE endDate
-	          , FILE_PATH filePath
-	          , ORIGIN_NAME originName
-	          , CHANGE_NAME changeName
+	            EVENT_NO 		eventNo
+	          , EVENT_TITLE 	eventTitle
+	          , START_DATE 		startDate
+	          , END_DATE 		endDate
+	          , CATEGORY_NAME 	categoryName
+	          , FILE_PATH 		filePath
+	          , CHANGE_NAME 	changeName
 	       FROM  
 	            CT_EVENT
 	       JOIN 
-	            CT_EVENT_ATTACHMENT ON (REF_BNO = EVENT_NO)
+	            CT_EVENT_CATEGORY ON (CT_EVENT.CATEGORY_NO = CT_EVENT_CATEGORY.CATEGORY_NO)
+	       LEFT 
+	       JOIN
+	            CT_EVENT_ATTACHMENT ON (REF_BNO = EVENT_NO AND FILE_LEVEL = 0)
 	      WHERE 
 	            CT_EVENT.STATUS = 'Y'
 	       AND 
@@ -77,8 +43,8 @@
 	            EVENT_NO DESC
 	</select>
 	
-	
-	 <select id="selectEndedCount" resultType="_int">
+	<!-- 종료된 이벤트 조회수 증가 -->
+	<select id="selectEndedCount" resultType="_int">
 	    SELECT 
 	    	   COUNT(*)
 	      FROM 
@@ -87,31 +53,140 @@
 	           STATUS = 'Y'
 	       AND 
 	           END_DATE &lt; SYSDATE
-	 </select>
+	</select>
 	 
-	 
+	<!--  종료된 이벤트 조회 -->
 	<select id="selectEnded" resultType="eventdto">
 	    SELECT
-	            EVENT_NO eventNo
-	          , EVENT_TITLE eventTitle
-	          , START_DATE startDate
-	          , END_DATE endDate
-	          , FILE_PATH filePath
-	          , ORIGIN_NAME originName
-	          , CHANGE_NAME changeName
+	            EVENT_NO 		eventNo
+	          , EVENT_TITLE 	eventTitle
+	          , START_DATE 		startDate
+	          , END_DATE 		endDate
+	          , CATEGORY_NAME 	categoryName
+	          , FILE_PATH 		filePath
+	          , ORIGIN_NAME 	originName
+	          , CHANGE_NAME 	changeName
 	       FROM  
 	            CT_EVENT
+  		   JOIN 
+            	CT_EVENT_CATEGORY ON (CT_EVENT.CATEGORY_NO = CT_EVENT_CATEGORY.CATEGORY_NO)
+	       LEFT
 	       JOIN 
-	            CT_EVENT_ATTACHMENT ON (REF_BNO = EVENT_NO)
+	            CT_EVENT_ATTACHMENT ON (REF_BNO = EVENT_NO AND FILE_LEVEL = 0)
 	      WHERE 
-	            CT_EVENT.STATUS = 'Y'
-	        AND 
-	            END_DATE &lt; SYSDATE
+	            (CT_EVENT.STATUS = 'Y' AND END_DATE &lt; SYSDATE)
+	         OR 
+	             CT_EVENT.STATUS = 'N'
 	      ORDER
 	         BY 
 	            EVENT_NO DESC
 	</select>
 	
+	
+	<update id="increaseCount" parameterType="long">
+		UPDATE
+		       CT_EVENT
+		   SET
+		       VIEW_COUNT = VIEW_COUNT + 1
+		 WHERE
+		       EVENT_NO = #{eventNo}
+		   AND
+		       STATUS = 'Y'
+	</update>
+	
+	
+	<!-- 이벤트 상세조회 -->
+    <select id="selectByEventNo" resultType="eventdto">
+	    SELECT 
+	          E.EVENT_NO        eventNo
+	        , E.EVENT_TITLE     eventTitle
+	        , E.EVENT_CONTENT   eventContent
+	        , E.START_DATE      startDate
+	        , E.END_DATE        endDate
+	        , E.VIEW_COUNT      viewCount
+	        , E.STATUS          status
+	        , C.CATEGORY_NAME   categoryName
+	        , A.FILE_PATH       filePath
+	        , A.CHANGE_NAME     changeName
+	      FROM 
+	          CT_EVENT E
+	      JOIN 
+	          CT_EVENT_CATEGORY C ON (E.CATEGORY_NO = C.CATEGORY_NO)
+	 LEFT JOIN 
+	          CT_EVENT_ATTACHMENT A ON (E.EVENT_NO = A.REF_BNO AND A.FILE_LEVEL = 1)
+	     WHERE 
+	          E.EVENT_NO = #{eventNo}
+	       AND E.STATUS = 'Y'
+	</select>
+
+	<!-- 게시글 등록하기 -->
+	<insert id="insertEvent" parameterType="eventdto">
+
+    <!-- 시퀀스 미리 조회해서 eventNo에 세팅 -->
+    <selectKey resultType="long" keyProperty="eventNo" order="BEFORE">
+        SELECT SEQ_EVENT.NEXTVAL FROM DUAL
+    </selectKey>
+
+	    INSERT 
+	      INTO 
+	           CT_EVENT 
+	           (
+	           EVENT_NO
+	         , CATEGORY_NO
+	         , EVENT_TITLE
+	         , EVENT_CONTENT
+	         , START_DATE
+	         , END_DATE
+	         , STATUS
+	         , USER_NO
+	         , ENROLL_DATE
+	    	   )
+	    VALUES (
+	           #{eventNo}
+	         , #{categoryNo}
+	         , #{eventTitle}
+	         , #{eventContent}
+	         , #{startDate}
+	         , #{endDate}
+	         , 'Y'
+	         , #{userNo}
+	         , DEFAULT
+	    	   )
+	</insert>
+
+	<!-- 파일 첨부 -->
+	<insert id="insertEventAttachment" parameterType="com.kh.spring.event.model.dto.EventAttachmentDTO">
+
+    <!-- 파일 시퀀스 자동 부여 -->
+    <selectKey resultType="long" keyProperty="fileNo" order="BEFORE">
+        SELECT SEQ_EVENT_FILE_NO.NEXTVAL FROM DUAL
+    </selectKey>
+
+    INSERT 
+      INTO 
+           CT_EVENT_ATTACHMENT 
+           (
+           FILE_NO
+         , REF_BNO
+         , ORIGIN_NAME
+         , CHANGE_NAME
+         , FILE_PATH
+         , FILE_LEVEL
+         , UPLOAD_DATE
+         , STATUS
+    	   ) 
+    VALUES (
+           #{fileNo}
+         , #{refBno}
+         , #{originName}
+         , #{changeName}
+         , #{filePath}
+         , #{fileLevel}
+         , DEFAULT
+         , 'Y'
+           )
+</insert>
+
 	
     
 
