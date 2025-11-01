@@ -16,8 +16,14 @@
 <jsp:include page="/WEB-INF/views/include/meta.jsp" />
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
 	<main class="main-wrap">
+		
+		<div class="top-area">
 		<h2>중고 판매 목록</h2>
-
+		
+		<c:if test="${ not empty sessionScope.loginMember }">
+		<a href="${pageContext.request.contextPath}/used/myList" class="btn-write">내 판매목록</a>
+		</c:if>
+		</div>
 		<!-- 차량 목록 -->
 		<div class="car-list">
 
@@ -27,14 +33,14 @@
 						<a href="${pageContext.request.contextPath}/used/detail?no=${car.usedNo}" class="car-link">
 							<div class="car-card">
 								<div class="car-info">
-									<div>${ car.status }| ${ car.category }</div>
+									<div>${ car.status }| ${ car.categoryName }</div>
 									<h3>${ car.usedTitle }</h3>
 									<p>${ car.carYear }/ ${ car.distance }KM / ${ car.transmission }
 										/ ${ car.fuelType }</p>
-									<div class="meta">가격: ${ car.usedPrice }만원 | 댓글 ${ car.viewCount }
+									<div class="meta">가격: ${ car.usedPrice }만원 | 조회수 ${ car.viewCount }
 										| 등록일 ${ car.enrollDate }</div>
 								</div>
-								<img src="${ car.thumbnail }" alt="${ car.usedTitle }">
+								<img src="${pageContext.request.contextPath}${car.thumbnail}" alt="썸네일 이미지" width="120" height="80">
 							</div>
 						</a>
 					</c:forEach>
@@ -64,6 +70,11 @@
 
 		<!-- 검색 -->
 		<div class="search-wrap">
+	<!-- 로그인이 안됐을 경우 글쓰기 기능 막음 (로그인 구현되면 활성화) 
+		<c:if test="${ not empty sessionScope.loginMember }">
+			<a href="${pageContext.request.contextPath}/used/insert" class="btn-write">글쓰기</a>
+		</c:if>  -->
+		<!-- 로그인 구현시 밑에 항목 삭제 -->
 			<a href="${pageContext.request.contextPath}/used/insert" class="btn-write">글쓰기</a>
 
 			<form action="${pageContext.request.contextPath}/used/list" method="get" class="search-box">

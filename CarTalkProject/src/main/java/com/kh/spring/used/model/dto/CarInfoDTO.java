@@ -14,14 +14,10 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class UsedDTO {
+public class CarInfoDTO {
 	
+	private Long carNo;
 	private Long usedNo;
-	private Long userNo;
-	private String usedTitle;
-	private int usedPrice;
-	private String usedContent;
-	private String category;
 	private String manufacturer;
 	private String model;
 	private String carYear;
@@ -31,13 +27,5 @@ public class UsedDTO {
 	private String region;
 	private String carColor;
 	private String phone;
-	private String accident;
-	private Date createDate;
-	private String status;
-	private Date enrollDate;
-	private int viewCount;
-	private String thumbnail;
-	
-	private List<MultipartFile> upfile;
 
 }
