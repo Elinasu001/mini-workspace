@@ -170,5 +170,15 @@ public class UsedController {
 		
 		return "used/myUsedList";
 	}
+	
+	@GetMapping("/updateForm/{usedNo}")
+	public String updateForm(@PathVariable("usedNo") int usedNo, Model model) {
+		
+		UsedListDTO used = usedService.selectUsedDetail(usedNo);
+		
+		model.addAttribute("used", used);
+		
+		return "used/usedUpdateForm";
+	}
 
 }
