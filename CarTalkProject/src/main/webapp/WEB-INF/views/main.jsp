@@ -4,23 +4,79 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<jsp:include page="/WEB-INF/views/include/meta.jsp"/>
 <title>Insert title here</title>
 </head>
 <style>
 	.main-title{
-		position:absolute;
-		z-index:2; 
-		left:100px;
-		top:120px;
+	  position: absolute;
+	  z-index: 2;
+	  top: 30%;
+	  left: 25%;
+	  transform: translateY(-50%);
+	  color: #222;
+      animation: fadeInDown 1.5s ease forwards;
 	}
 	.main-title h3{
-		font-size:var(--font36);
 		font-weight: var(--font-w-b);
+		margin: 0;
+		font-size: clamp(1.6rem, 2vw, 3.5rem); 
 	}
+	
+	/* 반응형 위치 조정 */
+	@media (max-width: 1200px) {
+	  .main-title {
+	    top: 100px;
+	    left: 60px;
+	  }
+	}
+	@media (max-width: 992px) {
+	  .main-title {
+	    top: 100px;
+	    left: 60px;
+	  }
+	  .main-title h3 {
+	    font-size: clamp(1.4rem, 4vw, 2.5rem);
+	  }
+	}
+	@media (max-width: 768px) {
+	  .main-title {
+	    top: 100px;
+	    left: 50px;
+	  }
+	  .main-title h3 {
+	    font-size: clamp(1.2rem, 4vw, 2rem);
+	  }
+	}
+	@media (max-width: 576px) {
+	  .main-title {
+	    top: 80px;
+	    left: 30px;
+	  }
+	  .main-title h3 {
+	    font-size: clamp(1rem, 3vw, 1.8rem);
+	  }
+	}
+	/*
     .MainSwiper {
-        /* background-color: white; */
+   	 	position: relative;
+        background-color: white;
         background: linear-gradient(135deg, #f7f7f7, #d1d1d1);
+       background: radial-gradient(
+	    ellipse at 50% 60%,       
+	    rgba(120, 120, 120, 0.03) 0%,  
+	    rgba(120, 120, 120, 0.03) 00%,  
+	    rgba(215, 215, 215, 1.3) 30% 
+	   );
+	 	 background-repeat: no-repeat;
+      
     }
+    */
+    
+    .MainSwiper{
+    	background: linear-gradient(135deg, #f7f7f7, #d1d1d1);
+    }
+    
     .MainSwiper .swiper-wrapper{
         align-items: center;
     }
@@ -59,16 +115,18 @@
 		
 	 	<div class="contentWrap">
             <div class="contArea">
-            	<div class="main-title">
-            		<h3>
-            			차 이야기, <br/>
-            			함께 나누다
-            		</h3>
-            	</div>
                 <!-- Slider main container -->
                 <div class="swiper MainSwiper">
+                
+                	<div class="main-title">
+	            		<h3>
+	            			차 이야기, <br/>
+	            			함께 나누다
+	            		</h3>
+	            	</div>
                     <!-- Additional required wrapper -->
                     <div class="swiper-wrapper">
+                    	
                         <!-- Slides -->
                         <div class="swiper-slide"><img src="./resources/images/main_banner/car01.png"></div>
                         <div class="swiper-slide"><img src="./resources/images/main_banner/car02.png"></div>
@@ -84,8 +142,6 @@
                     <div class="swiper-button-prev"></div>
                     <div class="swiper-button-next"></div>
                 
-                    <!-- If we need scrollbar -->
-                    <div class="swiper-scrollbar"></div>
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.spring.exception.AuthenticationException;
+import com.kh.spring.exception.BadRequestException;
 import com.kh.spring.exception.BoardSaveFailedException;
 import com.kh.spring.exception.InvalidArgumentsException;
 import com.kh.spring.exception.TooLargeValueException;
@@ -60,6 +61,11 @@ public class ExceptionHandlingController {
 	// 게시판 / ResponseStatusException 처리
 	@ExceptionHandler(BoardSaveFailedException.class)
 	protected ModelAndView boardSaveFailedError(BoardSaveFailedException e) {
+		return createErrorResponse(e);
+	}
+	
+	@ExceptionHandler(BadRequestException.class)
+	protected ModelAndView BadRequestError(BadRequestException e) {
 		return createErrorResponse(e);
 	}
 
