@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<jsp:include page="/WEB-INF/views/include/meta.jsp"/>
 <title>CarTalk</title>
 </head>
 <body>
