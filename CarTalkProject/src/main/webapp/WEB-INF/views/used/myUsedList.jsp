@@ -60,7 +60,7 @@
 			</c:if>
 
 			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-				<a href="list?page=${p}" class=${pi.currentPage}>${p}</a>
+				<a href="myList?page=${p}" class=${pi.currentPage}>${p}</a>
 			</c:forEach>
 
 			<c:if test="${ pi.currentPage < pi.maxPage }">

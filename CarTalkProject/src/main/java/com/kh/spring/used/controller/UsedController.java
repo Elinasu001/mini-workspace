@@ -49,7 +49,7 @@ public class UsedController {
 						  ,HttpSession session) {
 		
 		int listCount = usedService.selectListCount(keyword);
-		PageInfo pi = pagination.getPageInfo(listCount, currentPage, 10, 7);
+		PageInfo pi = pagination.getPageInfo(listCount, currentPage, 10, 6);
 		
 		List<UsedListDTO> usedList = usedService.selectUsedListAll(pi, keyword);
 		
@@ -158,7 +158,7 @@ public class UsedController {
 		int userNo = loginMember.getUserNo();
 		
 		int listCount = usedService.selectMyListCount(userNo, status);
-		PageInfo pi = pagination.getPageInfo(listCount, page, 10, 8);
+		PageInfo pi = pagination.getPageInfo(listCount, page, 10, 6);
 		
 		List<UsedListDTO> myList = usedService.selectMyUsedList(pi, userNo, status);
 		//System.out.println("현재 로그인한 유저번호 : " + loginMember.getUserNo());
