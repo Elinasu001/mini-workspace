@@ -8,19 +8,19 @@ $( document ).ready(function() {
 	var btObj = $("#loginBt");
 	
 	btObj.click(function () {
-		$("#frm").attr("action", "loginPage").submit();
+		$("#frm").attr("action", "/ct/loginPage").submit();
 	});
 	
 	$("#logOutBt").click(function () {
-		$("#frm").attr("action", "logout").submit();
+		$("#frm").attr("action", "/ct/logout").submit();
 	});
 	
 	$("#signupBt").click(function () {
-		$("#frm").attr("action", "join").submit();
+		$("#frm").attr("action", "/ct/join").submit();
 	});
 	
 	$("#mypageBt").click(function () {
-		$("#frm").attr("action", "mypageForm").submit();
+		$("#frm").attr("action", "/ct/mypageForm").submit();
 	});
 
 });
