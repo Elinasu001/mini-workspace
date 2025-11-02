@@ -44,6 +44,7 @@ $( document ).ready(function() {
             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/board">일반 게시판</a></li>
             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/gallery">사진 게시판</a></li>
             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/used/list">거래 게시판</a></li>
+
             <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Dropdown</a>
                 <ul class="dropdown-menu">
@@ -90,7 +91,7 @@ $( document ).ready(function() {
                 <li class="nav-item"><a class="nav-link" href="/ct/event/list">이벤트 게시판</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">일반 게시판</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">사진 게시판</a></li>
-                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/used/list">거래 게시판</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">거래 게시판</a></li>
                 <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Dropdown</a>
                 <!-- <ul class="dropdown-menu">
