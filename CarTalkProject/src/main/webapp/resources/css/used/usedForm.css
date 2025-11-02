@@ -7,20 +7,21 @@ body {
 
 
 .container {
-  width: 850px;
-  margin: 0 auto;
+  width: 600px;
+  max-width: 90%;
+  margin: 0 auto;         /* 가운데 정렬 */
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
   padding: 40px 50px;
 }
 
+
 /* 제목 */
 h2 {
   font-size: 24px;
   font-weight: 700;
   color: #1f2f50;
-  border-left: 5px solid #1a73e8;
   padding-left: 10px;
   margin-bottom: 30px;
 }

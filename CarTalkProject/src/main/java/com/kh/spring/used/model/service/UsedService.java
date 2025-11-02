@@ -19,5 +19,6 @@ public interface UsedService {
 	UsedListDTO selectUsedDetail(Long usedNo);
 	UsedDTO selectCarInfo(Long usedNo);
 	List<UsedAttachmentDTO> selectAttachments(Long usedNo);
+	int deleteUsed(Long usedNo);
 	
 }

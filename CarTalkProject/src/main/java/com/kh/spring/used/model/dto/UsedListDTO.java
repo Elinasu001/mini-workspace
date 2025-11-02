@@ -13,6 +13,7 @@ import lombok.ToString;
 @ToString
 public class UsedListDTO {
 	
+	private Long userNo;
 	private int usedNo;
     private String usedTitle;
     private int usedPrice;

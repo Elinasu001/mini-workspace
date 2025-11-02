@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring.used.model.dto.CarInfoDTO;
@@ -47,6 +48,7 @@ public class UsedServiceImpl implements UsedService {
 		return usedMapper.selectListCount(keyword);
 	}
 
+	@Transactional
 	@Override
 	public Long insertUsed(UsedDTO used, List<MultipartFile> files, HttpSession session) {
 		Long usedNo = usedMapper.getNextUsedNo();
@@ -132,6 +134,20 @@ public class UsedServiceImpl implements UsedService {
 	@Override
 	public List<UsedAttachmentDTO> selectAttachments(Long usedNo){
 		return usedMapper.selectAttachments(usedNo);
+	}
+	
+	@Transactional
+	@Override
+	public int deleteUsed(Long usedNo) {
+		
+		usedMapper.deleteAttachments(usedNo);
+		
+		usedMapper.deleteCarInfo(usedNo);
+		
+		int result = usedMapper.deleteUsed(usedNo);
+		
+		log.info("삭제 처리 결과 (usedNo{}) : {}", usedNo, result);
+		return result;
 	}
 
 }

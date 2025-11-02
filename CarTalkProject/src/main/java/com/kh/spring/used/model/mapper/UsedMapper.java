@@ -19,5 +19,8 @@ public interface UsedMapper {
 	UsedListDTO selectUsedDetail(Long usedNo);
 	UsedDTO selectCarInfo(Long usedNo);
 	List<UsedAttachmentDTO> selectAttachments(Long usedNo);
+	void deleteAttachments(Long usedNo);
+	void deleteCarInfo(Long usedNo);
+	int deleteUsed(Long usedNo);
 
 }

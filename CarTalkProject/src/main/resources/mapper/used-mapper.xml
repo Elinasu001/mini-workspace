@@ -202,5 +202,32 @@
 		    BY
 		       FILE_NO ASC                   
 	</select>
+	
+	<delete id="deleteUsed"
+			parameterType="long">
+		DELETE
+		  FROM
+		       CT_USED_LISTING
+		 WHERE
+		       USED_NO = #{usedNo}      
+	</delete>
+	
+	<delete id="deleteAttachments"
+			parameterType="long">
+		DELETE
+		  FROM
+		       CT_USED_ATTACHMENT
+		 WHERE
+		       REF_BNO = #{usedNo}      
+	</delete>
+	
+	<delete id="deleteCarInfo"
+			parameterType="long">
+		DELETE
+		  FROM
+		       CT_CAR_INFO
+		 WHERE
+		       USED_NO = #{usedNo}      
+	</delete>
 
 </mapper>

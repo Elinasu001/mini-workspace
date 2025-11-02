@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -78,13 +79,13 @@ public class UsedController {
 		
 		
 		// 로그인이 안됐을 경우 글쓰기 기능 막음 (로그인 구현되면 활성화)
-		/*
+		
 		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 		if( loginMember == null) {
 			return "redirect:/ct/login";
 		}
-		*/
-		used.setUserNo(1L); // 테스트용
+		
+		//used.setUserNo(1L); // 테스트용
 		
 		//used.setUserNo(loginMember.getUserNo());
 		
@@ -104,11 +105,22 @@ public class UsedController {
 					             , Model model
 					             , HttpSession session) {
 		
+		/*로그인 테스트용
+		MemberDTO temp = new MemberDTO();
+		temp.setUserNo(1);
+		temp.setUserName("테스트");
+		session.setAttribute("loginMember", temp);
+		*/
+		
+		//log.info("세션 loginMember 확인 = {}", session.getAttribute("loginMember"));
+		
+		// 로그인 완료시 윗 코드 주석처리 or 삭제
 		UsedListDTO used = usedService.selectUsedDetail(usedNo);
 		
 		UsedDTO car = usedService.selectCarInfo(usedNo);
 		
 		List<UsedAttachmentDTO> attachments = usedService.selectAttachments(usedNo); 
+		
 		
 		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 		model.addAttribute("loginMember", loginMember);
@@ -118,6 +130,21 @@ public class UsedController {
 		model.addAttribute("attachments", attachments);
 		
 		return "used/usedDetail";
+	}
+	
+	@PostMapping("/delete/{usedNo}")
+	@ResponseBody
+	public String deleteUsed(@PathVariable Long usedNo) {
+		
+		System.out.println("삭제요청 usedNo =" + usedNo);
+		
+		int result = usedService.deleteUsed(usedNo);
+		if(result > 0) {
+			return "success";
+		} else {
+			return "fail";
+		}
+		
 	}
 	
 	@PostMapping("/list")
