@@ -31,6 +31,17 @@ public class EventServiceImpl implements EventService {
     private final EventMapper eventMapper;
     private final Pagination pagination;
     
+    
+    /**
+     * 메인 페이지 진행 중 이벤트 조회
+     **/
+    @Override
+    public List<EventDTO> selectEventOngoingTop() {
+    	 List<EventDTO> list = eventMapper.selectEventOngoingTop();
+         log.info("진행중 이벤트 3개: {}", list);
+         return list;
+    }
+    
     /**
      * 진행중 이벤트 게시글 조회
      **/

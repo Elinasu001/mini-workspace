@@ -8,6 +8,8 @@
 <title>CarTalk</title>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/main.jsp"/>
+	<%
+    response.sendRedirect(request.getContextPath() + "/main");
+	%>
 </body>
 </html>

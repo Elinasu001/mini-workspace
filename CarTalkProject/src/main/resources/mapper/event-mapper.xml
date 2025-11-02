@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kh.spring.event.model.mapper.EventMapper">
-    
+
   <!-- 상세조회용 resultMap -->
   <resultMap id="eventResultSet" type="eventdto">
     <id property="eventNo" column="EVENT_NO"/>
@@ -314,6 +314,37 @@
 	     WHERE 
 	           EVENT_NO = #{eventNo}
 	</update>
+	
+	<!-- 메인 페이지 진행 중 이벤트 조회 : 진행 중(status='Y') + 기간 유효한 이벤트 + 상위 3개만 조회-->
+	<select id="selectEventOngoingTop" resultMap="eventListResultSet">
+	    SELECT
+	           E.EVENT_NO
+	         , E.EVENT_TITLE
+	         , E.START_DATE
+	         , E.END_DATE
+	         , C.CATEGORY_NO
+	         , C.CATEGORY_NAME
+	         , A.FILE_PATH
+	         , A.CHANGE_NAME
+	      FROM 
+	           CT_EVENT E
+	      JOIN 
+	           CT_EVENT_CATEGORY C ON (E.CATEGORY_NO = C.CATEGORY_NO)
+	      LEFT 
+	      JOIN 
+	           CT_EVENT_ATTACHMENT A ON (A.REF_BNO = E.EVENT_NO AND A.FILE_LEVEL = 0)
+	     WHERE 
+	           E.STATUS = 'Y'
+	       AND 
+	           E.START_DATE &lt;= SYSDATE  <!-- 시작일 오늘 이전 -->
+		   AND 
+		       E.END_DATE >= SYSDATE	<!-- 종료일 오늘 이후 -->
+	     ORDER 
+	        BY 
+	           E.EVENT_NO DESC
+	     FETCH FIRST 3 ROWS ONLY
+	</select>
+	
     
 
 </mapper>

@@ -11,7 +11,11 @@ import com.kh.spring.event.model.dto.EventDTO;
 import com.kh.spring.event.model.vo.EventCategory;
 
 public interface EventService {
-
+	
+	// 메인 페이지 진행 중 이벤트 조회
+	List<EventDTO> selectEventOngoingTop();
+	
+	
 	// 진행중인 이벤트 게시글 조회
 	Map<String, Object> selectOngoing(Long page);
 	
