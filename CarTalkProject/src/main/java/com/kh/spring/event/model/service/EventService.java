@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring.event.model.dto.EventDTO;
+import com.kh.spring.event.model.vo.EventCategory;
 
 public interface EventService {
 
@@ -20,6 +21,16 @@ public interface EventService {
 	// 이벤트 게시글 상세보기
 	EventDTO selectByEventNo(Long eventNo);
 	
-	// 게시글 등록하기
+	// 게시글 등록
     int insertEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session);
+    
+    // 카테고리 목록 조회
+    List<EventCategory> selectCategoryList();
+    
+    // 게시글 수정
+    int updateEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session);
+    
+    // 게시글 삭제
+    Long deleteEvent(Long eventNo);
+    
 }

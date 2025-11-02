@@ -12,8 +12,8 @@
             <a href="${pageContext.request.contextPath}/event/detail/${event.eventNo}">
               <p class="feature rounded-3 mb-4 mt-n4">
                 <c:choose>
-                  <c:when test="${not empty event.filePath and not empty event.changeName}">
-                    <img src="<c:url value='/${event.filePath}/${event.changeName}' />" alt="대표이미지">
+                  <c:when test="${not empty event.thumbnailPath and not empty event.thumbnailName}">
+                    <img src="${pageContext.request.contextPath}/${event.thumbnailPath}/${event.thumbnailName}" alt="대표이미지">
                   </c:when>
                   <c:otherwise>
                     <img src="<c:url value='/resources/upfiles/event/default.png' />" alt="기본이미지">
@@ -21,7 +21,7 @@
                 </c:choose>
               </p>
               <h2 class="fs-4 fw-bold">${event.eventTitle}</h2>
-              <p class="info-txt my-3"><span class="category  me-2">${event.categoryName}</span> <span>${event.startDate} ~ ${event.endDate}</span></p>
+              <p class="info-txt my-3"><span class="category  me-2">${event.category.categoryName}</span> <span>${event.startDate} ~ ${event.endDate}</span></p>
             </a>
           </div>
         </div>

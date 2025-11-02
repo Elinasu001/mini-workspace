@@ -1,9 +1,7 @@
 package com.kh.spring.event.model.dto;
 
 import java.sql.Date;
-import java.util.List;
 
-import com.kh.spring.event.model.vo.EventAttachment; 
 import com.kh.spring.event.model.vo.EventCategory;
 
 import lombok.AllArgsConstructor;
@@ -31,16 +29,17 @@ public class EventDTO {
     private String status;
     private String userId;
     
-    // 카테고리
-    private EventCategory category;
+    private EventCategory category;  // categoryNo, categoryName은 이 객체 안에 포함
+    
+    /* 썸네일용 */
+    private String filePath;        // 썸네일 경로
+    private String changeName;      // 썸네일 저장명
+    private String originName;      // 썸네일 원본명
 
-	// 첨부파일 리스트
-    private List<EventAttachment> files;
-	
-    // 썸네일 / 상세
-    private String thumbnailPath;
-    private String thumbnailName;
-    private String detailPath;
-    private String detailName;
+    /* 상세이미지용 */
+    private String detailPath;         // 상세 경로
+    private String detailChangeName;   // 상세 저장명
+    private String detailOriginName;   // 상세 원본명
 
+    private String shareUrl;
 }

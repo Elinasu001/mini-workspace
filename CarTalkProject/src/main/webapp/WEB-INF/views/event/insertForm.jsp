@@ -221,20 +221,26 @@
 		
 	 	<div class="contentWrap">
             <div class="contArea admin">
+            	<!-- 상단 타이틀 -->
+				<div class="text-center mb-5">
+					<h2 class="fw-bold mb-3">이벤트 등록</h2>
+					<p class="text-muted">이벤트 내용을 등록합니다.</p>
+				</div>
+            	
 				<div class="admin-event-form">
-				    <h2><i class="bi bi-calendar-plus"></i> 이벤트 등록</h2>
 				
 				    <form action="insert" method="post" enctype="multipart/form-data">
 				        <!--  카테고리 -->
 				        <div class="mb-4 ">
 				            <label for="categoryNo" class="form-label">카테고리</label>
-				            <select class="form-select" id="categoryNo" name="categoryNo" required>
-				                <option value="">카테고리를 선택하세요</option>
-				                <option value="1">시즌 이벤트</option>
-				                <option value="2">회원 이벤트</option>
-				                <option value="3">리뷰 이벤트</option>
-				                <option value="4">출석 이벤트</option>
-				            </select>
+				            <select class="form-select" name="categoryNo" required>
+							  <option value="">카테고리를 선택하세요</option>
+							  <option value="1" <c:if test="${event.categoryNo == 1}">selected</c:if>>시즌 이벤트</option>
+							  <option value="2" <c:if test="${event.categoryNo == 2}">selected</c:if>>회원 이벤트</option>
+							  <option value="3" <c:if test="${event.categoryNo == 3}">selected</c:if>>리뷰 이벤트</option>
+							  <option value="4" <c:if test="${event.categoryNo == 4}">selected</c:if>>출석 이벤트</option>
+							</select>
+
 				        </div>
 				
 				        <!-- 제목 -->

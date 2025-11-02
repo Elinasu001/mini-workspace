@@ -118,6 +118,7 @@
 
 </style>
 <body>
+
 	<div id="wrap">
 	
 		<jsp:include page="../include/header.jsp"/>
@@ -141,17 +142,17 @@
 		            </div>
 		            
 		        </header>
-		         
-	        	<!-- 관리자료그인 상태일 경우만 보여지는 글쓰기 버튼 -->
-		      	<c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.manager eq 'Y'}">
-					<div class="mx-3 my-4">
-						<a class="btn btn-secondary" href="ct/event/insertForm">등록하기</a>
-					</div>
-				</c:if>
-
 		        
 		        <!-- 탭 영역 추가 -->
 			    <div class="container py-5">
+			    
+			    	<!-- [D] : 관리자로그인 상태일 경우만 보여지는 글쓰기 버튼 -->
+			      	<c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.manager eq 'Y'}">
+						<div class="d-flex justify-content-end">
+							<a class="btn btn-secondary" href="${pageContext.request.contextPath}/event/insertForm">등록하기</a>
+						</div>
+					</c:if>
+					
 				    <ul id="eventTabs" class="nav nav-tabs nav-fill pt-4" >
 				        <li class="nav-item">
 				            <button  id="ongoing-tab" class="nav-link active fs-4 fs-md-3 px-4 px-md-5 py-3 py-md-4 fw-semibold" type="button">

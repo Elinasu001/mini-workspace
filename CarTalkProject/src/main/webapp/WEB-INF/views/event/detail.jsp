@@ -67,7 +67,7 @@
           <div class="p-4 p-lg-5 rounded-3">
             <h1 class="display-5 fw-bold mb-3">${event.eventTitle}</h1>
             <p class="fs-5 mb-0">
-              <span class="category me-2">${event.categoryName}</span>
+              <span class="category me-2">${event.category.categoryName}</span>
               <span>${event.startDate} ~ ${event.endDate}</span>
             </p>
             <p class="meta-info mt-2">
@@ -80,14 +80,24 @@
       <!-- 상세 내용 -->
       <section class="pt-5 pb-5">
         <div class="container">
+       	 <!-- 관리자 전용 버튼 -->
+         <div class="d-flex justify-content-end py-3">
+			  <c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.manager eq 'Y'}">
+			      <a href="${pageContext.request.contextPath}/event/delete?eventNo=${event.eventNo}" 
+			         class="btn btn-danger px-5 py-2 ms-2"
+			         onclick="return confirm('정말 이 이벤트를 삭제하시겠습니까?');">삭제하기</a>
+			      <a href="${pageContext.request.contextPath}/event/updateForm?eventNo=${event.eventNo}" 
+			         class="btn btn-primary px-5 py-2 ms-2">수정하기</a>
+			  </c:if>
+		  </div>
           <div class="card border-0 shadow-sm">
             <div class="card-body text-center p-4">
 
-              <!-- 대표 이미지 -->
+              <!-- 상세 이미지 -->
               <c:choose>
-                <c:when test="${not empty event.filePath and not empty event.changeName}">
+                <c:when test="${not empty event.detailPath and not empty event.detailName}">
                   <img class="detail-img mb-5" 
-                       src="<c:url value='/${event.filePath}/${event.changeName}'/>" 
+                       src="${pageContext.request.contextPath}/${event.detailPath}/${event.detailName}" 
                        alt="${event.eventTitle}">
                 </c:when>
                 <c:otherwise>
@@ -109,6 +119,7 @@ ${event.eventContent}
                 <a href="${pageContext.request.contextPath}/event/list" 
                    class="btn btn-secondary px-5 py-2">목록으로</a>
               </div>
+              
             </div>
           </div>
         </div>
