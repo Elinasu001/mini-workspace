@@ -103,9 +103,37 @@
                     <th>댓글 작성</th>
                 </tr>
                 <tr>
-                    <td><textarea cols="50" rows="4" style="resize: none;" placeholder="댓글은 로그인 시에만 작성할 수 있습니다." required="required"></textarea></td>
+                    <td><textarea cols="50" rows="4" style="resize: none;" id="replyContent" placeholder="댓글을 작성하세요." required="required"></textarea></td>
                     <td><button onclick="insertReply()">댓글 등록</button></td>
                 </tr>
+                <script>
+                	// 미구현 AJAX로 댓글 비동기 등록
+                	function insertReply(){
+                		
+                		const boardNo = ${ board.boardNo };
+                		const replyContent = document.getElementById("replyContent").value;
+                		
+                		$.ajax({
+                			url : 'replies',
+                			type : 'post',
+                			data : {
+                				refBno : boardNo;
+                				replyContent : replyContent;
+                			}
+                			success : function(response){
+                				
+                				if(response === 'success'){
+                					alert('댓글 작성 성공');
+                				} else {
+                					alert('댓글 작성 실패, 다시 시도해주세요');
+                				}
+                				
+                			}
+                			
+                		})
+                		location.href = `/ct/board/\${ board.boardNo }/reply`;
+                	}
+                </script>
             </form>
             </c:when>
             <c:otherwise>

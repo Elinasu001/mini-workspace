@@ -104,6 +104,7 @@ public class BoardController {
 		
 		model.addAttribute("board",board);
 		
+		
 		return "board/update_form";
 	}
 	
@@ -122,7 +123,7 @@ public class BoardController {
 		
 		boardService.updateBoard(board, boardUpfile, session);
 		
-		return "redirect:/board/"+board.getBoardNo();
+		return "redirect:/board/"+boardNo;
 		
 	}
 	
@@ -136,7 +137,6 @@ public class BoardController {
 		return "redirect:/board";
 	}
 	
-	
-	
+
 	
 }

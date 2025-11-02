@@ -21,4 +21,7 @@ public interface BoardService {
 	void updateBoard(BoardDTO board, MultipartFile boardUpfile, HttpSession session);
 	
 	void deleteBoard(BoardDTO board, HttpSession session);
+
+	int insertLikes(Long boardNo, HttpSession session);
+	
 }

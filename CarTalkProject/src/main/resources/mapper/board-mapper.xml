@@ -316,6 +316,30 @@
 	           FILE_NO = #{fileNo}
 	</update>
 
+	<select id="selectLikes" parameterType="com.kh.spring.board.model.dto.LikeDTO" 
+	resultType ="com.kh.spring.board.model.dto.LikeDTO">
+		SELECT
+		       USER_NO
+		     , BOARD_NO
+		  FROM
+		       CT_BOARD_LIKE
+		 WHERE
+		       USER_NO = #{userNo}
+		   AND
+		       BOARD_NO = #{boardNo}
+	
+	</select>
 
+	<insert id="insertLikes" parameterType="com.kh.spring.board.model.dto.LikeDTO" >
+		INSERT
+		  INTO
+		       CT_BOARD_LIKE
+		VALUES
+		       (
+		       #{userNo}
+		     , #{boardNo}
+		       )
+	
+	</insert>
 
 </mapper>

@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring.board.model.dto.AttachmentDTO;
 import com.kh.spring.board.model.dto.BoardDTO;
+import com.kh.spring.board.model.dto.LikeDTO;
 import com.kh.spring.board.model.mapper.BoardMapper;
 import com.kh.spring.member.model.dto.MemberDTO;
 import com.kh.spring.util.PageInfo;
@@ -265,6 +266,34 @@ public class BoardServiceImpl implements BoardService {
 			
 		}
 		
+	}
+
+	@Override
+	public int insertLikes(Long boardNo, HttpSession session) {
+		
+		// 로그인 한 상태인지 검증
+		
+		Long userNo = (long)((MemberDTO)session.getAttribute("loginMember")).getUserNo();
+		
+		LikeDTO likeNums = new LikeDTO(boardNo, userNo);
+		
+		// 좋아요 테이블을 먼저 조회해서 값이 존재하는 지 확인
+		LikeDTO likes = boardMapper.selectLikes(likeNums);
+		
+		if(likes != null) {
+			//존재할 경우 - 이미 좋아요를 누른 상태
+			
+			
+		} else {
+			// 존재하지 않을 경우 - 좋아요를 처음 누른 상태
+			int result = boardMapper.insertLikes(likeNums);
+			
+			
+		}
+		
+		
+		
+		return 0;
 	}
 	
 }
