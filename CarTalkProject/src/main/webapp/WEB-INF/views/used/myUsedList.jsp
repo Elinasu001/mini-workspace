@@ -9,6 +9,10 @@
 <title>내 판매 목록 | CarTalk</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/used/myUsedList.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+	crossorigin="anonymous"></script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include/meta.jsp" />
@@ -47,11 +51,38 @@
 					<p>등록된 판매글이 없습니다.</p>
 				</c:otherwise>
 			</c:choose>
+		</div>
+		
+		<!-- 페이징 -->
+		<div class="pagination">
+			<c:if test="${ pi.currentPage > 1}">
+				<a href="myList?page=${ pi.currentPage -1 }">◀</a>
+			</c:if>
 
+			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+				<a href="list?page=${p}" class=${pi.currentPage}>${p}</a>
+			</c:forEach>
+
+			<c:if test="${ pi.currentPage < pi.maxPage }">
+				<a href="myList?page=${ pi.currentPage + 1 }">▶</a>
+			</c:if>
+		</div>
+		
+		<div class="btn-group">
+   		 	<button type="button" class="btn btn-outline-info" onclick="location.href='${pageContext.request.contextPath}/used/list'">목록으로</button>
 		</div>
 	</main>
 
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+	
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
+		integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
+		crossorigin="anonymous"></script>
 
 </body>
 </html>

@@ -135,3 +135,36 @@ h2 {
   margin-top: 40px;
   font-size: 15px;
 }
+
+/* 페이징 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin: 30px 0 20px 0;
+}
+
+.pagination a {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  background: #fff;
+  color: #333;
+  font-size: 13px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+  background: #2d77ff;
+  color: #fff;
+  border-color: #2d77ff;
+}
+
+.pagination .active {
+  background: #2d77ff;
+  color: #fff;
+  border-color: #2d77ff;
+}
