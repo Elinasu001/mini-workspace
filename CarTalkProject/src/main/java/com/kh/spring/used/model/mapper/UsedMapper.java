@@ -22,5 +22,7 @@ public interface UsedMapper {
 	void deleteAttachments(int usedNo);
 	void deleteCarInfo(int usedNo);
 	int deleteUsed(int usedNo);
+	int selectMyListCount(Map<String, Object> map);
+	List<UsedListDTO> selectMyUsedList(Map<String, Object> map);
 
 }

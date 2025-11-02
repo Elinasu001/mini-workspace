@@ -232,5 +232,65 @@
 	</delete>
 	
 	
+	<select id="selectMyListCount"
+			parameterType="map"
+			resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM
+		       CT_USED_LISTING
+		 WHERE
+		       USER_NO = #{userNo}
+		<if test="status != null and status != '' and status != '전체'">
+			AND STATUS = #{status}
+		</if>           
+	</select>
+	
+	<select id="selectMyUsedList"
+			parameterType="map"
+			resultType="UsedListDTO">
+		SELECT 
+		       *
+		  FROM      
+		       (
+		  SELECT 
+		  		 ROWNUM AS RNUM, A.*
+		    FROM (
+		        SELECT
+					   U.USED_NO usedNo
+					 , U.USER_NO userNo
+					 , U.USED_TITLE usedTitle
+					 , U.USED_PRICE usedPrice
+					 , U.STATUS status
+					 , U.ENROLL_DATE enrollDate
+					 , U.VIEW_COUNT viewCount
+					 , CAT.CATEGORY_NAME categoryName
+					 , CAR.MANUFACTURER manufacturer
+					 , CAR.MODEL model
+					 , CAR.CAR_YEAR carYear
+					 , CAR.DISTANCE distance
+					 , CAR.TRANSMISSION transmission
+					 , CAR.FUEL_TYPE fuelType
+					 , U.THUMBNAIL thumbnail
+				  FROM
+				  	   CT_USED_LISTING U
+				  JOIN
+				  	   CT_USED_CATEGORY CAT ON U.CATEGORY = CAT.CATEGORY_NO
+				  JOIN
+				       CT_CAR_INFO CAR ON U.USED_NO = CAR.USED_NO
+				 WHERE
+				       U.USER_NO = #{userNo}
+				<if test="status != null and status != '' and status != '전체'">
+					AND U.STATUS = #{status}
+				</if>
+				 ORDER
+				    BY
+				       U.USED_NO DESC
+				  ) A
+				  WHERE ROWNUM &lt;= #{endRow}
+		       )
+		       WHERE RNUM &gt;= #{startRow}
+	</select>
+	
 
 </mapper>

@@ -58,6 +58,9 @@ public class UsedServiceImpl implements UsedService {
 		if (result1 == 0) return 0;
 
 		String savePath = session.getServletContext().getRealPath("/resources/upfiles/used/");
+		//저장 경로 확인용
+		System.out.println("savePath = " + session.getServletContext().getRealPath("/resources/upfiles/used/"));
+		
 		File folder = new File(savePath);
 		if(!folder.exists())folder.mkdirs();
 		
@@ -149,5 +152,38 @@ public class UsedServiceImpl implements UsedService {
 		log.info("삭제 처리 결과 (usedNo{}) : {}", usedNo, result);
 		return result;
 	}
+	
+	@Override
+	public int selectMyListCount(int userNo, String status) {
+		
+		if("전체".equals(status)) status = null;
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("status", status);
+		
+		return usedMapper.selectMyListCount(map);
+	}
+	
+	@Override
+	public List<UsedListDTO> selectMyUsedList(PageInfo pi, int userNo, String status){
+		
+		if("전체".equals(status)) status = null;
+		
+		int startRow = (pi.getCurrentPage() - 1) * pi.getBoardLimit() + 1;
+		int endRow = startRow + pi.getBoardLimit() - 1;
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("status", status);
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+		map.put("boardLimit", pi.getBoardLimit());
+		
+		return usedMapper.selectMyUsedList(map);
+	}
+	
+	
+	
 
 }

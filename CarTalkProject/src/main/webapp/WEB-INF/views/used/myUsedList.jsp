@@ -7,57 +7,46 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>내 판매 목록 | CarTalk</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/used/myUsedList.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/used/myUsedList.css">
 </head>
 <body>
-    <jsp:include page="/WEB-INF/views/include/meta.jsp" />
+	<jsp:include page="/WEB-INF/views/include/meta.jsp" />
 	<jsp:include page="/WEB-INF/views/include/header.jsp" />
 
 	<main class="main-wrap">
 		<h2>내 판매 목록</h2>
 
 		<div class="filter">
-			<button class="active">전체</button>
-			<button>판매중</button>
-			<button>예약중</button>
-			<button>판매완료</button>
+			<a href="?status=전체" class="${param.status eq '전체' or empty param.status ? 'active' : ''}">전체</a>
+			<a href="?status=판매중" class="${param.status eq '판매중' ? 'active' : ''}">판매중</a>
+			<a href="?status=예약중" class="${param.status eq '예약중' ? 'active' : ''}">예약중</a>
+			<a href="?status=판매완료" class="${param.status eq '판매완료' ? 'active' : ''}">판매완료</a>
 		</div>
 
 		<div class="car-list">
-
-			<div class="car-card">
-				<div class="car-info">
-					<div></div>
-					<!-- 상태 / 차급 -->
-					<h3></h3>
-					<!-- 차량명 -->
-					<p></p>
-					<!-- 요약설명 -->
-					<div class="meta"></div>
-					<!-- 가격/댓글/기간 -->
-				</div>
-				<img src="" alt="차량 이미지">
-			</div>
-
-			<div class="car-card">
-				<div class="car-info">
-					<div></div>
-					<h3></h3>
-					<p></p>
-					<div class="meta"></div>
-				</div>
-				<img src="" alt="차량 이미지">
-			</div>
-
-			<div class="car-card">
-				<div class="car-info">
-					<div></div>
-					<h3></h3>
-					<p></p>
-					<div class="meta"></div>
-				</div>
-				<img src="" alt="차량 이미지">
-			</div>
+			<c:choose>
+				<c:when test="${not empty usedList }">
+					<c:forEach var="car" items="${usedList}">
+						<a href="${pageContext.request.contextPath}/used/detail?no=${car.usedNo}" class="car-link">
+							<div class="car-card">
+								<div class="car-info">
+									<div>${ car.status }| ${ car.categoryName }</div>
+									<h3>${ car.usedTitle }</h3>
+									<p>${ car.carYear }/ ${ car.distance }KM / ${ car.transmission }
+										/ ${ car.fuelType }</p>
+									<div class="meta">가격: ${ car.usedPrice }만원 | 조회수 ${ car.viewCount }
+										| 등록일 ${ car.enrollDate }</div>
+								</div>
+								<img src="${pageContext.request.contextPath}${car.thumbnail}" alt="썸네일 이미지" width="120" height="80">
+							</div>
+						</a>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<p>등록된 판매글이 없습니다.</p>
+				</c:otherwise>
+			</c:choose>
 
 		</div>
 	</main>

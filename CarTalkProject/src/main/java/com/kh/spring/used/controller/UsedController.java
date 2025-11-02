@@ -147,15 +147,27 @@ public class UsedController {
 		
 	}
 	
-	@PostMapping("/list")
-	public String usedFileSave() {
-		
-		return "redirect:list";
-	}
-	
-	
 	@GetMapping("/myList")
-	public String myUsetList() {
+	public String myUsetList(HttpSession session, Model model,
+							 @RequestParam(value="page", defaultValue="1") int page,
+							 @RequestParam(value="status", required=false) String status) {
+		
+		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+		if(loginMember == null) return "redirect:/loginPage";
+		
+		int userNo = loginMember.getUserNo();
+		
+		int listCount = usedService.selectMyListCount(userNo, status);
+		PageInfo pi = pagination.getPageInfo(listCount, page, 10, 8);
+		
+		List<UsedListDTO> myList = usedService.selectMyUsedList(pi, userNo, status);
+		//System.out.println("현재 로그인한 유저번호 : " + loginMember.getUserNo());
+		//System.out.println("내 판매글 개수 : " + myList.size());
+		model.addAttribute("pi", pi);
+		model.addAttribute("usedList", myList);
+		model.addAttribute("status", status);
+		
+		
 		return "used/myUsedList";
 	}
 

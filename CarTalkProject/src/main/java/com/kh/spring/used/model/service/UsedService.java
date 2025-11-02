@@ -20,5 +20,7 @@ public interface UsedService {
 	UsedDTO selectCarInfo(int usedNo);
 	List<UsedAttachmentDTO> selectAttachments(int usedNo);
 	int deleteUsed(int usedNo);
+	int selectMyListCount(int userNo, String status);
+	List<UsedListDTO> selectMyUsedList(PageInfo pi, int userNo, String status);
 	
 }
