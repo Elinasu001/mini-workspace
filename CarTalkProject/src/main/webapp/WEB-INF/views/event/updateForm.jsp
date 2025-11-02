@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <jsp:include page="/WEB-INF/views/include/meta.jsp"/>
@@ -15,7 +15,7 @@
     
     .contentWrap .contArea.admin {
     	height:initial;
-    	margin-top:80px;
+    	margin-top:60px;
     	margin-bottom:100px;
     }
     .admin-event-form {
@@ -217,7 +217,7 @@
 <div id="wrap">
 	<jsp:include page="../include/header.jsp"/>
 
-	<div class="contentWrap py-5">
+	<div class="contentWrap">
 		<div class="contArea admin">
 			
 			<!-- 상단 타이틀 -->
@@ -244,39 +244,35 @@
 	
 					<!-- 카테고리 -->
 					<div class="mb-4">
-						<label class="form-label fw-semibold">카테고리</label>
-						<select name="category.categoryNo" class="form-select" required>
-						  <option value="">카테고리를 선택하세요</option>
-						  <c:forEach var="cat" items="${categoryList}">
-						    <option value="${cat.category.categoryNo}"
-						      <c:if test="${cat.category.categoryNo == event.category.categoryNo}">selected</c:if>>
-						      ${cat.category.categoryName}
-						    </option>
-						  </c:forEach>
-						</select>
+					   <label class="form-label fw-semibold">카테고리</label>
+					   <select class="form-select" name="category.categoryNo"  required>
+				    	<option value="">카테고리를 선택하세요</option>
+					    <c:forEach var="cat" items="${categoryList}">
+					      <option value="${cat.categoryNo}"
+					        <c:if test="${cat.categoryNo == event.category.categoryNo}">selected</c:if>>
+					        ${cat.categoryName}
+					      </option>
+					    </c:forEach>
+					  </select>
 					</div>
 	
-					<!-- 기간 -->
-					<div class="row mb-4">
-						<div class="col-md-6">
-							<label class="form-label fw-semibold">시작일</label>
-							<input type="date" class="form-control" 
-								   name="startDate" 
-								   value="${event.startDate}" required>
-						</div>
-						<div class="col-md-6">
-							<label class="form-label fw-semibold">종료일</label>
-							<input type="date" class="form-control" 
-								   name="endDate" 
-								   value="${event.endDate}" required>
-						</div>
-					</div>
+					<!-- 시작일 -->
+			        <div class="mb-4">
+			            <label for="startDate" class="form-label">이벤트 시작일</label>
+			            <input type="text" id="startDate" name="startDate" value="${event.startDate}" class="form-control datepicker" required>
+			        </div>
+			
+			        <!-- 7종료일 -->
+			        <div class="mb-4">
+			            <label for="endDate" class="form-label">이벤트 종료일</label>
+			            <input type="text" id="endDate" name="endDate" value="${event.endDate}"  class="form-control datepicker" placeholder="YYYY-MM-DD" required>
+			        </div>
 	
 					<!-- 썸네일 -->
 					<div class="mb-4">
 					  <label class="form-label fw-semibold">대표 이미지 (썸네일)</label>
 					  <input type="file" class="form-control" name="thumbnail" accept="image/*">
-					  <small class="text-muted d-block mt-1">
+					  <small class="text-muted d-block py-3"">
 						※ 새 이미지를 선택하지 않으면 기존 이미지가 유지됩니다.
 					  </small>
 					  <c:if test="${not empty event.thumbnailName}">
@@ -291,7 +287,7 @@
 					<div class="mb-4">
 					  <label class="form-label fw-semibold">상세 이미지</label>
 					  <input type="file" class="form-control" name="detailImage" accept="image/*">
-					  <small class="text-muted d-block mt-1">
+					  <small class="text-muted d-block py-3">
 						※ 새 이미지를 선택하지 않으면 기존 상세 이미지가 유지됩니다.
 					  </small>
 					    <div class="mt-2">
@@ -330,13 +326,18 @@
 
 	<jsp:include page="../include/footer.jsp"/>
 </div>
-
 </body>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(function() {
-
+   // 날짜 선택기 초기화
+   $('.datepicker').datepicker({
+       format: 'yyyy-mm-dd',
+       autoclose: true,
+       todayHighlight: true,
+       language: 'ko'
+  });
+   
   // 썸네일 미리보기
   $('input[name="thumbnail"]').on('change', function(e) {
     previewImage(this, '#thumb-preview');

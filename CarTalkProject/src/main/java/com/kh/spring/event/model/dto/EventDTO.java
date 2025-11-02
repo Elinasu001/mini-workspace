@@ -18,10 +18,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class EventDTO {
-
-    private Long eventNo;
-    private int categoryNo;
-    private String categoryName;
+	
+	private Long eventNo;
     private String eventTitle;
     private String eventContent;
     private Date startDate;
@@ -32,8 +30,7 @@ public class EventDTO {
     private String userId;
     
     // 카테고리
-    private EventCategory category;
-
+    private EventCategory category = new EventCategory(); //  초기화
 	// 첨부파일 리스트
     private List<EventAttachment> files;
 	

@@ -83,9 +83,6 @@
        	 <!-- 관리자 전용 버튼 -->
          <div class="d-flex justify-content-end py-3">
 			  <c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.manager eq 'Y'}">
-			      <a href="${pageContext.request.contextPath}/event/delete?eventNo=${event.eventNo}" 
-			         class="btn btn-danger px-5 py-2 ms-2"
-			         onclick="return confirm('정말 이 이벤트를 삭제하시겠습니까?');">삭제하기</a>
 			      <a href="${pageContext.request.contextPath}/event/updateForm?eventNo=${event.eventNo}" 
 			         class="btn btn-primary px-5 py-2 ms-2">수정하기</a>
 			  </c:if>

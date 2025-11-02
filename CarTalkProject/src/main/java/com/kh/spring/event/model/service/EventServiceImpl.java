@@ -30,7 +30,6 @@ public class EventServiceImpl implements EventService {
 
     private final EventMapper eventMapper;
     private final Pagination pagination;
-
     /**
      * 진행중 이벤트 조회
      **/
@@ -144,7 +143,8 @@ public class EventServiceImpl implements EventService {
      **/
     @Override
     public int updateEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session) {
-        validateUser(event, session);
+        
+    	validateUser(event, session);
         validateEvent(event);
 
         int result = eventMapper.updateEvent(event);
