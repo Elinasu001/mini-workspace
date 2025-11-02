@@ -12,25 +12,25 @@ import com.kh.spring.event.model.vo.EventCategory;
 
 public interface EventService {
 
-	// 진행중인 이벤트 조회
+	// 진행중인 이벤트 게시글 조회
 	Map<String, Object> selectOngoing(Long page);
 	
-	// 종료된 이벤트 조회
+	// 종료된 이벤트 게시글 조회
 	Map<String, Object> selectEnded(Long page);
 	
-	// 이벤트 게시글 상세보기
+	// 이벤트 게시글 상세 조회
 	EventDTO selectByEventNo(Long eventNo);
 	
-	// 게시글 등록
+	// 이벤트 게시글 등록
     int insertEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session);
     
     // 카테고리 목록 조회
     List<EventCategory> selectCategoryList();
     
-    // 게시글 수정
+    // 이벤트 게시글 수정
     int updateEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session);
     
-    // 게시글 삭제
+    // 이벤트 게시글 삭제
     Long deleteEvent(Long eventNo);
     
 }

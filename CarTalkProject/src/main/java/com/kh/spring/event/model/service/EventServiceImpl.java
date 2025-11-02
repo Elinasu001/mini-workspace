@@ -30,8 +30,9 @@ public class EventServiceImpl implements EventService {
 
     private final EventMapper eventMapper;
     private final Pagination pagination;
+    
     /**
-     * 진행중 이벤트 조회
+     * 진행중 이벤트 게시글 조회
      **/
     @Override
     public Map<String, Object> selectOngoing(Long page) {
@@ -55,7 +56,7 @@ public class EventServiceImpl implements EventService {
     }
     
     /**
-     * 종료된 이벤트 조회
+     * 종료된 이벤트 게시글 조회
      **/
     @Override
     public Map<String, Object> selectEnded(Long page) {
@@ -80,7 +81,7 @@ public class EventServiceImpl implements EventService {
     
     
     /**
-     * 이벤트 상세조회 (조회수 증가 포함)
+     * 이벤트 게시글 상세조회 (조회수 증가 포함)
      **/
     @Override
     public EventDTO selectByEventNo(Long eventNo) {
@@ -118,7 +119,7 @@ public class EventServiceImpl implements EventService {
     
     
     /**
-     * 이벤트 등록
+     * 이벤트 게시글 등록
      **/
     @Override
     public int insertEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session) {
@@ -139,7 +140,7 @@ public class EventServiceImpl implements EventService {
     
     
     /**
-     * 이벤트 수정
+     * 이벤트 게시글 수정
      **/
     @Override
     public int updateEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session) {
@@ -168,7 +169,7 @@ public class EventServiceImpl implements EventService {
     
     
     /**
-     * 이벤트 삭제 (상태 변경)
+     * 이벤트 게시글 삭제 (상태 변경)
      **/
     @Override
     public Long deleteEvent(Long eventNo) {
@@ -190,6 +191,9 @@ public class EventServiceImpl implements EventService {
         return eventMapper.selectCategoryList();
     }
 
+    
+    //--- 내부 공통 로직 ---
+    
     /**
      * 내부 공통 유효성 검증
      **/
@@ -213,8 +217,6 @@ public class EventServiceImpl implements EventService {
     }
     
     
-    
-    //파일 업로드 / 삭제 로직
     /** 파일 저장 **/
     private void saveAttachment(MultipartFile file, Long eventNo, HttpSession session, int fileLevel) {
         String originName = file.getOriginalFilename();

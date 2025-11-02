@@ -34,7 +34,7 @@ public class EventController {
 	// 이벤트 게시글 목록페이지
 	@GetMapping("/list")
 	public String selectEventPage(HttpSession session) {
-		/*테스트중*/
+		/*T : 테스트중*/
 		if (session.getAttribute("loginMember") == null) {
 			com.kh.spring.member.model.dto.MemberDTO dummyAdmin = new com.kh.spring.member.model.dto.MemberDTO();
 	        dummyAdmin.setUserNo(1);
@@ -84,7 +84,7 @@ public class EventController {
 	@GetMapping("/insertForm")
 	public String insertEventForm(HttpSession session, Model model){
 		
-		 // ★ 테스트용 관리자 세션 주입
+		 /*T: 테스트용 관리자 세션 주입*/
 	    if (session.getAttribute("loginMember") == null) {
 	        com.kh.spring.member.model.dto.MemberDTO dummyAdmin = new com.kh.spring.member.model.dto.MemberDTO();
 	        dummyAdmin.setUserNo(1);
@@ -120,6 +120,7 @@ public class EventController {
 	        RedirectAttributes ra
 	        ) {
 		
+		// T: 테스트 
 		log.info("이벤트 등록 요청: {}", event);
         log.info("썸네일 파일명: {}", thumbnail.getOriginalFilename());
         log.info("상세이미지 파일명: {}", detailImage.getOriginalFilename());
@@ -138,15 +139,16 @@ public class EventController {
 	// 이벤트 게시글 수정페이지
 	@GetMapping("/updateForm")
 	public String updateEventForm(@RequestParam("eventNo") Long eventNo, Model model) {
-		// 1. 기존 이벤트 상세 정보 조회
+		
+		// 기존 이벤트 상세 정보 조회
 	    EventDTO event = eventService.selectByEventNo(eventNo);
 
-	    // 2. 카테고리 목록 조회 (select box용)
+	    // 카테고리 목록 조회
 	    List<EventCategory> categoryList = eventService.selectCategoryList();
 	    
+	    // T: 테스트 
 	    log.info(" categoryList: {}", categoryList); // 로그 확인
 	    
-	    // 3. JSP로 전달
 	    model.addAttribute("event", event);
 	    model.addAttribute("categoryList", categoryList);
 
@@ -162,7 +164,7 @@ public class EventController {
 	        HttpSession session,
 	        RedirectAttributes ra) {
 
-	    // 1. 이벤트 상세 조회
+	    // T: 이벤트 상세 조회
 		log.info("이벤트 수정 요청: {}", event);
 	    log.info("썸네일 파일명: {}", (thumbnail != null ? thumbnail.getOriginalFilename() : "없음"));
 	    log.info("상세이미지 파일명: {}", (detailImage != null ? detailImage.getOriginalFilename() : "없음"));
@@ -179,10 +181,11 @@ public class EventController {
 
 	}
 	
-	// 게시글 삭제
+	// 이벤트 게시글 삭제
 	@GetMapping("/delete")
     public String deleteEvent(@RequestParam("eventNo") Long eventNo, RedirectAttributes ra) {
-
+		
+		// T: 테스트 
         log.info("이벤트 삭제 요청: {}", eventNo);
         
         Long result = eventService.deleteEvent(eventNo);
