@@ -118,5 +118,20 @@ public class UsedServiceImpl implements UsedService {
 
 		return (result1 > 0 && result2 > 0 && result3 > 0) ? usedNo : null;
 	}
+	
+	@Override
+	public UsedListDTO selectUsedDetail(Long usedNo) {
+		return usedMapper.selectUsedDetail(usedNo);
+	}
+	
+	@Override
+	public UsedDTO selectCarInfo(Long usedNo) {
+		return usedMapper.selectCarInfo(usedNo);
+	}
+	
+	@Override
+	public List<UsedAttachmentDTO> selectAttachments(Long usedNo){
+		return usedMapper.selectAttachments(usedNo);
+	}
 
 }

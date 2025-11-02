@@ -142,5 +142,65 @@
 		     , 'Y'
 		       )       
 	</insert>
+	
+	<select id="selectUsedDetail"
+			parameterType="long"
+			resultType="UsedListDTO">
+		SELECT
+			   U.USED_NO usedNo
+			 , U.USED_TITLE usedTitle
+			 , U.USED_CONTENT usedContent
+			 , U.USED_PRICE usedPrice
+			 , U.STATUS status
+			 , U.ENROLL_DATE enrollDate
+			 , U.VIEW_COUNT viewCount
+			 , CAT.CATEGORY_NAME categoryName
+			 , U.THUMBNAIL thumbnail
+		  FROM
+		       CT_USED_LISTING U
+		  JOIN
+		       CT_USED_CATEGORY CAT ON U.CATEGORY = CAT.CATEGORY_NO
+		 WHERE
+		       U.USED_NO = #{usedNo}           	   
+	</select>
+	
+	<select id="selectCarInfo"
+			parameterType="long"
+			resultType="UsedDTO">
+		SELECT
+			   MANUFACTURER manufacturer
+			 , MODEL model
+			 , CAR_YEAR carYear
+			 , DISTANCE distance
+			 , TRANSMISSION transmission
+			 , FUEL_TYPE fuelType
+			 , REGION region
+			 , CAR_COLOR carColor
+			 , PHONE
+		  FROM
+		       CT_CAR_INFO
+		 WHERE
+		       USED_NO = #{usedNo}      	   
+	</select>
+	
+	<select id="selectAttachments"
+			parameterType="long"
+			resultType="UsedAttachmentDTO">
+		SELECT
+		       FILE_NO fileNo
+		     , REF_BNO refBno
+		     , ORIGIN_NAME originName
+		     , CHANGE_NAME changeName
+		     , FILE_PATH filePath
+		  FROM
+		       CT_USED_ATTACHMENT
+		 WHERE
+		       REF_BNO = #{usedNo}
+		   AND
+		       STATUS = 'Y'
+		 ORDER
+		    BY
+		       FILE_NO ASC                   
+	</select>
 
 </mapper>

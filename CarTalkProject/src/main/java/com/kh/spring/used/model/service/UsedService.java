@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.spring.used.model.dto.UsedAttachmentDTO;
 import com.kh.spring.used.model.dto.UsedDTO;
 import com.kh.spring.used.model.dto.UsedListDTO;
 import com.kh.spring.util.PageInfo;
@@ -15,5 +16,8 @@ public interface UsedService {
 	List<UsedListDTO> selectUsedListAll(PageInfo pi, String keyword);
 	int selectListCount(String keyword);
 	Long insertUsed(UsedDTO used, List<MultipartFile> files, HttpSession session);
+	UsedListDTO selectUsedDetail(Long usedNo);
+	UsedDTO selectCarInfo(Long usedNo);
+	List<UsedAttachmentDTO> selectAttachments(Long usedNo);
 	
 }

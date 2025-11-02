@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.spring.member.model.dto.MemberDTO;
+import com.kh.spring.used.model.dto.UsedAttachmentDTO;
 import com.kh.spring.used.model.dto.UsedDTO;
 import com.kh.spring.used.model.dto.UsedListDTO;
 import com.kh.spring.used.model.service.UsedService;
@@ -90,11 +92,32 @@ public class UsedController {
 		
 		if(usedNo != null) {
 			redirectAttr.addFlashAttribute("message", "게시글 작성 완료!");
-			return "redirect:/used/detail/" + usedNo;
+			return "redirect:/used/detail?no=" + usedNo;
 		} else {
 			redirectAttr.addFlashAttribute("message", "등록에 실패하였습니다. 다시 등록해주세요!");
 			return "redirect:/used/insert";
 		}
+	}
+	
+	@GetMapping("/detail")
+	public String selectUsedDetail(@RequestParam("no") Long usedNo
+					             , Model model
+					             , HttpSession session) {
+		
+		UsedListDTO used = usedService.selectUsedDetail(usedNo);
+		
+		UsedDTO car = usedService.selectCarInfo(usedNo);
+		
+		List<UsedAttachmentDTO> attachments = usedService.selectAttachments(usedNo); 
+		
+		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+		model.addAttribute("loginMember", loginMember);
+		
+		model.addAttribute("used", used);
+		model.addAttribute("car", car);
+		model.addAttribute("attachments", attachments);
+		
+		return "used/usedDetail";
 	}
 	
 	@PostMapping("/list")
@@ -103,10 +126,6 @@ public class UsedController {
 		return "redirect:list";
 	}
 	
-	@GetMapping("/detail")
-	public String usedDetail() {
-		return "used/usedDetail";
-	}
 	
 	@GetMapping("/myList")
 	public String myUsetList() {

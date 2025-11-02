@@ -14,6 +14,7 @@
 			<typeAlias type="com.kh.spring.used.model.dto.UsedDTO" alias="UsedDTO"/>
 			<typeAlias type="com.kh.spring.used.model.dto.CarInfoDTO" alias="CarInfoDTO"/>
 			<typeAlias type="com.kh.spring.used.model.dto.UsedAttachmentDTO" alias="UsedAttachmentDTO"/>
+			<typeAlias type="com.kh.spring.used.model.dto.UsedListDTO" alias="UsedListDTO"/>
 	</typeAliases>
 
 	<!-- environment, dataSource, data Source => 연결정보 -->

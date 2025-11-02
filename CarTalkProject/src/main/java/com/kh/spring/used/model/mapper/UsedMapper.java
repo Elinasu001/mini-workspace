@@ -16,5 +16,8 @@ public interface UsedMapper {
 	int insertUsed(UsedDTO used);
 	int insertCarInfo(CarInfoDTO car);
 	int insertAttachment(UsedAttachmentDTO attach);
+	UsedListDTO selectUsedDetail(Long usedNo);
+	UsedDTO selectCarInfo(Long usedNo);
+	List<UsedAttachmentDTO> selectAttachments(Long usedNo);
 
 }
