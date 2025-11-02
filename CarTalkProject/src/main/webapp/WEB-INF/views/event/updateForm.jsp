@@ -13,6 +13,10 @@
         background-color: #f8f9fa;
     }
     
+    .btn-primary {
+		background:var(--primary);
+	}	
+    
     .contentWrap .contArea.admin {
     	height:initial;
     	margin-top:60px;
@@ -84,9 +88,17 @@
         border-radius: 8px;
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 920px) {
+        .contentWrap .contArea.admin{
+        	margin-bottom:0;
+        }
+        
         .admin-event-form {
-            padding: 25px 20px;
+            padding: 50px 20px;
+        }
+        .p-5{
+        	1rem;
+        	
         }
         .form-control, .form-select {
             height: 48px;
@@ -309,13 +321,17 @@
 					</div>
 	
 					<!-- 버튼 -->
-					<div class="d-flex justify-content-end gap-2 mt-5">
+					<div class="d-flex justify-content-between gap-2 mt-5">
 						<a href="javascript:history.back();" 
 						   class="btn btn-outline-secondary px-4">이전으로</a>
-						<a href="${pageContext.request.contextPath}/event/delete?eventNo=${event.eventNo}" 
-				         class="btn btn-danger px-5 py-2 ms-2"
-				         onclick="return confirm('정말 이 이벤트를 삭제하시겠습니까?');">삭제하기</a>
-						<button type="submit" class="btn btn-primary px-5">수정 완료</button>
+						<div class="flex">
+							<a href="${pageContext.request.contextPath}/event/delete?eventNo=${event.eventNo}" 
+					         class="btn btn-danger"
+					         data-bs-toggle="modal" 
+            				 data-bs-target="#deleteConfirmModal"
+					         data-event-no="${event.eventNo}">삭제하기</a>
+							<button type="submit" class="btn btn-primary">수정 완료</button>
+						</div>
 					</div>
 	
 				</form>
@@ -323,9 +339,30 @@
 			<!-- 수정 폼 끝 -->
 		</div>
 	</div>
-
+	
 	<jsp:include page="../include/footer.jsp"/>
 </div>
+
+<!-- //삭제하기 모달 -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">이벤트 삭제 확인</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        정말로 이 이벤트를 "삭제"하시겠습니까? <br>
+        삭제된 이벤트는 되돌릴 수 없습니다.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">취소</button>
+        <a id="modalDeleteLink" href="#" class="btn btn-danger">삭제 진행</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- //삭제하기 모달 -->
 </body>
 
 <script>
@@ -385,7 +422,17 @@ $(function() {
     };
     reader.readAsDataURL(file);
   }
+  
+  // 삭제하기
+  var contextPath = "${pageContext.request.contextPath}";
 
+  $('#deleteConfirmModal').on('show.bs.modal', function (event) {
+      const button = $(event.relatedTarget); // 모달을 트리거한 버튼
+      const eventNo = button.data('event-no'); // 버튼에 저장해 둔 eventNo 값 가져오기
+      
+      const deleteLink = contextPath + "/event/delete?eventNo=" + eventNo;
+      $('#modalDeleteLink').attr('href', deleteLink);
+  });
 });
 </script>
 

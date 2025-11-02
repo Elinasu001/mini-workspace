@@ -10,7 +10,9 @@
     body {
         background-color: #f8f9fa;
     }
-    
+    .btn-primary {
+		background:var(--primary);
+	}	
     .contentWrap .contArea.admin {
     	height:initial;
     	margin-top:60px;
@@ -82,9 +84,17 @@
         border-radius: 8px;
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 920px) {
+        .contentWrap .contArea.admin{
+        	margin-bottom:0;
+        }
+        
         .admin-event-form {
-            padding: 25px 20px;
+            padding: 50px 20px;
+        }
+        .p-5{
+        	1rem;
+        	
         }
         .form-control, .form-select {
             height: 48px;

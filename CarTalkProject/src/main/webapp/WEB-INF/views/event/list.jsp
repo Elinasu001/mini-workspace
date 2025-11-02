@@ -8,14 +8,16 @@
 <title>이벤트 게시판</title>
 </head>
 <style>
+
+.btn-primary {
+	background:var(--primary);
+}
+
 .eventBanner{
 	 background:rgb(216 221 228);
 }
 .eventBanner .text-center p{
 	color: #343a40;
-}
-
-.eventBanner p {
 	line-height:1.5;
 }
 
@@ -30,6 +32,8 @@
 	font-size:2rem;
 	background-color:var(--bs-gray-200);
 }
+
+
 .feature img {
 	width:100%;
 	height:100%;
@@ -66,8 +70,6 @@
   width:18rem;
   height:18rem;
 }
-
-
 
 .category {
   color: var(--color-1);
@@ -136,7 +138,6 @@
 		                        다양한 이벤트와 혜택을 한눈에!<br/>
 		                        참여하고, 즐기고, 특별한 선물을 만나보세요.
 		                        </p>
-		                        <!-- <a class="btn btn-primary btn-lg" href="#">Call to action</a> -->
 		                    </div>
 		                </div>
 		            </div>
@@ -149,7 +150,7 @@
 			    	<!-- [D] : 관리자로그인 상태일 경우만 보여지는 글쓰기 버튼 -->
 			      	<c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.manager eq 'Y'}">
 						<div class="d-flex justify-content-end">
-							<a class="btn btn-secondary" href="${pageContext.request.contextPath}/event/insertForm">등록하기</a>
+							<a class="btn btn-primary btn btn-primary px-5 py-2 ms-2" href="${pageContext.request.contextPath}/event/insertForm">등록하기</a>
 						</div>
 					</c:if>
 					

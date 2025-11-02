@@ -11,21 +11,17 @@
 <body>
 
 <style>
-.detailBanner {
-   background:rgb(216 221 228);
-
+.btn-primary {
+	background:var(--primary);
 }
 
-.detailBanner p {
-  line-height: 1.5;
+.eventBanner{
+	 background:rgb(216 221 228);
 }
 
-.detail-img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  object-fit: cover;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+.eventBanner .text-center p{
+	color: #343a40;
+	line-height:1.5;
 }
 
 .category {
@@ -44,7 +40,7 @@
   text-align: left;
 }
 
-.meta-info {
+.category {
   font-size: 0.95rem;
   color: #666;
   margin-top: 1rem;
@@ -62,7 +58,7 @@
     <div class="contArea">
 
       <!-- 상단 배너 -->
-      <header class="detailBanner text-center py-5">
+      <header class="eventBanner text-center py-5">
         <div class="container px-lg-5">
           <div class="p-4 p-lg-5 rounded-3">
             <h1 class="display-5 fw-bold mb-3">${event.eventTitle}</h1>
@@ -70,7 +66,7 @@
               <span class="category me-2">${event.category.categoryName}</span>
               <span>${event.startDate} ~ ${event.endDate}</span>
             </p>
-            <p class="meta-info mt-2">
+            <p class=" mt-2">
               조회수: ${event.viewCount}
             </p>
           </div>
@@ -88,7 +84,7 @@
 			  </c:if>
 		  </div>
           <div class="card border-0 shadow-sm">
-            <div class="card-body text-center p-4">
+            <div class="card-body text-center p-4 mb-4">
 
               <!-- 상세 이미지 -->
               <c:choose>
