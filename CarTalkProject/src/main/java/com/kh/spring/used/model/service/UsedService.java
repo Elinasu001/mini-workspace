@@ -15,10 +15,10 @@ public interface UsedService {
 
 	List<UsedListDTO> selectUsedListAll(PageInfo pi, String keyword);
 	int selectListCount(String keyword);
-	Long insertUsed(UsedDTO used, List<MultipartFile> files, HttpSession session);
-	UsedListDTO selectUsedDetail(Long usedNo);
-	UsedDTO selectCarInfo(Long usedNo);
-	List<UsedAttachmentDTO> selectAttachments(Long usedNo);
-	int deleteUsed(Long usedNo);
+	int insertUsed(UsedDTO used, List<MultipartFile> files, HttpSession session);
+	UsedListDTO selectUsedDetail(int usedNo);
+	UsedDTO selectCarInfo(int usedNo);
+	List<UsedAttachmentDTO> selectAttachments(int usedNo);
+	int deleteUsed(int usedNo);
 	
 }

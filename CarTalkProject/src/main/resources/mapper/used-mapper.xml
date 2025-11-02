@@ -80,7 +80,7 @@
 	</if>     
 	</select>
 	
-	<select id="getNextUsedNo" resultType="long">
+	<select id="getNextUsedNo" resultType="_int">
     	SELECT SEQ_USED.NEXTVAL FROM DUAL
 	</select>
 	
@@ -144,10 +144,11 @@
 	</insert>
 	
 	<select id="selectUsedDetail"
-			parameterType="long"
+			parameterType="_int"
 			resultType="UsedListDTO">
 		SELECT
 			   U.USED_NO usedNo
+			 , U.USER_NO userNo
 			 , U.USED_TITLE usedTitle
 			 , U.USED_CONTENT usedContent
 			 , U.USED_PRICE usedPrice
@@ -165,7 +166,7 @@
 	</select>
 	
 	<select id="selectCarInfo"
-			parameterType="long"
+			parameterType="_int"
 			resultType="UsedDTO">
 		SELECT
 			   MANUFACTURER manufacturer
@@ -184,7 +185,7 @@
 	</select>
 	
 	<select id="selectAttachments"
-			parameterType="long"
+			parameterType="_int"
 			resultType="UsedAttachmentDTO">
 		SELECT
 		       FILE_NO fileNo
@@ -203,17 +204,8 @@
 		       FILE_NO ASC                   
 	</select>
 	
-	<delete id="deleteUsed"
-			parameterType="long">
-		DELETE
-		  FROM
-		       CT_USED_LISTING
-		 WHERE
-		       USED_NO = #{usedNo}      
-	</delete>
-	
 	<delete id="deleteAttachments"
-			parameterType="long">
+			parameterType="_int">
 		DELETE
 		  FROM
 		       CT_USED_ATTACHMENT
@@ -222,12 +214,23 @@
 	</delete>
 	
 	<delete id="deleteCarInfo"
-			parameterType="long">
+			parameterType="_int">
 		DELETE
 		  FROM
 		       CT_CAR_INFO
 		 WHERE
 		       USED_NO = #{usedNo}      
 	</delete>
+	
+	<delete id="deleteUsed"
+			parameterType="_int">
+		DELETE
+		  FROM
+		       CT_USED_LISTING
+		 WHERE
+		       USED_NO = #{usedNo}      
+	</delete>
+	
+	
 
 </mapper>

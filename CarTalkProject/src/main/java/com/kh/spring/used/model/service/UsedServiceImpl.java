@@ -50,12 +50,12 @@ public class UsedServiceImpl implements UsedService {
 
 	@Transactional
 	@Override
-	public Long insertUsed(UsedDTO used, List<MultipartFile> files, HttpSession session) {
-		Long usedNo = usedMapper.getNextUsedNo();
+	public int insertUsed(UsedDTO used, List<MultipartFile> files, HttpSession session) {
+		int usedNo = usedMapper.getNextUsedNo();
 		used.setUsedNo(usedNo);
 		
 		int result1 = usedMapper.insertUsed(used);
-		if (result1 == 0) return null;
+		if (result1 == 0) return 0;
 
 		String savePath = session.getServletContext().getRealPath("/resources/upfiles/used/");
 		File folder = new File(savePath);
@@ -122,23 +122,23 @@ public class UsedServiceImpl implements UsedService {
 	}
 	
 	@Override
-	public UsedListDTO selectUsedDetail(Long usedNo) {
+	public UsedListDTO selectUsedDetail(int usedNo) {
 		return usedMapper.selectUsedDetail(usedNo);
 	}
 	
 	@Override
-	public UsedDTO selectCarInfo(Long usedNo) {
+	public UsedDTO selectCarInfo(int usedNo) {
 		return usedMapper.selectCarInfo(usedNo);
 	}
 	
 	@Override
-	public List<UsedAttachmentDTO> selectAttachments(Long usedNo){
+	public List<UsedAttachmentDTO> selectAttachments(int usedNo){
 		return usedMapper.selectAttachments(usedNo);
 	}
 	
 	@Transactional
 	@Override
-	public int deleteUsed(Long usedNo) {
+	public int deleteUsed(int usedNo) {
 		
 		usedMapper.deleteAttachments(usedNo);
 		

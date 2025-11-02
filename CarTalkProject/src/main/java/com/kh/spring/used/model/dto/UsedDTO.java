@@ -16,8 +16,8 @@ import lombok.ToString;
 @ToString
 public class UsedDTO {
 	
-	private Long usedNo;
-	private Long userNo;
+	private int usedNo;
+	private int userNo;
 	private String usedTitle;
 	private int usedPrice;
 	private String usedContent;

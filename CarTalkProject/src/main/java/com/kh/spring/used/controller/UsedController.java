@@ -87,11 +87,11 @@ public class UsedController {
 		
 		//used.setUserNo(1L); // 테스트용
 		
-		//used.setUserNo(loginMember.getUserNo());
+		used.setUserNo(loginMember.getUserNo());
 		
-		Long usedNo = usedService.insertUsed(used, files, session);
+		int usedNo = usedService.insertUsed(used, files, session);
 		
-		if(usedNo != null) {
+		if(usedNo != 0) {
 			redirectAttr.addFlashAttribute("message", "게시글 작성 완료!");
 			return "redirect:/used/detail?no=" + usedNo;
 		} else {
@@ -101,7 +101,7 @@ public class UsedController {
 	}
 	
 	@GetMapping("/detail")
-	public String selectUsedDetail(@RequestParam("no") Long usedNo
+	public String selectUsedDetail(@RequestParam("no") int usedNo
 					             , Model model
 					             , HttpSession session) {
 		
@@ -134,7 +134,7 @@ public class UsedController {
 	
 	@PostMapping("/delete/{usedNo}")
 	@ResponseBody
-	public String deleteUsed(@PathVariable Long usedNo) {
+	public String deleteUsed(@PathVariable int usedNo) {
 		
 		System.out.println("삭제요청 usedNo =" + usedNo);
 		

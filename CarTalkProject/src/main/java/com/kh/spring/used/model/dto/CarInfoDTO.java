@@ -16,8 +16,8 @@ import lombok.ToString;
 @ToString
 public class CarInfoDTO {
 	
-	private Long carNo;
-	private Long usedNo;
+	private int carNo;
+	private int usedNo;
 	private String manufacturer;
 	private String model;
 	private String carYear;

@@ -12,15 +12,15 @@ public interface UsedMapper {
 
 	List<UsedListDTO> selectUsedListAll(Map<String, Object> map);
 	int selectListCount(String keyword);
-	Long getNextUsedNo();
+	int getNextUsedNo();
 	int insertUsed(UsedDTO used);
 	int insertCarInfo(CarInfoDTO car);
 	int insertAttachment(UsedAttachmentDTO attach);
-	UsedListDTO selectUsedDetail(Long usedNo);
-	UsedDTO selectCarInfo(Long usedNo);
-	List<UsedAttachmentDTO> selectAttachments(Long usedNo);
-	void deleteAttachments(Long usedNo);
-	void deleteCarInfo(Long usedNo);
-	int deleteUsed(Long usedNo);
+	UsedListDTO selectUsedDetail(int usedNo);
+	UsedDTO selectCarInfo(int usedNo);
+	List<UsedAttachmentDTO> selectAttachments(int usedNo);
+	void deleteAttachments(int usedNo);
+	void deleteCarInfo(int usedNo);
+	int deleteUsed(int usedNo);
 
 }

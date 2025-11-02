@@ -122,13 +122,14 @@
 			<label>차량 설명</label><br>
 			<textarea readonly>${used.usedContent}</textarea>
 		</div>
-
+		<!-- <p>로그인 유저: ${sessionScope.loginMember.userNo}</p>
+		<p>글 작성자: ${used.userNo}</p> -->
 		<div class="btns">
-			
-      <c:if test="${not empty loginMember and loginMember.userNo eq used.userNo }">
+		<!--and sessionScope.loginMember.userNo eq used.userNo-->	
+      <c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.userNo == used.userNo}">
       <button type="button" class="btn btn-outline-success" onclick="location.href='${pageContext.request.contextPath}/used/updateForm/${used.usedNo}'">수정</button>
       <button type="button" class="btn btn-outline-danger" data-no="${used.usedNo}">삭제</button>
-      <</c:if>
+      </c:if>
       
 			
 			<button type="button" class="btn btn-outline-info"
@@ -143,16 +144,20 @@
 			const contextPath = "${pageContext.request.contextPath}";
 
 			$(".btn.btn-outline-danger").on("click", function() {
-				const usedNo = $(this).data("no");
+				const usedNo = $(this).data("no") || "/ct";
+				
+				//console.log("삭제 버튼 클릭됨, usedNo =", usedNo);
+				//console.log("요청 URL =", `${contextPath}/used/delete/${usedNo}`);
+				
 
 				if (confirm("정말 삭제하시겠습니까?")) {
 					$.ajax({
-						url : `${contextPath}/used/delete/${usedNo}`,
+						url : "/ct/used/delete/" + usedNo, 
 						type : "POST",
 						success : function(result) {
 							if (result === "success") {
 								alert("삭제가 완료되었습니다.");
-								location.href = `${contextPath}/used/list`;
+								location.href = `${contextPath}/ct/used/list`;
 							} else {
 								alert("삭제 실패");
 							}

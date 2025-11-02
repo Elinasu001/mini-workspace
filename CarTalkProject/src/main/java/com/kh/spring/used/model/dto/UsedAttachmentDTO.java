@@ -16,8 +16,8 @@ import lombok.ToString;
 @ToString
 public class UsedAttachmentDTO {
 	
-	private Long fileNo;
-	private Long refBno;
+	private int fileNo;
+	private int refBno;
 	private String originName;
 	private String changeName;
 	private String filePath;
