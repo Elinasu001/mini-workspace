@@ -36,45 +36,47 @@
 
 <body>
     <div class="boardDetail">
+    <form action="/ct/board" method="post" enctype="multipart/form-data">
         <table class="boardDetailTable">
             <thead>
                 <tr>
                     <th width="500">작성자</th>
                 </tr>
                 <tr>
-                    <td width="50">관리자</td>
+                    <td width="50">${ sessionScope.loginMember.nickName }
+                    <input type="hidden" name="boardWriter" value="${ sessionScope.loginMember.nickName }"/>
+                    </td>
                 </tr>
                 <tr>
                     <td width="10">
                         카테고리
-                        <select name="condition">
-                            <option>자유</option>
-                            <option>질문</option>
-                            <option>정보</option>
+                        <select name="category">
+                            <option value="1">자유</option>
+                            <option value="2">질문</option>
+                            <option value="3">정보</option>
                         </select>
                     </td>
                 </tr>
             </thead>
             <tbody class="mainBoard">
                 <tr>
-                    <td><input name="" value="게시글 제목"></td>
+                    <td><input name="boardTitle" value="게시글 제목"></td>
                 </tr>
                 <tr>
-                    <td><textarea id="boardContent" style="resize: none;">게시글 내용</textarea></td>
+                    <td><textarea id="boardContent" name="boardContent" style="resize: none;">게시글 내용</textarea></td>
                 </tr>
                 <tr>
-                    <td><label>원본파일명.txt</label></td>
+                    <td>첨부파일<input type="file" name="boardUpfile"></td>
                 </tr>
-                <tr>
-                    <td>첨부파일<input type="file"></td>
-                </tr>
-                <td><button>등록</button><button>취소</button></td>
-
+                <td>
+                <button type="submit">등록</button>
+                <button type="reset" onclick="history.back()">취소</button>
+                </td>
 
             </tbody>
 
         </table>
-
+    </form>
     </div>
 
 

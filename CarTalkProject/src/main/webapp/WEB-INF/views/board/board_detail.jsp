@@ -57,15 +57,35 @@
                 <tr>
                     <td><pre id="boardContent">${ board.boardContent }</pre></td>
                 <tr>
+                <c:choose>
+                <c:when test="${ not empty sessionScope.loginMember }">
                     <td><button style="margin-left: 50px;"><span>좋아요!</span><br />
                     									   <span>${ board.likes }</span></button></td>
+                </c:when>
+                <c:otherwise>
+                    <td><button onclick="location.href='/ct/board/like'" style="margin-left: 50px;"><span>좋아요!</span><br />
+                    									   <span>${ board.likes }</span></button></td>
+                </c:otherwise>
+                </c:choose>   									   
                 </tr>
                 </tr>
-                    <td><button>수정</button><button>삭제</button></td>
-
+                	<c:if test="${ sessionScope.loginMember.nickName eq board.boardWriter }">
+                    <td><button onclick="location.href = '/ct/board/${board.boardNo}/edit'">수정</button>
+                    <button onclick="deleteBoard()">삭제</button></td>
+                    </c:if>
+                    <script>
+                    	function deleteBoard(){
+                    		const value = confirm('정말로 삭제하시겠습니까?');;
+                    		
+                    		if(value){
+                        		location.href='/ct/board/${board.boardNo}/delete';
+                    		}
+                    	}
+                    
+                    </script>
                 <tr>
                 	<c:choose>
-                	<c:when test="${ board.attachment ne null }">
+                	<c:when test="${ board.attachment ne null and board.attachment.status ne 'N' }">
                     <td>첨부파일 <a href="${ board.attachment.filePath }/${board.attachment.changeName}" download="${board.attachment.changeName}">${ board.attachment.originName }</a></td>
                     </c:when>
                     <c:otherwise>
@@ -74,15 +94,31 @@
                     </c:choose>
                 </tr>
             </tbody>
-
+            
             <thead>
+            <c:choose>
+            <c:when test="${ sessionScope.loginMember ne null }">
+            <form>
                 <tr>
                     <th>댓글 작성</th>
                 </tr>
                 <tr>
-                    <td><textarea cols="50" rows="4" style="resize: none;" placeholder="댓글은 로그인 시에만 작성할 수 있습니다."></textarea></td>
+                    <td><textarea cols="50" rows="4" style="resize: none;" placeholder="댓글은 로그인 시에만 작성할 수 있습니다." required="required"></textarea></td>
                     <td><button onclick="insertReply()">댓글 등록</button></td>
                 </tr>
+            </form>
+            </c:when>
+            <c:otherwise>
+                <tr>
+                    <th>댓글 작성</th>
+                </tr>
+                <tr>
+                    <td><textarea cols="50" rows="4" style="resize: none;" placeholder="댓글은 로그인 시에만 작성할 수 있습니다." readonly="readonly"></textarea></td>
+
+                </tr>
+            </c:otherwise>
+            </c:choose>
+            
             </thead>
             <tbody>
             	<c:choose>
