@@ -268,6 +268,11 @@ public class EventServiceImpl implements EventService {
     }
 
     /** 기존 파일 삭제 **/
+    
+    
+    
+    
+    
     private void deleteOldAttachment(Long eventNo,  HttpSession session, int fileLevel) {
     	
     	Map<String, Object> params = new HashMap();
@@ -287,4 +292,5 @@ public class EventServiceImpl implements EventService {
             eventMapper.deleteAttachment(oldFile.getFileNo());
         }
     }
+   
 }
