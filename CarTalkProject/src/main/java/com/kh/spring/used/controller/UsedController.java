@@ -1,7 +1,11 @@
 package com.kh.spring.used.controller;
 
+import java.io.PrintWriter;
 import java.util.List;
+import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,14 +79,23 @@ public class UsedController {
 	public String usedForm(@ModelAttribute UsedDTO used
 						  ,@RequestParam(value = "upfile", required = false) List<MultipartFile> files
 						  , HttpSession session
-						  , RedirectAttributes redirectAttr) {
+						  , HttpServletRequest request
+						  , HttpServletResponse response
+						  , RedirectAttributes redirectAttr) throws IOException {
 		
 		
 		// 로그인이 안됐을 경우 글쓰기 기능 막음 (로그인 구현되면 활성화)
 		
 		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 		if( loginMember == null) {
-			return "redirect:/ct/login";
+			response.setContentType("text/html; charset=UTF-8");
+		    PrintWriter out = response.getWriter();
+		    out.println("<script>");
+		    out.println("alert('로그인 후 이용해주세요.');");
+		    out.println("location.href='" + request.getContextPath() + "/loginPage';");
+		    out.println("</script>");
+		    out.close();
+		    return null;
 		}
 		
 		//used.setUserNo(1L); // 테스트용
