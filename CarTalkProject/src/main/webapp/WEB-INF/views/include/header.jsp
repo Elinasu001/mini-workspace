@@ -72,29 +72,6 @@ $( document ).ready(function() {
         </div>
     </div>
 
-        <!-- PC 메뉴 -->
-        <div class="collapse navbar-collapse d-none d-lg-flex justify-content-end">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/event/list">이벤트 게시판</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">일반 게시판</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">사진 게시판</a></li>
-                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/used/list">거래 게시판</a></li>
-            </ul>
-
-            <div class="auth-links">
-                <c:choose>
-                    <c:when test="${empty sessionScope.loginMember}">
-                        <a href="#login" id="loginBt" class="btn-login line">로그인</a>
-                        <a href="#signup" class="btn-signup">회원가입</a>
-                    </c:when>
-                    <c:otherwise>
-                        ${sessionScope.loginMember.userName} 님 환영합니다.
-                        <a href="#logout" id="logOutBt" class="btn-login line">로그아웃</a>
-                        <a href="#myPage" class="btn-signup">마이페이지</a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-        </div>
 
         <!-- 모바일 메뉴 -->
         <div class="offcanvas offcanvas-end d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
