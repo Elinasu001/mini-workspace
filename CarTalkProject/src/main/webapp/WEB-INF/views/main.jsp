@@ -110,7 +110,77 @@
         background-color:black;
     }
     
-
+    /* 카드 리스트 */
+    .mainSec01{
+    	margin-top:80px;
+    }
+	.innerSec {
+		display:flex;
+		flex-direction:row;
+		align-items: center;
+		max-width:1200px;
+		padding: 0 1rem;
+		margin:0 auto;
+		gap:20px;
+	}
+	
+	.cardItem{
+		border-radius:20px;
+		background-color: white;
+		padding:10px;
+	}
+	
+	.cardItem a h2 {
+		font-size: var(--font16);
+	}
+	
+	.cardItem a .feature {
+		max-width:270px;
+		position: relative;
+		display:inline-flex;
+		align-items:center;
+		justify-content:center;
+		height:18rem;
+		width:18rem;
+		overflow:hidden;
+		font-size:2rem;
+		border-radius:20px;
+		background-color:var(--bs-gray-200);
+	}
+	
+	.cardItem a .feature img {
+		width:100%;
+		height:100%;
+		object-fit:cover;
+	}
+	
+	.cardItem a h2{
+		width: 250px;
+		white-space: nowrap; 
+	    text-overflow: ellipsis;
+		overflow: hidden;
+		font-size: var(--font20);
+	}
+	
+	.category {
+	  color: var(--color-1);
+	  font-size: var(--font14);
+	  background-color:rgb(13 110 253 / 18%);
+	  padding:6px 10px;
+	  border-radius:20px;
+	}
+	
+	
+	.cardItem .info {
+		display:flex;
+		flex-direction:column;
+		padding:10px;
+		gap:1rem;
+	}
+	
+	.cardItem .info .txt p{
+	   padding-top:1rem;
+	}
     
 </style>
 <body>
@@ -149,39 +219,40 @@
                 </div>
                 
                 <!-- 진행 중인 이벤트 -->
-				<c:choose>
-				  <c:when test="${not empty ongoingEvents}">
-				    <c:forEach items="${ongoingEvents}" var="event">
-				      <div class="" data-eventno="${event.eventNo}">
-				        <div class="">
-				          <div class="">
-				            <a href="${pageContext.request.contextPath}/event/detail/${event.eventNo}">
-				              <p class="">
-				                <c:choose>
-				                  <c:when test="${not empty event.thumbnailPath and not empty event.thumbnailName}">
-				                    <img src="${pageContext.request.contextPath}/${event.thumbnailPath}/${event.thumbnailName}" alt="대표이미지">
-				                  </c:when>
-				                  <c:otherwise>
-				                    <img src="<c:url value='/resources/upfiles/event/default.png' />" alt="기본이미지">
-				                  </c:otherwise>
-				                </c:choose>
-				              </p>
-				              <h2 class="">${event.eventTitle}</h2>
-				              <p class="">
-				                <span class="category">${event.category.categoryName}</span>
-				                <span>${event.startDate} ~ ${event.endDate}</span>
-				              </p>
-				            </a>
-				          </div>
-				        </div>
-				      </div>
-				    </c:forEach>
-				  </c:when>
-				  <c:otherwise>
-				    <div class="col-12 text-center py-5">현재 진행 중인 이벤트가 없습니다.</div>
-				  </c:otherwise>
-				</c:choose>
-
+                <section class="mainSec01 cardArea">
+                	<div class="innerSec">
+						<c:choose>
+						  <c:when test="${not empty ongoingEvents}">
+						    <c:forEach items="${ongoingEvents}" var="event">
+						      <div class="cardItem" data-eventno="${event.eventNo}">
+					            <a href="${pageContext.request.contextPath}/event/detail/${event.eventNo}">
+					              <p class="feature">
+					                <c:choose>
+					                  <c:when test="${not empty event.thumbnailPath and not empty event.thumbnailName}">
+					                    <img src="${pageContext.request.contextPath}/${event.thumbnailPath}/${event.thumbnailName}" alt="대표이미지">
+					                  </c:when>
+					                  <c:otherwise>
+					                    <img src="<c:url value='/resources/upfiles/event/default.png' />" alt="기본이미지">
+					                  </c:otherwise>
+					                </c:choose>
+					              </p>
+					              <div class="info">
+						              <h2>${event.eventTitle}</h2>
+						              <div class="txt">
+						                <span class="category">${event.category.categoryName}</span>
+						                <p>${event.startDate} ~ ${event.endDate}</p>
+						              </div>
+					              </div>
+					            </a>
+						      </div>
+						    </c:forEach>
+						  </c:when>
+						  <c:otherwise>
+						    <div class="col-12 text-center py-5">현재 진행 중인 이벤트가 없습니다.</div>
+						  </c:otherwise>
+						</c:choose>
+					</div>
+				</section>
 
             </div>
         </div>
