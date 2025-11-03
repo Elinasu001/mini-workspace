@@ -319,8 +319,8 @@
 	<select id="selectLikes" parameterType="com.kh.spring.board.model.dto.LikeDTO" 
 	resultType ="com.kh.spring.board.model.dto.LikeDTO">
 		SELECT
-		       USER_NO
-		     , BOARD_NO
+		       USER_NO userNo
+		     , BOARD_NO boardNo
 		  FROM
 		       CT_BOARD_LIKE
 		 WHERE
@@ -341,5 +341,18 @@
 		       )
 	
 	</insert>
+	
+	<delete id="deleteLikes" parameterType="com.kh.spring.board.model.dto.LikeDTO">
+		DELETE
+		  FROM
+		       CT_BOARD_LIKE
+		 WHERE
+		       USER_NO = #{userNo}
+		   AND
+		       BOARD_NO = #{boardNo}
+	
+	</delete>
+	
+	
 
 </mapper>

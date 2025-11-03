@@ -5,6 +5,7 @@
 <html lang="en">
 
 <head>
+    <jsp:include page="../include/meta.jsp" />
     <meta charset="UTF-8">
     <title>1번 게시판 | CarTalk</title>
 
@@ -59,14 +60,58 @@
                 <tr>
                 <c:choose>
                 <c:when test="${ not empty sessionScope.loginMember }">
-                    <td><button style="margin-left: 50px;"><span>좋아요!</span><br />
-                    									   <span>${ board.likes }</span></button></td>
+                    <td><button onclick="like()" style="margin-left: 50px;"><span>좋아요!</span><br />
+                    									   <span class="likeNum">${ board.likes }</span></button></td>
                 </c:when>
                 <c:otherwise>
-                    <td><button onclick="location.href='/ct/board/like'" style="margin-left: 50px;"><span>좋아요!</span><br />
-                    									   <span>${ board.likes }</span></button></td>
+                    <td><button  style="margin-left: 50px;"><span>좋아요!</span><br />
+                    									   <span class="likeNum">${ board.likes }</span></button></td>
                 </c:otherwise>
-                </c:choose>   									   
+                </c:choose>   	
+                <script>
+                function like(){
+                	const boardNo = ${board.boardNo};
+                	$.ajax({
+                		url : '/ct/board/like',
+                		type : 'get',
+                		data : {
+                			boardNo : boardNo
+                		},
+                		success : function(response){
+                			
+                			if(response === 'success'){
+                				alert('이 게시글에 좋아요를 누르셨습니다.');
+                			} else {
+                				alert('이 게시글에 누른 좋아요를 취소하셨습니다.');
+                			}
+                		}
+                		
+                	})
+                	
+                	selectInfo();
+                }
+                
+                
+                function selectInfo(){
+                	
+                	const boardNo = ${board.boardNo};
+                	
+                	$.ajax({
+                		url : `/ct/board/\${boardNo}/refresh`,
+                		type : 'get',
+                		success : function(response){
+                			console.log(response);
+                			$('.likeNum').html(response.likes);
+                			
+                		}
+                		
+                	})
+                	
+                	
+                	
+                }
+                
+                </script>								   
                 </tr>
                 </tr>
                 	<c:if test="${ sessionScope.loginMember.nickName eq board.boardWriter }">
@@ -117,8 +162,8 @@
                 			url : 'replies',
                 			type : 'post',
                 			data : {
-                				refBno : boardNo;
-                				replyContent : replyContent;
+                				refBno : boardNo,
+                				replyContent : replyContent
                 			}
                 			success : function(response){
                 				
@@ -131,7 +176,6 @@
                 			}
                 			
                 		})
-                		location.href = `/ct/board/\${ board.boardNo }/reply`;
                 	}
                 </script>
             </form>

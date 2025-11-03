@@ -99,7 +99,6 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		int count = boardMapper.increaseBoardCount(boardNo);
-		System.out.println(count);
 		
 		// 조회수가 늘어나지 않는 경우 예외 발생
 		if(count != 1) {
@@ -248,7 +247,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void deleteBoard(BoardDTO board, HttpSession session) {
 
-		System.out.println(board);
+		//System.out.println(board);
 		
 		//유효성 검증(예외 처리)
 
@@ -269,31 +268,38 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int insertLikes(Long boardNo, HttpSession session) {
+	public String insertLikes(Long boardNo, HttpSession session) {
 		
 		// 로그인 한 상태인지 검증
+		System.out.println("출력확인");
 		
-		Long userNo = (long)((MemberDTO)session.getAttribute("loginMember")).getUserNo();
+		int userNo = ((MemberDTO)session.getAttribute("loginMember")).getUserNo();
 		
-		LikeDTO likeNums = new LikeDTO(boardNo, userNo);
+		LikeDTO likeNums = new LikeDTO(userNo, boardNo);
+
+		//System.out.println(likeNums);
 		
 		// 좋아요 테이블을 먼저 조회해서 값이 존재하는 지 확인
 		LikeDTO likes = boardMapper.selectLikes(likeNums);
 		
-		if(likes != null) {
-			//존재할 경우 - 이미 좋아요를 누른 상태
-			
-			
-		} else {
+		
+		if(likes == null) {
 			// 존재하지 않을 경우 - 좋아요를 처음 누른 상태
-			int result = boardMapper.insertLikes(likeNums);
+			int pushResult = boardMapper.insertLikes(likeNums);
+			if(pushResult != 1) { // 좋아요 추가 (INSERT) 실패 시 예외처리
+				
+			}
 			
+			
+			return "success";
+		} 
+		//존재할 경우 - 이미 좋아요를 누른 상태 - 좋아요 취소(테이블 삭제)
+		int popResult = boardMapper.deleteLikes(likeNums);
+		if(popResult != 1) { // 좋아요 삭제 (DELETE) 실패 시 예외처리
 			
 		}
 		
-		
-		
-		return 0;
+		return "cancle";
 	}
 	
 }

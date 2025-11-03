@@ -46,4 +46,6 @@ public interface BoardMapper {
 	LikeDTO selectLikes(LikeDTO likeNums);
 	
 	int insertLikes(LikeDTO likeNums);
+
+	int deleteLikes(LikeDTO likeNums);
 }

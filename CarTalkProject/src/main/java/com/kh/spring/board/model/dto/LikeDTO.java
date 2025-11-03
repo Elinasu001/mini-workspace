@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class LikeDTO {
 
-	private Long userNo;
+	private int userNo;
 	private Long boardNo;
 	
 }

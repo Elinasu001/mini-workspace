@@ -22,6 +22,6 @@ public interface BoardService {
 	
 	void deleteBoard(BoardDTO board, HttpSession session);
 
-	int insertLikes(Long boardNo, HttpSession session);
+	String insertLikes(Long boardNo, HttpSession session);
 	
 }
