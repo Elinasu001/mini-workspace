@@ -6,8 +6,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <jsp:include page="../include/meta.jsp" />
     <title>게시글 작성 | CarTalk</title>
-
     <style>
         .boardDetail {
             width: 1200px;
@@ -36,41 +36,55 @@
 
 <body>
     <div class="boardDetail">
+    <form action="/ct/board/${ board.boardNo }/update" method="post" enctype="multipart/form-data">
         <table class="boardDetailTable">
             <thead>
                 <tr>
                     <th width="500">작성자</th>
                 </tr>
                 <tr>
-                    <td width="50">관리자</td>
+                    <td width="50">${ board.boardWriter }</td>
                 </tr>
                 <tr>
                     <td width="10">
                         카테고리
-                        <select name="condition">
-                            <option>자유</option>
-                            <option>질문</option>
-                            <option>정보</option>
+                        <select id="boardCategory" name="category">
+                            <option value="1" id="자유">자유</option>
+                            <option value="2" id="질문">질문</option>
+                            <option value="3" id="정보">정보</option>
                         </select>
                     </td>
                 </tr>
             </thead>
+            <script>
+            	$(function(){
+                	$('#boardCategory option[id="${ board.category }"]').attr('selected', true);
+            	});
+            </script>
+            
             <tbody class="mainBoard">
                 <tr>
-                    <td><input name="" value="게시글 제목"></td>
+                    <td><input name="boardTitle" value="${ board.boardTitle }"></td>
                 </tr>
                 <tr>
-                    <td><textarea id="boardContent" style="resize: none;">게시글 내용</textarea></td>
+                    <td><textarea name="boardContent" id="boardContent" style="resize: none;">${ board.boardContent }</textarea></td>
                 </tr>
                 <tr>
-                    <td>첨부파일 <input type="file"></td>
+                <c:choose>
+                <c:when test="${ board.attachment eq null and board.attachment.status ne 'N' }">
+                    <td>첨부파일 <input type="file" name="boardUpfile"></td>
+                </c:when>
+                <c:otherwise>
+                	<td>기존파일 : ${ board.attachment.originName } <input type="file" name="boardUpfile"></td>
+                </c:otherwise>
+                </c:choose>
                 </tr>
-                    <td><button>수정</button><button>취소</button></td>
+                    <td><button type="submit">수정</button><button type="reset" onclick="history.back()">취소</button></td>
 
             </tbody>
 
         </table>
-
+       </form>
     </div>
 
 

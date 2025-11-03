@@ -6,6 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <jsp:include page="../include/meta.jsp" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>게시판 | CarTalk</title>
 </head>
@@ -13,7 +14,7 @@
 <style>
     .boardListPage {
         width: 1000px;
-        height: 600px;
+        height: 800px;
         margin: auto;
         align-content: center;
     }
@@ -28,25 +29,10 @@
         margin: auto;
         text-align: center;
     }
-
-    .boardListTable,
-    .boardListTable>*>*>th,
-    .boardListTable>*>*>td {
-        border: 1px solid black;
-    }
     
     .boardOrderBy:hover, .searchBoardOrderBy:hover{
-    	background-color: gray;
+    	background-color: rgb(214,208,156);
     	cursor : pointer;
-    }
-
-    .boardListTable {
-        border-collapse: collapse;
-    }
-
-    #boardList>*:hover{
-        background-color: lightblue;
-        cursor:pointer;
     }
 
     #boardSearchArea{
@@ -56,9 +42,11 @@
 </style>
 
 <body>
+	<jsp:include page="../include/header.jsp" />
+
     <div class="boardListPage">
 
-        <table class="boardListTable" style="margin-bottom: 25px;">
+        <table class="table boardListTable" style="margin-bottom: 25px;">
             <thead id="boardCategory">
                 <tr>
                 	<th width="100"><a href="/ct/board">전체 게시판</a></th>
@@ -69,7 +57,8 @@
             </thead>
         </table>
 
-        <table class="boardListTable">
+
+        <table class="table table-warning table-hover boardListTable">
             <thead>
             <c:choose>
             	<c:when test="${ not empty condition }">
@@ -83,7 +72,7 @@
 	                </tr>
 	            </c:when>
 	            <c:otherwise>
-		            <tr style="border: 1px solid gray;">
+		            <tr>
 	                    <th width="50" id="boardNo&category=${ category }" class="boardOrderBy">번호</th>
 	                    <th width="400" id="boardTitle&category=${ category }" class="boardOrderBy">제목</th>
 	                    <th width="100" id="boardWriter&category=${ category }" class="boardOrderBy">작성자</th>
@@ -99,7 +88,7 @@
             <c:choose>
             <c:when test="${ not empty map.boards }">
 	            <c:forEach var="board" items="${ map.boards }">
-	                <tr class="board" id="${ board.boardNo }">
+	                <tr class="table table-light board" id="${ board.boardNo }">
 	                    <td>${ board.boardNo }</td>
 	                    <td>${ board.boardTitle }</td>
 	                    <td>${ board.boardWriter }</td>
@@ -116,6 +105,10 @@
             </tbody>
         </table>
         
+        <div>
+        	<button class="btn btn-outline-info" onclick="location.href = '/ct/board/form'">글쓰기</button>
+        
+        </div>
         <script>
         	$('.boardOrderBy').click(e => {
         		
@@ -149,40 +142,40 @@
 	        	<c:when test="${ empty condition }">
 		            <div class="boardPageButtons">
 			            <c:if test="${ map.pi.currentPage gt 1 }">
-			            <button onclick="location.href = 'board?page=${ map.pi.currentPage - 1 }&condition=${ condition }&keyword=${ keyword }&category=${category}&orderBy=${ orderBy }'">이전</button>
+			            <button class="btn btn-primary" onclick="location.href = 'board?page=${ map.pi.currentPage - 1 }&condition=${ condition }&keyword=${ keyword }&category=${category}&orderBy=${ orderBy }'">이전</button>
 			            </c:if>
 			            <c:forEach var="i" begin="${ map.pi.startPage }" end="${ map.pi.endPage }">
-			            <button onclick="location.href = 'board?page=${i}&condition=${ condition }&keyword=${ keyword }&category=${category}&orderBy=${ orderBy }'">${i}</button>
+			            <button class="btn btn-outline-primary" onclick="location.href = 'board?page=${i}&condition=${ condition }&keyword=${ keyword }&category=${category}&orderBy=${ orderBy }'">${i}</button>
 			            </c:forEach>
 			            <c:if test="${ map.pi.currentPage ne map.pi.maxPage }">
-			            <button onclick="location.href = 'board?page=${map.pi.currentPage + 1}&condition=${ condition }&keyword=${ keyword }&category=${category}&orderBy=${ orderBy }'">다음</button>
+			            <button class="btn btn-primary" onclick="location.href = 'board?page=${map.pi.currentPage + 1}&condition=${ condition }&keyword=${ keyword }&category=${category}&orderBy=${ orderBy }'">다음</button>
 			            </c:if>
 		            </div>
 		        </c:when>
 		        <c:otherwise>
 		        	<div class="boardPageButtons">
 			            <c:if test="${ map.pi.currentPage gt 1 }">
-			            <button onclick="location.href = '/ct/board/search?page=${ map.pi.currentPage - 1 }&category=${category}&condition=${ condition }&keyword=${ keyword }&orderBy=${ orderBy }'">이전</button>
+			            <button class="btn btn-primary" onclick="location.href = '/ct/board/search?page=${ map.pi.currentPage - 1 }&category=${category}&condition=${ condition }&keyword=${ keyword }&orderBy=${ orderBy }'">이전</button>
 			            </c:if>
 			            <c:forEach var="i" begin="${ map.pi.startPage }" end="${ map.pi.endPage }">
-			            <button onclick="location.href = '/ct/board/search?page=${i}&category=${category}&condition=${ condition }&keyword=${ keyword }&orderBy=${ orderBy }'">${i}</button>
+			            <button class="btn btn-outline-primary" onclick="location.href = '/ct/board/search?page=${i}&category=${category}&condition=${ condition }&keyword=${ keyword }&orderBy=${ orderBy }'">${i}</button>
 			            </c:forEach>
 			            <c:if test="${ map.pi.currentPage ne map.pi.maxPage }">
-			            <button onclick="location.href = '/ct/board/search?page=${map.pi.currentPage + 1}&category=${category}&condition=${ condition }&keyword=${ keyword }&orderBy=${ orderBy }'">다음</button>
+			            <button class="btn btn-primary" onclick="location.href = '/ct/board/search?page=${map.pi.currentPage + 1}&category=${category}&condition=${ condition }&keyword=${ keyword }&orderBy=${ orderBy }'">다음</button>
 			            </c:if>
 		            </div>
 		        </c:otherwise>
 	    </c:choose>
 	    </c:if>
             <form action="/ct/board/search" method="get">
-                <select name="condition" id="boardCondition">
+                <select class="form-control" name="condition" id="boardCondition">
                     <option value="title">제목</option>
                     <option value="content">내용</option>
                     <option value="writer">작성자</option>
                 </select>
-                <input name="keyword" value="${ keyword }"/>
+                <input class="form-control" name="keyword" value="${ keyword }"/>
                 <input type="hidden" name="category" value="${ category }">
-                <button type="submit">검색</button>
+                <button class="form-control btn btn-outline-primary" type="submit">검색</button>
             </form>
             <script>
             	$(function(){
@@ -196,6 +189,7 @@
         </div>
 
     </div>
+    <jsp:include page="../include/footer.jsp" />
 </body>
 
 </html>
