@@ -38,10 +38,6 @@ public class BoardController {
 		model.addAttribute("category", category);
 		model.addAttribute("orderBy", orderBy);
 		
-		//기능 확인용 임시 계정
-		MemberDTO member = new MemberDTO(99999, "dummy", "1234", "테스트01", "test01", "test@test.com", null, "N");
-		session.setAttribute("loginMember", member);
-		
 		return "board/board_list";
 	}
 	
