@@ -190,7 +190,6 @@
 	           (
 	           EVENT_NO
 	         , CATEGORY_NO
-	         , CATEGPRU_NAME
 	         , EVENT_TITLE
 	         , EVENT_CONTENT
 	         , START_DATE
@@ -202,7 +201,6 @@
 	    VALUES (
 	           #{eventNo}
 	         , #{category.categoryNo}
-	         , #{category.categoryName}
 	         , #{eventTitle}
 	         , #{eventContent}
 	         , #{startDate}
