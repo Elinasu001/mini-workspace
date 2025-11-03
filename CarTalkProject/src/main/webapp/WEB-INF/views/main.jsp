@@ -112,7 +112,7 @@
     
     /* 카드 리스트 */
     .mainSec01{
-    	margin-top:80px;
+    	padding:80px 0;
     }
 	.innerSec {
 		display:flex;
@@ -125,8 +125,9 @@
 	}
 	
 	.cardItem{
-		border-radius:20px;
-		background-color: white;
+		max-width:18rem;
+		border-radius: 3px;
+		background-color: #39393682;
 		padding:10px;
 	}
 	
@@ -135,25 +136,40 @@
 	}
 	
 	.cardItem a .feature {
-		max-width:270px;
 		position: relative;
 		display:inline-flex;
 		align-items:center;
 		justify-content:center;
-		height:18rem;
-		width:18rem;
+		height:270px;
 		overflow:hidden;
 		font-size:2rem;
-		border-radius:20px;
-		background-color:var(--bs-gray-200);
+		border-radius: 3px;
+	    transition: transform 0.35s ease, box-shadow 0.35s ease;
 	}
 	
+	.cardItem:hover .feature {
+	  transform: translateY(-6px);
+	}
+	
+	.cardItem a{
+		overflow:hidden;
+	}
+		
 	.cardItem a .feature img {
 		width:100%;
 		height:100%;
 		object-fit:cover;
+	  	transition: transform 0.6s ease, filter 0.6s ease;
+		transform: scale(1);
+		filter: brightness(1);
 	}
 	
+	
+	.cardItem:hover .feature img {
+	  transform: scale(1.02);
+  filter: brightness(1.03)
+	}
+
 	.cardItem a h2{
 		width: 250px;
 		white-space: nowrap; 
@@ -165,9 +181,11 @@
 	.category {
 	  color: var(--color-1);
 	  font-size: var(--font14);
-	  background-color:rgb(13 110 253 / 18%);
+	  background-color:var(--primary);
 	  padding:6px 10px;
 	  border-radius:20px;
+	  color:white;
+	  
 	}
 	
 	
@@ -176,6 +194,7 @@
 		flex-direction:column;
 		padding:10px;
 		gap:1rem;
+		color:white;
 	}
 	
 	.cardItem .info .txt p{
@@ -229,7 +248,7 @@
 					              <p class="feature">
 					                <c:choose>
 					                  <c:when test="${not empty event.thumbnailPath and not empty event.thumbnailName}">
-					                    <img src="${pageContext.request.contextPath}/${event.thumbnailPath}/${event.thumbnailName}" alt="대표이미지">
+					                    <img src="${pageContext.request.contextPath}${event.thumbnailPath}${event.thumbnailName}" alt="대표이미지">
 					                  </c:when>
 					                  <c:otherwise>
 					                    <img src="<c:url value='/resources/upfiles/event/default.png' />" alt="기본이미지">

@@ -85,12 +85,11 @@
 		  </div>
           <div class="card border-0 shadow-sm">
             <div class="card-body text-center p-4 mb-4">
-
               <!-- 상세 이미지 -->
               <c:choose>
                 <c:when test="${not empty event.detailPath and not empty event.detailName}">
                   <img class="detail-img mb-5" 
-                       src="${pageContext.request.contextPath}/${event.detailPath}/${event.detailName}" 
+                       src="${pageContext.request.contextPath}${event.detailPath}${event.detailName}" 
                        alt="${event.eventTitle}">
                 </c:when>
                 <c:otherwise>
