@@ -25,4 +25,5 @@ public class GalleryDTO {
 	private List<ReplyDTO> replies;
 	private List<AttachmentDTO> attatchments;
 	private String thumnailPath;
+	private int replyCount;
 }

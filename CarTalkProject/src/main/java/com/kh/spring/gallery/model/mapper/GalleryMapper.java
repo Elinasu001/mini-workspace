@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.session.RowBounds;
 
+import com.kh.spring.gallery.model.dto.AttachmentDTO;
 import com.kh.spring.gallery.model.dto.GalleryDTO;
+import com.kh.spring.gallery.model.dto.ReplyDTO;
 
 @Mapper
 public interface GalleryMapper {
@@ -15,4 +16,11 @@ public interface GalleryMapper {
 
 	int selectTotalcount();
 
+	List<AttachmentDTO> selectAttachmentsByNo(Long galleryNo);
+
+	List<ReplyDTO> selectReplysByNo(Long galleryNo);
+
+	GalleryDTO selectGalleryByNo(Long galleryNo);
+	
+	int selectReplyCount(Long galleryNo);
 }

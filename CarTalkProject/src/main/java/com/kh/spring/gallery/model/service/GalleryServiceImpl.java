@@ -5,10 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
+import com.kh.spring.gallery.model.dto.AttachmentDTO;
 import com.kh.spring.gallery.model.dto.GalleryDTO;
+import com.kh.spring.gallery.model.dto.ReplyDTO;
 import com.kh.spring.gallery.model.mapper.GalleryMapper;
 import com.kh.spring.util.PageInfo;
 import com.kh.spring.util.Pagination;
@@ -55,6 +56,32 @@ public class GalleryServiceImpl implements GalleryService {
 		map.put("gallerys", gallerys);
 		
 		return map;
+	}
+
+	@Override
+	public GalleryDTO selectGalleryByNo(Long galleryNo) {
+		
+		List<AttachmentDTO> attachments = new ArrayList();
+		List<ReplyDTO> replys = new ArrayList();
+//		log.info("{}",galleryNo);
+		
+		//TODO: 유효성검증
+		/*			*/
+		attachments = galleryMapper.selectAttachmentsByNo(galleryNo);
+		
+		replys = galleryMapper.selectReplysByNo(galleryNo);
+		
+		int replyCount = galleryMapper.selectReplyCount(galleryNo);
+		
+		GalleryDTO gallery = galleryMapper.selectGalleryByNo(galleryNo);
+		
+		gallery.setAttatchments(attachments);
+		
+		gallery.setReplies(replys);
+		
+		gallery.setReplyCount(replyCount);
+		
+		return gallery;
 	}
 
 }

@@ -43,5 +43,159 @@
 				CT_GALLERY.GALLERY_NO DESC
 		OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
 	</select>
+	<select id="selectGalleryByNo"
+			parameterType="long"
+			resultType="com.kh.spring.gallery.model.dto.GalleryDTO">
+		SELECT 
+		     	  G.GALLERY_NO galleryNo
+		     	, C.CATEGORY_NAME categoryName
+		    	, G.GALLERY_TITLE galleryTitle
+		    	, G.GALLERY_CONTENT galleryContent
+		    	, G.VIEW_COUNT viewCount
+		    	, G.ENROLL_DATE enrollDate
+		    	, M.USER_NAME userName
+		    	, M.NICKNAME nickname
+		FROM	
+				CT_GALLERY G
+		JOIN	
+				CT_MEMBER M ON G.USER_NO = M.USER_NO
+		JOIN
+		    	CT_GALLERY_CATEGORY C ON G.CATEGORY_NO = C.CATEGORY_NO
+		WHERE  
+				G.GALLERY_NO = #{galleryNo}
+		AND    
+				G.STATUS = 'Y'
+	</select>
+	
+	<select id="selectAttachmentsByNo"
+			parameterType="long"
+			resultType="com.kh.spring.gallery.model.dto.AttachmentDTO">
+		
+		SELECT 
+				  A.FILE_NO fileNo
+				, A.CHANGE_NAME changeName
+				, A.FILE_PATH filePath
+				, A.UPLOAD_DATE uploadDate
+				, A.ORDER_NO orderNo
+		FROM	
+				CT_GALLERY G
+		JOIN	
+				CT_MEMBER M ON G.USER_NO = M.USER_NO
+		LEFT 
+		JOIN	
+				CT_GALLERY_ATTACHMENT A ON G.GALLERY_NO = A.GALLERY_NO
+		WHERE	
+				G.GALLERY_NO = #{galleryNo}
+		AND 	
+				G.STATUS = 'Y'
+		ORDER 
+		BY		
+				A.ORDER_NO ASC
+	</select>
+	
+	<select id="selectReplysByNo"
+			parameterType="long"
+			resultType="com.kh.spring.gallery.model.dto.ReplyDTO">
+		
+		SELECT
+				  R.REPLY_NO replyNo
+		    	, R.GALLERY_NO galleryNo
+		    	, R.USER_NO userNo
+		    	, M.NICKNAME replyWriter
+		    	, R.REPLY_CONTENT replyContent
+		    	, TO_CHAR(R.ENROLL_DATE, 'YYYY-MM-DD') enrollDate
+		    	, R.STATUS status
+		FROM
+		    	CT_GALLERY_REPLY R
+		JOIN 
+				CT_MEMBER M ON R.USER_NO = M.USER_NO
+		WHERE
+		    	R.GALLERY_NO = #{galleryNo}
+		AND 	
+				R.STATUS = 'Y'
+		ORDER
+		BY
+		    	R.REPLY_NO ASC
+	</select>
+	
+	<select id="selectReplyCount"
+			parameterType="long">
+			
+		SELECT
+				COUNT(*)
+		FROM
+		    	CT_GALLERY_REPLY R
+		JOIN 
+				CT_MEMBER M ON R.USER_NO = M.USER_NO
+		WHERE
+				R.GALLERY_NO = #{galleryNo}
+		AND
+				STATUS='Y'		
+	</select>
+	
+	<update id="increaseCount"
+			parameterType="long">
+		UPDATE
+		       CT_GALLERY
+		   SET
+		       VIEW_COUNT = VIEW_COUNT + 1 viewCount
+		 WHERE
+		       GALLERY_NO = #{galleryNo}
+		   AND
+		       STATUS = 'Y'
+	</update>
+	
+	<insert id="insertReply"
+			parameterType="com.kh.spring.gallery.model.dto.ReplyDTO">
+		INSERT
+		INTO
+				CT_GALLERY_REPLY
+		VALUES
+				(
+				  R.SEQ_RNO.NEXTVAL
+				, #{galleryNo}
+				, #{userNo}
+				, #{replyContent}
+				, SYSDATE
+				, 'Y'
+				)
+	</insert>
+	
+	<insert id="insertGallery"
+			parameterType="com.kh.spring.gallery.model.dto.GalleryDTO">
+		INSERT
+		INTO
+				CT_GALLERY
+		VALUES
+				(
+				  SEQ_RNO.NEXTVAL
+				, #{categoryNo}
+				, #{userNo}
+				, #{galleryTitle}
+				, #{galleryContent}
+				, #{galleryContent}
+				, 0
+				, SYSDATE
+				, 'Y'
+				)
+	</insert>
+	
+	<insert id="insertAttachment"
+			parameterType="com.kh.spring.gallery.model.dto.AttachmentDTO">
+		INSERT
+		INTO
+				CT_GALLERY_ATTACHMENT
+		VALUES
+				(
+				  R.SEQ_RNO.NEXTVAL
+				, #{GalleryNo}
+				, #{orderNo}
+				, #{originName}
+				, #{changeName}
+				, #{filePath}
+				, SYSDATE
+				, 'Y'
+				)
+	</insert>
 
 </mapper>
