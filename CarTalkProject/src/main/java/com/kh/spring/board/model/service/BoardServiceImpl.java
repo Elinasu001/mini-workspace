@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.spring.board.model.dto.AttachmentDTO;
 import com.kh.spring.board.model.dto.BoardDTO;
 import com.kh.spring.board.model.dto.LikeDTO;
+import com.kh.spring.board.model.dto.ReplyDTO;
 import com.kh.spring.board.model.mapper.BoardMapper;
 import com.kh.spring.member.model.dto.MemberDTO;
 import com.kh.spring.util.PageInfo;
@@ -33,6 +34,7 @@ public class BoardServiceImpl implements BoardService {
 
 	private final BoardMapper boardMapper;
 	private final Pagination pagination;
+	private final BoardValidator boardValidator;
 
 	/**
 	 * 페이지 번호를 인자값으로 전달받아서 
@@ -300,6 +302,64 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		return "cancle";
+	}
+
+	@Override
+	public String insertReply(ReplyDTO reply, HttpSession session) {
+		
+		
+		MemberDTO member = ((MemberDTO)session.getAttribute("loginMember"));
+		
+		if(member == null) { // 로그인하지 않은 사용자가 댓글 입력을 시도 할 경우
+			
+		}
+
+		// 유효 값 검증 (댓글이 null이거나 공백문자밖에 없을 경우)
+		
+		
+		reply.setReplyWriter(String.valueOf(member.getUserNo()));
+		
+		int result = boardMapper.insertReply(reply);
+		
+		if(result != 1) { // 댓글 작성 실패 시
+			
+		}
+		
+		
+		return "success";
+	}
+
+	@Override
+	public String updateReply(ReplyDTO reply, HttpSession session) {
+		
+		MemberDTO member = ((MemberDTO)session.getAttribute("loginMember"));
+		
+		if(member == null) { // 로그인하지 않은 사용자가 댓글 입력을 시도 할 경우
+			
+		}
+
+		// 유효 값 검증 (댓글이 null이거나 공백문자밖에 없을 경우)
+		boardValidator.validateReply();
+		
+		reply.setReplyWriter(String.valueOf(member.getUserNo()));
+		
+		System.out.println(reply);
+		
+		int result = boardMapper.updateReply(reply);
+		
+		if(result != 1) {
+			
+			
+		}
+		
+		
+		return "success";
+	}
+
+	@Override
+	public String deleteReply(ReplyDTO reply, HttpSession session) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

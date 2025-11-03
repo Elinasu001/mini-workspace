@@ -228,6 +228,9 @@
 	       CT_BOARD.STATUS = 'Y'
 	   AND
 	       CT_BOARD.BOARD_NO = #{boardNo}
+	 ORDER
+	    BY
+	       replyEnrollDate DESC
 	
 	</select>
 	<!-- 댓글 작성자로 참조할 외래키 값이 USER_NO(NUMBER)라서 댓글 작성자의 NICKNAME 값을 따로 출력해 주기 위해
@@ -353,6 +356,37 @@
 	
 	</delete>
 	
+	<insert id="insertReply" parameterType="com.kh.spring.board.model.dto.ReplyDTO">
+		INSERT
+		  INTO
+		       CT_BOARD_REPLY
+		VALUES
+		       (
+		       SEQ_BOARD_REPLY.NEXTVAL
+		     , #{refBno}
+		     , #{replyWriter}
+		     , #{replyContent}
+		     , SYSDATE
+		     , 'Y'
+		       )
+		
 	
+	</insert>
+	
+	<update id="updateReply" parameterType="com.kh.spring.board.model.dto.ReplyDTO">
+		UPDATE
+			   CT_BOARD_REPLY
+		   SET
+		       REPLY_CONTENT = #{replyContent}
+		 WHERE
+		 	   REPLY_NO = #{replyNo}
+		   AND
+		       USER_NO = #{replyWriter}
+		   AND
+		       BOARD_NO = #{refBno}
+		   AND
+		       STATUS = 'Y'
+	
+	</update>
 
 </mapper>
