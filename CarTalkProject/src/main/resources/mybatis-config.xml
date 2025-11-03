@@ -9,6 +9,9 @@
 	</settings>
 
 	<typeAliases>
+		<typeAlias type="com.kh.spring.event.model.vo.EventCategory" alias="eventcategory" />
+		<typeAlias type="com.kh.spring.event.model.vo.EventAttachment" alias="eventattachment" />
+		<typeAlias type="com.kh.spring.event.model.dto.EventDTO" alias="eventdto" />
 		<typeAlias type="com.kh.spring.event.model.dto.EventDTO"
 			alias="eventdto" />
 			<typeAlias type="com.kh.spring.used.model.dto.UsedDTO" alias="UsedDTO"/>

@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <jsp:include page="/WEB-INF/views/include/meta.jsp"/>
@@ -11,21 +11,17 @@
 <body>
 
 <style>
-.detailBanner {
-   background:rgb(216 221 228);
-
+.btn-primary {
+	background:var(--primary);
 }
 
-.detailBanner p {
-  line-height: 1.5;
+.eventBanner{
+	 background:rgb(216 221 228);
 }
 
-.detail-img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  object-fit: cover;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+.eventBanner .text-center p{
+	color: #343a40;
+	line-height:1.5;
 }
 
 .category {
@@ -44,7 +40,7 @@
   text-align: left;
 }
 
-.meta-info {
+.category {
   font-size: 0.95rem;
   color: #666;
   margin-top: 1rem;
@@ -62,15 +58,15 @@
     <div class="contArea">
 
       <!-- 상단 배너 -->
-      <header class="detailBanner text-center py-5">
+      <header class="eventBanner text-center py-5">
         <div class="container px-lg-5">
           <div class="p-4 p-lg-5 rounded-3">
             <h1 class="display-5 fw-bold mb-3">${event.eventTitle}</h1>
             <p class="fs-5 mb-0">
-              <span class="category me-2">${event.categoryName}</span>
+              <span class="category me-2">${event.category.categoryName}</span>
               <span>${event.startDate} ~ ${event.endDate}</span>
             </p>
-            <p class="meta-info mt-2">
+            <p class=" mt-2">
               조회수: ${event.viewCount}
             </p>
           </div>
@@ -80,14 +76,21 @@
       <!-- 상세 내용 -->
       <section class="pt-5 pb-5">
         <div class="container">
+       	 <!-- 관리자 전용 버튼 -->
+         <div class="d-flex justify-content-end py-3">
+			  <c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.manager eq 'Y'}">
+			      <a href="${pageContext.request.contextPath}/event/updateForm?eventNo=${event.eventNo}" 
+			         class="btn btn-primary px-5 py-2 ms-2">수정하기</a>
+			  </c:if>
+		  </div>
           <div class="card border-0 shadow-sm">
-            <div class="card-body text-center p-4">
+            <div class="card-body text-center p-4 mb-4">
 
-              <!-- 대표 이미지 -->
+              <!-- 상세 이미지 -->
               <c:choose>
-                <c:when test="${not empty event.filePath and not empty event.changeName}">
+                <c:when test="${not empty event.detailPath and not empty event.detailName}">
                   <img class="detail-img mb-5" 
-                       src="<c:url value='/${event.filePath}/${event.changeName}'/>" 
+                       src="${pageContext.request.contextPath}/${event.detailPath}/${event.detailName}" 
                        alt="${event.eventTitle}">
                 </c:when>
                 <c:otherwise>
@@ -109,6 +112,7 @@ ${event.eventContent}
                 <a href="${pageContext.request.contextPath}/event/list" 
                    class="btn btn-secondary px-5 py-2">목록으로</a>
               </div>
+              
             </div>
           </div>
         </div>

@@ -1,21 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <jsp:include page="/WEB-INF/views/include/meta.jsp"/>
 <title>이벤트 게시판</title>
 </head>
 <style>
+
+.btn-primary {
+	background:var(--primary);
+}
+
 .eventBanner{
 	 background:rgb(216 221 228);
 }
 .eventBanner .text-center p{
 	color: #343a40;
-}
-
-.eventBanner p {
 	line-height:1.5;
 }
 
@@ -30,6 +32,8 @@
 	font-size:2rem;
 	background-color:var(--bs-gray-200);
 }
+
+
 .feature img {
 	width:100%;
 	height:100%;
@@ -66,8 +70,6 @@
   width:18rem;
   height:18rem;
 }
-
-
 
 .category {
   color: var(--color-1);
@@ -118,6 +120,7 @@
 
 </style>
 <body>
+
 	<div id="wrap">
 	
 		<jsp:include page="../include/header.jsp"/>
@@ -135,23 +138,22 @@
 		                        다양한 이벤트와 혜택을 한눈에!<br/>
 		                        참여하고, 즐기고, 특별한 선물을 만나보세요.
 		                        </p>
-		                        <!-- <a class="btn btn-primary btn-lg" href="#">Call to action</a> -->
 		                    </div>
 		                </div>
 		            </div>
 		            
 		        </header>
-		         
-	        	<!-- 관리자료그인 상태일 경우만 보여지는 글쓰기 버튼 -->
-		      	<c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.manager eq 'Y'}">
-					<div class="mx-3 my-4">
-						<a class="btn btn-secondary" href="ct/event/insertForm">등록하기</a>
-					</div>
-				</c:if>
-
 		        
 		        <!-- 탭 영역 추가 -->
 			    <div class="container py-5">
+			    
+			    	<!-- [D] : 관리자로그인 상태일 경우만 보여지는 글쓰기 버튼 -->
+			      	<c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.manager eq 'Y'}">
+						<div class="d-flex justify-content-end">
+							<a class="btn btn-primary btn btn-primary px-5 py-2 ms-2" href="${pageContext.request.contextPath}/event/insertForm">등록하기</a>
+						</div>
+					</c:if>
+					
 				    <ul id="eventTabs" class="nav nav-tabs nav-fill pt-4" >
 				        <li class="nav-item">
 				            <button  id="ongoing-tab" class="nav-link active fs-4 fs-md-3 px-4 px-md-5 py-3 py-md-4 fw-semibold" type="button">

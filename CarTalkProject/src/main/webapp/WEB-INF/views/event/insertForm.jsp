@@ -10,10 +10,12 @@
     body {
         background-color: #f8f9fa;
     }
-    
+    .btn-primary {
+		background:var(--primary);
+	}	
     .contentWrap .contArea.admin {
     	height:initial;
-    	margin-top:80px;
+    	margin-top:60px;
     	margin-bottom:100px;
     }
     .admin-event-form {
@@ -82,9 +84,17 @@
         border-radius: 8px;
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 920px) {
+        .contentWrap .contArea.admin{
+        	margin-bottom:0;
+        }
+        
         .admin-event-form {
-            padding: 25px 20px;
+            padding: 50px 20px;
+        }
+        .p-5{
+        	1rem;
+        	
         }
         .form-control, .form-select {
             height: 48px;
@@ -221,20 +231,26 @@
 		
 	 	<div class="contentWrap">
             <div class="contArea admin">
+            	<!-- 상단 타이틀 -->
+				<div class="text-center mb-5">
+					<h2 class="fw-bold mb-3">이벤트 등록</h2>
+					<p class="text-muted">이벤트 등록 페이지입니다.</p>
+				</div>
+            	
 				<div class="admin-event-form">
-				    <h2><i class="bi bi-calendar-plus"></i> 이벤트 등록</h2>
 				
 				    <form action="insert" method="post" enctype="multipart/form-data">
 				        <!--  카테고리 -->
 				        <div class="mb-4 ">
 				            <label for="categoryNo" class="form-label">카테고리</label>
-				            <select class="form-select" id="categoryNo" name="categoryNo" required>
-				                <option value="">카테고리를 선택하세요</option>
-				                <option value="1">시즌 이벤트</option>
-				                <option value="2">회원 이벤트</option>
-				                <option value="3">리뷰 이벤트</option>
-				                <option value="4">출석 이벤트</option>
-				            </select>
+				            <select id="categoryNo" class="form-select" name="category.categoryNo" required>
+							  <option value="">카테고리를 선택하세요</option>
+							  <c:forEach var="cat" items="${categoryList}">
+							    <option value="${cat.categoryNo}">${cat.categoryName}</option>
+							  </c:forEach>
+							</select>
+
+
 				        </div>
 				
 				        <!-- 제목 -->
