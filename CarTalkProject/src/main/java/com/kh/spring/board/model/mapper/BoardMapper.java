@@ -6,7 +6,9 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import com.kh.spring.board.model.dto.AttachmentDTO;
 import com.kh.spring.board.model.dto.BoardDTO;
+import com.kh.spring.board.model.dto.LikeDTO;
 
 @Mapper
 public interface BoardMapper {
@@ -29,9 +31,19 @@ public interface BoardMapper {
 	
 	int deleteReply();
 	
-	int insertBoard();
+	int insertBoard(BoardDTO board);
 	
-	int updateBoard();
+	int updateBoard(BoardDTO board);
 	
-	int deleteBoard();
+	int deleteBoard(BoardDTO board);
+
+	int insertAttachment(AttachmentDTO attachment);
+	
+	int updateAttachment(AttachmentDTO attachment);
+	
+	int deleteAttachment(AttachmentDTO attachment);
+
+	LikeDTO selectLikes(LikeDTO likeNums);
+	
+	int insertLikes(LikeDTO likeNums);
 }
