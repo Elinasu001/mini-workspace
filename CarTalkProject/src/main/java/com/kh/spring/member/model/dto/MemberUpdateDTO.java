@@ -13,16 +13,12 @@ import lombok.ToString;
 @NoArgsConstructor 
 @AllArgsConstructor
 @ToString
-public class MemberDTO {
+public class MemberUpdateDTO {
 
-	private int userNo;
-	private String userId;
-	private String userPwd;
-	private String userName;
-	private String nickName;
-	private String email;
-	private String enrollDate;
-	private String manager;
+	
+	private int  updateNo;
+	private int  userNo;
+	private String changePwd;
 	private String updateDate;
-	private String changePwd; 
+	private String status;
 }
