@@ -13,7 +13,7 @@ import com.kh.spring.event.model.vo.EventCategory;
 public interface EventMapper {
 	
 	// 메인 페이지 진행 중 이벤트 조회
-	List<EventDTO> selectEventOngoingTop();
+	List<EventDTO> selectEventOngoingTop(); // 처리 속도로 인하여 RowBounds 사용 안함
 	
 	// RowBounds (페이징 포함 - MyBatis 페이징 도구 offset 과 limit 내부적으로 계산)
 	
