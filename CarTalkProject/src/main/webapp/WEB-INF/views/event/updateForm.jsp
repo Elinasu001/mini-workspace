@@ -288,7 +288,7 @@
 						※ 새 이미지를 선택하지 않으면 기존 이미지가 유지됩니다.
 					  </small>
 					  <c:if test="${not empty event.thumbnailName}">
-						  <img src="${pageContext.request.contextPath}${event.thumbnailPath}${event.thumbnailName}" 
+						  <img src="${pageContext.request.contextPath}/${event.thumbnailPath}/${event.thumbnailName}" 
 						       alt="기존 썸네일"
 						       style="width:140px;height:140px;object-fit:cover"
 						       class="border rounded">
@@ -304,7 +304,7 @@
 					  </small>
 					    <div class="mt-2">
 					      	<c:if test="${not empty event.detailName}">
-							  <img src="${pageContext.request.contextPath}${event.detailPath}${event.detailName}" 
+							  <img src="${pageContext.request.contextPath}/${event.detailPath}/${event.detailName}" 
 							       alt="기존 상세 이미지"
 							       style="width:140px;height:140px;object-fit:cover"
 							       class="border rounded">
