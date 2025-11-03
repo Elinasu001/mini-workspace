@@ -274,6 +274,7 @@
     </select>
 
 	<!-- 첨부파일 단일 조회 (삭제용) -->
+	<!-- 
     <select id="selectAttachmentByLevel" resultType="eventattachment">
         SELECT 
         	   FILE_NO		fileNo
@@ -291,7 +292,7 @@
            AND 
                STATUS = 'Y'
     </select>
-	
+	 -->
 	
 	<!-- 기존 첨부파일 삭제 (DB 상태값만 N으로 변경) -->
 	<update id="deleteAttachment" parameterType="long">

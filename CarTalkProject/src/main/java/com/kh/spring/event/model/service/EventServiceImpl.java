@@ -163,7 +163,7 @@ public class EventServiceImpl implements EventService {
         if (result != 1) throw new BadRequestException("이벤트 수정 실패");
 
         Long eventNo = event.getEventNo();
-
+        log.info("번호 : {}", eventNo);
         // 파일 교체
         if (thumbnail != null && !thumbnail.isEmpty()) {
             deleteOldAttachment(eventNo, session, 0);
@@ -240,11 +240,11 @@ public class EventServiceImpl implements EventService {
         // 물리 경로 + 상대 경로
         ServletContext app = session.getServletContext();
         String saveDir = (fileLevel == 0)
-                ? app.getRealPath("/resources/upfiles/thumb/event/")
-                : app.getRealPath("/resources/upfiles/detail/event/");
+                ? app.getRealPath("/resources/event/upfiles/thumb/")
+                : app.getRealPath("/resources/event/upfiles/detail/");
         String relativePath = (fileLevel == 0)
-                ? "/resources/upfiles/thumb/event/"
-                : "/resources/upfiles/detail/event/";
+                ? "/resources/event/upfiles/thumb/"
+                : "/resources/event/upfiles/detail/";
 
         File dir = new File(saveDir);
         if (!dir.exists()) dir.mkdirs();
@@ -268,8 +268,20 @@ public class EventServiceImpl implements EventService {
     }
 
     /** 기존 파일 삭제 **/
-    private void deleteOldAttachment(Long eventNo, HttpSession session, int fileLevel) {
-        EventAttachment oldFile = eventMapper.selectAttachmentByLevel(eventNo, fileLevel);
+    
+    
+    
+    
+    
+    private void deleteOldAttachment(Long eventNo,  HttpSession session, int fileLevel) {
+    	
+    	Map<String, Object> params = new HashMap();
+    	params.put("eventNo", eventNo);
+    	params.put("fileLevel", fileLevel);
+    	
+        EventAttachment oldFile = eventMapper.selectAttachmentByLevel(params);
+        
+        
         if (oldFile != null && oldFile.getChangeName() != null) {
             ServletContext app = session.getServletContext();
             String fullPath = app.getRealPath(oldFile.getFilePath() + oldFile.getChangeName());
@@ -280,4 +292,5 @@ public class EventServiceImpl implements EventService {
             eventMapper.deleteAttachment(oldFile.getFileNo());
         }
     }
+   
 }
