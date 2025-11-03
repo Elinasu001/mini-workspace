@@ -1,30 +1,76 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<script>
-$(document).ready(function() {
+<%@page import="com.kh.spring.member.model.dto.MemberDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<script >
+$( document ).ready(function() {
 
-    $("#loginBt").click(function() {
-        $("#frm").attr("action", "${pageContext.request.contextPath}/loginPage").submit();
-    });
-
-    $("#logOutBt").click(function() {
-        $("#frm").attr("action", "${pageContext.request.contextPath}/logout").submit();
-    });
+	var btObj = $("#loginBt");
+	
+	btObj.click(function () {
+		$("#frm").attr("action", "/ct/loginPage").submit();
+	});
+	
+	$("#logOutBt").click(function () {
+		$("#frm").attr("action", "/ct/logout").submit();
+	});
+	
+	$("#signupBt").click(function () {
+		$("#frm").attr("action", "/ct/join").submit();
+	});
+	
+	$("#mypageBt").click(function () {
+		$("#frm").attr("action", "/ct/mypageForm").submit();
+	});
 
 });
 </script>
-
-<form name="frm" method="post" id="frm"></form>
-
+<form name="frm" method="post" id="frm" action="loginPage"> </form>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <!-- 로고 -->
-        <a class="navbar-brand fw-bold" href="#">CarTalk</a>
+    <!-- 로고 -->
+    <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}">CarTalk</a>
 
-        <!-- 햄버거 버튼 -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <!-- 햄버거 버튼 -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- PC에서는 GNB, 모바일에서는 Offcanvas로 작동 -->
+    <div class="collapse navbar-collapse d-none d-lg-flex justify-content-end">
+        
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/event/list">이벤트 게시판</a></li>
+            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/board">일반 게시판</a></li>
+            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/gallery">사진 게시판</a></li>
+            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/used/list">거래 게시판</a></li>
+
+            <!-- <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Dropdown</a>
+                <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </li> -->
+        </ul>
+        <div class="auth-links">
+        
+        <c:choose>
+        	<c:when test="${ empty sessionScope.loginMember }">
+            	<!--로그인 안됐을 경우-->
+           		<a href="#login" id="loginBt"class="btn-login line">로그인</a>
+           	 	<a href="#signup" id="signupBt" class="btn-signup">회원가입</a>
+           	</c:when>
+           	<c:otherwise>
+	            <!--로그인 됐을 경우-->
+	            ${ sessionScope.loginMember.userName }님 환영합니다.
+	            <a href="#logout" id="logOutBt" class="btn-login line">로그아웃</a>
+	            <a href="#myPage" id="mypageBt" class="btn-signup">마이페이지</a>
+            </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
 
         <!-- PC 메뉴 -->
         <div class="collapse navbar-collapse d-none d-lg-flex justify-content-end">
