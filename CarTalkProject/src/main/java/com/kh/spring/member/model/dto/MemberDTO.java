@@ -21,6 +21,8 @@ public class MemberDTO {
 	private String userName;
 	private String nickName;
 	private String email;
-	private Date enrollDate;
+	private String enrollDate;
 	private String manager;
+	private String updateDate;
+	private String changePwd; 
 }

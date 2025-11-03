@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -108,6 +109,9 @@
         border-radius: 3px;
         background-color:black;
     }
+    
+
+    
 </style>
 <body>
 	<div id="wrap" class="main">
@@ -143,6 +147,42 @@
                     <div class="swiper-button-next"></div>
                 
                 </div>
+                
+                <!-- 진행 중인 이벤트 -->
+				<c:choose>
+				  <c:when test="${not empty ongoingEvents}">
+				    <c:forEach items="${ongoingEvents}" var="event">
+				      <div class="" data-eventno="${event.eventNo}">
+				        <div class="">
+				          <div class="">
+				            <a href="${pageContext.request.contextPath}/event/detail/${event.eventNo}">
+				              <p class="">
+				                <c:choose>
+				                  <c:when test="${not empty event.thumbnailPath and not empty event.thumbnailName}">
+				                    <img src="${pageContext.request.contextPath}/${event.thumbnailPath}/${event.thumbnailName}" alt="대표이미지">
+				                  </c:when>
+				                  <c:otherwise>
+				                    <img src="<c:url value='/resources/upfiles/event/default.png' />" alt="기본이미지">
+				                  </c:otherwise>
+				                </c:choose>
+				              </p>
+				              <h2 class="">${event.eventTitle}</h2>
+				              <p class="">
+				                <span class="category">${event.category.categoryName}</span>
+				                <span>${event.startDate} ~ ${event.endDate}</span>
+				              </p>
+				            </a>
+				          </div>
+				        </div>
+				      </div>
+				    </c:forEach>
+				  </c:when>
+				  <c:otherwise>
+				    <div class="col-12 text-center py-5">현재 진행 중인 이벤트가 없습니다.</div>
+				  </c:otherwise>
+				</c:choose>
+
+
             </div>
         </div>
 		

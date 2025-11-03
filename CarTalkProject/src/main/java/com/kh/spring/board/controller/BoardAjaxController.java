@@ -19,7 +19,7 @@ public class BoardAjaxController {
 	
 	private final BoardService boardService;
 	
-	@GetMapping("/likes")
+	@GetMapping("/like")
 	public String insertLikes(Long boardNo, HttpSession session) {
 		
 		int result = boardService.insertLikes(boardNo, session);
