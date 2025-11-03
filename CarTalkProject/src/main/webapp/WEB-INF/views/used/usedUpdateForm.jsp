@@ -74,7 +74,7 @@
 		<!-- 등록 버튼 -->
 		<div class="btn-group">
 			<button type="submit" class="btn btn-primary">수정 완료</button>
-			<a href="${pageContext.request.contextPath}/used/detail?usedNo=${used.usedNo}" class="btn btn-secondary">취소</a>
+			<a href="${pageContext.request.contextPath}/used/detail?no=${used.usedNo}" class="btn btn-secondary">취소</a>
 		</div>
 
 	</form>
