@@ -240,11 +240,11 @@ public class EventServiceImpl implements EventService {
         // 물리 경로 + 상대 경로
         ServletContext app = session.getServletContext();
         String saveDir = (fileLevel == 0)
-                ? app.getRealPath("/resources/upfiles/thumb/event/")
-                : app.getRealPath("/resources/upfiles/detail/event/");
+                ? app.getRealPath("/resources/event/upfiles/thumb/")
+                : app.getRealPath("/resources/event/upfiles/detail/");
         String relativePath = (fileLevel == 0)
-                ? "/resources/upfiles/thumb/event/"
-                : "/resources/upfiles/detail/event/";
+                ? "/resources/event/upfiles/thumb/"
+                : "/resources/event/upfiles/detail/";
 
         File dir = new File(saveDir);
         if (!dir.exists()) dir.mkdirs();
