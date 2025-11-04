@@ -35,9 +35,9 @@ public class GalleryServiceImpl implements GalleryService {
 		if(page < 1) {}
 		
 		int count = galleryMapper.selectTotalcount();
-//		log.info("{}", count);
+		//log.info("{}", count);
 		PageInfo pi = pagination.getPageInfo(count, page.intValue(), 5, 4);
-//		log.info("{}, {}", count, page.intValue());
+		//log.info("{}, {}", count, page.intValue());
 		
 		
 		if(count > 0) {
@@ -49,7 +49,7 @@ public class GalleryServiceImpl implements GalleryService {
 	        params.put("limit", limit);
 		
 			gallerys = galleryMapper.selectGalleryList(params);
-//			log.info("{}", gallerys);
+			//log.info("{}", gallerys);
 		}
 		
 		map.put("pi", pi);
