@@ -5,17 +5,15 @@ body {
   padding: 40px 0;
 }
 
-
 .container {
   width: 600px;
   max-width: 90%;
-  margin: 0 auto;         /* 가운데 정렬 */
+  margin: 0 auto;
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
   padding: 40px 50px;
 }
-
 
 /* 제목 */
 h2 {
@@ -27,16 +25,69 @@ h2 {
 }
 
 .section {
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 
-.section h3 {
+/* ---------------- 업로드 구역 ---------------- */
+.section.upload-section h3 {
   font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 8px;
+  font-weight: 700;
+  color: #1f2f50;
+  margin-bottom: 12px;
+  padding-left: 8px;
 }
 
+.upload-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upload-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #d0d7e1;
+  border-radius: 8px;
+  background: #fafbff;
+  padding: 10px 15px;
+  transition: all 0.2s ease;
+}
+
+.upload-item:hover {
+  border-color: #c0c0c0;
+  background-color: #f3f8ff;
+}
+
+.upload-item input[type="file"] {
+  flex: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+.upload-item input[type="file"]::-webkit-file-upload-button {
+  background-color: #c0c0c0;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.upload-item input[type="file"]::-webkit-file-upload-button:hover {
+  background-color: #808080;
+}
+
+.upload-item span {
+  font-size: 14px;
+  color: #666;
+}
+
+/* ---------------- 입력 기본 ---------------- */
 input[type="text"],
 input[type="number"],
 textarea,
@@ -65,54 +116,23 @@ textarea {
   resize: vertical;
 }
 
-.upload-box {
-  text-align: center;
-  border: 2px dashed #d0d7e1;
-  border-radius: 8px;
-  background-color: #fafbff;
-  padding: 40px 20px;
-  transition: background-color 0.2s ease;
+/* ---------------- 거래 지역/자동차 분류 ---------------- */
+.section select {
+  background-color: #fff;
 }
 
-.upload-box:hover {
-  background-color: #f0f5ff;
-}
-
-.upload-count {
-  font-size: 14px;
-  color: #666;
-  margin-top: 10px;
-}
-
-button {
-  display: block;
-  width: 100%;
-  background-color: #1a73e8;
-  color: #fff;
-  border: none;
-  padding: 14px 0;
-  border-radius: 8px;
-  font-size: 17px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.25s ease;
-}
-
-button:hover {
-  background-color: #1557b0;
-}
-
-@media (max-width: 768px) {
-  .container {
-    width: 90%;
-    padding: 25px;
-  }
+.section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2f50;
+  margin-bottom: 12px;
+  padding-left: 8px;
 }
 
 .form-row {
   display: flex;
+  justify-content: space-between;
   gap: 20px;
-  align-items: flex-start;
 }
 
 .form-group {
@@ -128,21 +148,66 @@ button:hover {
   margin-bottom: 6px;
 }
 
-@media (max-width: 768px) {
-  .form-row {
-    flex-direction: column;
-  }
+select {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  background-color: #fafafa;
+  transition: border-color 0.2s ease;
 }
 
+select:hover {
+  border-color: #1a73e8;
+}
+
+/* ---------------- 버튼 영역 ---------------- */
 .button-group {
   display: flex;
-  justify-content: flex-end; /* 오른쪽 정렬 */
-  gap: 10px; /* 버튼 간 간격 */
-  margin-top: 20px;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
 }
 
 .button-group button {
-  width: auto; /* 버튼 길이를 내용에 맞게 */
-  min-width: 100px; /* 일정 너비 보장 */
+  width: auto;
+  min-width: 100px;
+  padding: 10px 18px;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
+.button-group button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------- 반응형 ---------------- */
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    padding: 25px;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .upload-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.preview-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.preview-box img {
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}

@@ -33,7 +33,7 @@ body {
 /* 왼쪽: 이미지 캐러셀 */
 #usedCarousel {
   width: 500px;
-  height: 350px;
+  aspect-ratio: 16 / 9;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid #e0e0e0;

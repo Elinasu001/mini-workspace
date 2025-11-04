@@ -50,8 +50,10 @@
 				<div class="carousel-inner">
 					<!-- 대표 이미지 -->
 					<div class="carousel-item active">
-						<img src="${pageContext.request.contextPath}${used.thumbnail}"
-							class="d-block w-100" alt="대표 이미지">
+						<img src="${pageContext.request.contextPath}${used.thumbnail}" 
+     											class="d-block w-100" alt="대표 이미지">
+
+							
 					</div>
 
 					<!-- 첨부 이미지들 -->
