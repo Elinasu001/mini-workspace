@@ -183,6 +183,14 @@ public class UsedServiceImpl implements UsedService {
 		return usedMapper.selectMyUsedList(map);
 	}
 	
+	@Override
+	public int updateUsed(UsedDTO used, HttpSession session) {
+		
+		int result = usedMapper.updateUsed(used);
+		
+		return result;
+	}
+	
 	
 	
 

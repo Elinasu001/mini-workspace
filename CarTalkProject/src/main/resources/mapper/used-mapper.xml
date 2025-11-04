@@ -292,5 +292,19 @@
 		       WHERE RNUM &gt;= #{startRow}
 	</select>
 	
+	<update id="updateUsed"
+			parameterType="UsedDTO">
+		UPDATE
+			   CT_USED_LISTING
+	       SET
+	           USED_TITLE = #{usedTitle}
+	         , USED_CONTENT = #{usedContent}
+	         , USED_PRICE = #{usedPrice}
+	         , STATUS = #{status}
+	         , ENROLL_DATE = SYSDATE
+	     WHERE
+	           USED_NO = #{usedNo}  
+	</update>
+	
 
 </mapper>

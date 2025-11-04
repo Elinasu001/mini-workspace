@@ -24,5 +24,6 @@ public interface UsedMapper {
 	int deleteUsed(int usedNo);
 	int selectMyListCount(Map<String, Object> map);
 	List<UsedListDTO> selectMyUsedList(Map<String, Object> map);
+	int updateUsed(UsedDTO used);
 
 }
