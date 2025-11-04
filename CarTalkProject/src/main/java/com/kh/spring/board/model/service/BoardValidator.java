@@ -5,12 +5,26 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
 
 import com.kh.spring.board.model.dto.ReplyDTO;
+import com.kh.spring.exception.InvalidArgumentsException;
 import com.kh.spring.member.model.dto.MemberDTO;
 
 @Component
 public class BoardValidator {
 
 
+	public void validateSelectBoard(Long num) {
+		checkBoardParam(num);
+	}
+	
+	private void checkBoardParam(Long num) {
+		if(num < 1) {
+			throw new InvalidArgumentsException("유효하지 않은 접근입니다.");
+		}
+	}
+	
+	private void checkBoardNull() {
+		
+	}
 	
 	private void checkReplyNull(String replyContent) {
 		
@@ -26,11 +40,15 @@ public class BoardValidator {
 		}
 	}
 	
+	private void checkMemberDuplicate(String userNo ,HttpSession session) {
+		
+	}
+	
 	public void validateReply(ReplyDTO reply) {
 		checkReplyNull(reply.getReplyContent());
 	}
 	
-	public MemberDTO validateLogin(String replyWriter, HttpSession session) {
+	public MemberDTO validateLogin(HttpSession session) {
 		
 		MemberDTO member = ((MemberDTO)session.getAttribute("loginMember"));
 		
