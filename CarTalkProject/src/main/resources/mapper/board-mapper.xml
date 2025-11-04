@@ -392,12 +392,25 @@
 		 WHERE
 		 	   REPLY_NO = #{replyNo}
 		   AND
-		       USER_NO = #{replyWriter}
+		       BOARD_NO = #{refBno}
+		   AND
+		       STATUS = 'Y'
+	
+	</update>
+	
+		<update id="deleteReply" parameterType="com.kh.spring.board.model.dto.ReplyDTO">
+		UPDATE
+			   CT_BOARD_REPLY
+		   SET
+		       STATUS = 'N'
+		 WHERE
+		 	   REPLY_NO = #{replyNo}
 		   AND
 		       BOARD_NO = #{refBno}
 		   AND
 		       STATUS = 'Y'
 	
 	</update>
+	
 
 </mapper>

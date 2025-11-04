@@ -48,7 +48,7 @@ public interface BoardMapper {
 	
 	int updateReply(ReplyDTO reply);
 	
-	int deleteReply();
+	int deleteReply(ReplyDTO reply);
 
 	List<Long> selectAllBoard();
 }

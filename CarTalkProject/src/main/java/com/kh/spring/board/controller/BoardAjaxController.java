@@ -53,9 +53,14 @@ public class BoardAjaxController {
 	@PostMapping("/updateReply")
 	public String updateReply(ReplyDTO reply, HttpSession session) {
 		
-		String result = boardService.updateReply(reply, session);
+		return boardService.updateReply(reply, session);
+	}
+	
+	@PostMapping("/deleteReply")
+	public String deleteReply(ReplyDTO reply, HttpSession session) {
 		
-		return result;
+		return boardService.deleteReply(reply, session);
+		
 	}
 	
 }

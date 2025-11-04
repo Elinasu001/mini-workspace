@@ -339,9 +339,7 @@ public class BoardServiceImpl implements BoardService {
 		}
 
 		// 유효 값 검증 (댓글이 null이거나 공백문자밖에 없을 경우)
-		boardValidator.validateReply();
-		
-		reply.setReplyWriter(String.valueOf(member.getUserNo()));
+		boardValidator.validateReply(reply);
 		
 		System.out.println(reply);
 		
@@ -356,10 +354,22 @@ public class BoardServiceImpl implements BoardService {
 		return "success";
 	}
 
+
+	
 	@Override
 	public String deleteReply(ReplyDTO reply, HttpSession session) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		MemberDTO member = boardValidator.validateLogin(reply.getReplyWriter(),session);
+		
+		int result = boardMapper.deleteReply(reply);
+		
+		if(result != 1) {
+			
+			
+		}
+		
+		
+		return "success";
 	}
 
 	@Override
