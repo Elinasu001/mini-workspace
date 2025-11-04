@@ -10,7 +10,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/used/usedList.css">
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/include/header.jsp" />
+	<jsp:include page="../include/header.jsp" />
+	<jsp:include page="/WEB-INF/views/include/meta.jsp" />
 	<main class="main-wrap">
 		<h2>사진 게시판</h2>
 
@@ -89,6 +90,6 @@
 		</div>
 
 	</main>
-	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+	<jsp:include page="../include/footer.jsp" />
 </body>
 </html>

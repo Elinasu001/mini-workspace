@@ -125,31 +125,36 @@ body {
   <div class="container">
     <h2>📸 사진게시판 글등록</h2>
 
-    <form action="/gallery/insert" method="post" enctype="multipart/form-data" class="upload-form">
+    <form action="/ct/gallery/insert" method="post" enctype="multipart/form-data" class="upload-form">
     
       <!-- 카테고리 -->
       <div class="form-group">
-        <label for="title">카테고리</label>
-        <input type="radio" id="category" name="galleryCategory" value="자랑"/>자랑
-        <input type="radio" id="category" name="galleryCategory" value="리뷰"/>리뷰
+        <label for="galleryCategory">카테고리</label>
+        <input type="radio" id="categoryName" name="categoryName" value="리뷰"/>리뷰
+        <input type="radio" id="categoryName" name="categoryName" value="자랑"/>자랑
       </div>
       
       <!-- 제목 -->
       <div class="form-group">
         <label for="title">제목</label>
-        <input type="text" id="title" name="galleryTitle" placeholder="제목을 입력하세요" required />
+        <input type="text" id="galleryTitle" name="galleryTitle" placeholder="제목을 입력하세요" required />
       </div>
 
       <!-- 내용 -->
       <div class="form-group">
         <label for="content">내용</label>
-        <textarea id="content" name="galleryContent" rows="6" placeholder="내용을 입력하세요" required></textarea>
+        <textarea id="galleryContent" name="galleryContent" rows="6" placeholder="내용을 입력하세요" required></textarea>
       </div>
 
       <!-- 파일 업로드 -->
       <div class="form-group">
         <label for="imageUpload">썸네일 업로드</label>
-        <input type="file" id="imageUpload" name="upfiles" accept="image/*" multiple />
+        <input type="file" id="thumnail" name="thumnail" accept="image/*"/>
+        <div id="preview"></div>
+      </div>
+      <div class="form-group">
+        <label for="imageUpload">사진 업로드</label>
+        <input type="file" id="upfiles" name="upfiles" accept="image/*" multiple />
         <div id="preview"></div>
       </div>
 
@@ -164,7 +169,7 @@ body {
 
   <script>
     // 이미지 미리보기 기능
-    const imageInput = document.getElementById('imageUpload');
+    const imageInput = document.getElementById('thumnail');
     const preview = document.getElementById('preview');
 
     imageInput.addEventListener('change', function() {

@@ -152,7 +152,7 @@
 				CT_GALLERY_REPLY
 		VALUES
 				(
-				  R.SEQ_RNO.NEXTVAL
+				  SEQ_RNO.NEXTVAL
 				, #{galleryNo}
 				, #{userNo}
 				, #{replyContent}
@@ -162,19 +162,19 @@
 	</insert>
 	
 	<insert id="insertGallery"
-			parameterType="com.kh.spring.gallery.model.dto.GalleryDTO">
+			parameterType="com.kh.spring.gallery.model.dto.GalleryDTO"
+			keyProperty="galleryNo">
 		INSERT
 		INTO
 				CT_GALLERY
 		VALUES
 				(
 				  SEQ_RNO.NEXTVAL
-				, #{categoryNo}
-				, #{userNo}
+				, (SELECT CATEGORY_NO FROM CT_GALLERY_CATEGORY WHERE CATEGORY_NAME = #{categoryName})
+				, #{nickname}
 				, #{galleryTitle}
 				, #{galleryContent}
-				, #{galleryContent}
-				, 0
+				, DEFAULT
 				, SYSDATE
 				, 'Y'
 				)
@@ -187,8 +187,8 @@
 				CT_GALLERY_ATTACHMENT
 		VALUES
 				(
-				  R.SEQ_RNO.NEXTVAL
-				, #{GalleryNo}
+				  SEQ_GALLERY_ATTACHMENT.NEXTVAL
+				, #{refGno}
 				, #{orderNo}
 				, #{originName}
 				, #{changeName}

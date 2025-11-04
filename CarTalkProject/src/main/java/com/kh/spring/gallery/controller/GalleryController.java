@@ -1,6 +1,9 @@
 package com.kh.spring.gallery.controller;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring.gallery.model.dto.GalleryDTO;
 import com.kh.spring.gallery.model.service.GalleryService;
@@ -49,8 +53,18 @@ public class GalleryController {
 	}
 	
 	@GetMapping("/form")
-	public String insertGallery() {
+	public String toGalleryForm() {
 		return "gallery/form";
+	}
+	
+	@PostMapping("/insert")
+	public String insertGallery(GalleryDTO gallery, MultipartFile thumnail, List<MultipartFile> upfiles, HttpSession session) {
+//		log.info("board: {} / thumnail: {}", board, thumnail);
+//		log.info("upfiles: {}", upfiles);
+		
+		galleryService.insertGallery(gallery, thumnail, upfiles, session);
+		
+		return "redirect:/gallery";
 	}
 	
 }
