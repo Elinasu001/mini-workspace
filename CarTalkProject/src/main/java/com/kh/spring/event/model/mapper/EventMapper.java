@@ -1,6 +1,7 @@
 package com.kh.spring.event.model.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
@@ -48,7 +49,10 @@ public interface EventMapper {
     int updateEvent(EventDTO event);
     
     // 기존 첨부파일 조회 (0 == 썸네일/1 == 상세이미지 구분)
-    EventAttachment selectAttachmentByLevel(Long  eventNo, int fileLevel);
+    EventAttachment selectAttachmentByFileNo(Long fileNo);
+    
+    // 이벤트 번호로 전체 첨부파일 조회
+    List<EventAttachment> selectAttachmentsByEventNo(Long eventNo);
     
     // 첨부파일 삭제 (STATUS = 'N' 처리)
     int deleteAttachment(Long fileNo);

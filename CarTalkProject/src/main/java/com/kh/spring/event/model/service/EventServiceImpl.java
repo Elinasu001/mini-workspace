@@ -163,16 +163,35 @@ public class EventServiceImpl implements EventService {
         if (result != 1) throw new BadRequestException("이벤트 수정 실패");
 
         Long eventNo = event.getEventNo();
-
-        // 파일 교체
+        log.info("번호 : {}", eventNo);
+        
+        // 기존 첨부파일 목록 조회
+        List<EventAttachment> attachments = eventMapper.selectAttachmentsByEventNo(eventNo);
+        
+        // 썸네일 교체
         if (thumbnail != null && !thumbnail.isEmpty()) {
-            deleteOldAttachment(eventNo, session, 0);
-            saveAttachment(thumbnail, eventNo, session, 0);
-        }
+            EventAttachment oldThumb = attachments.stream()
+                    .filter(f -> f.getFileLevel() == 0)
+                    .findFirst()
+                    .orElse(null);
 
+            if (oldThumb != null) {
+                deleteOldAttachment(oldThumb.getFileNo(), session); // fileNo 기준 삭제
+            }
+            saveAttachment(thumbnail, eventNo, session, 0); // 새 파일 저장
+        }
+        
+        // 상세 이미지 교체
         if (detailImage != null && !detailImage.isEmpty()) {
-            deleteOldAttachment(eventNo, session, 1);
-            saveAttachment(detailImage, eventNo, session, 1);
+            EventAttachment oldDetail = attachments.stream()
+                    .filter(f -> f.getFileLevel() == 1)
+                    .findFirst()
+                    .orElse(null);
+
+            if (oldDetail != null) {
+                deleteOldAttachment(oldDetail.getFileNo(), session); // fileNo 기준 삭제
+            }
+            saveAttachment(detailImage, eventNo, session, 1); // 새 파일 저장
         }
 
         return result;
@@ -230,30 +249,55 @@ public class EventServiceImpl implements EventService {
     
     /** 파일 저장 **/
     private void saveAttachment(MultipartFile file, Long eventNo, HttpSession session, int fileLevel) {
+
+        //  파일 비어있을 경우 업로드 스킵
+        if (file == null || file.isEmpty()) {
+            log.warn("첨부파일이 비어있음 (fileLevel={}): 업로드 스킵", fileLevel);
+            return;
+        }
+
         String originName = file.getOriginalFilename();
+
+        //  확장자 유효성 검증 (확장자 없는 파일 방지)
+        if (originName == null || !originName.contains(".")) {
+            log.error("확장자를 찾을 수 없는 파일명: {}", originName);
+            return;
+        }
+
         String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         int rand = (int) (Math.random() * 900) + 100;
         String ext = originName.substring(originName.lastIndexOf("."));
         String prefix = (fileLevel == 0) ? "EVT_TH_" : "EVT_DE_";
         String changeName = prefix + currentTime + "_" + rand + ext;
 
-        // 물리 경로 + 상대 경로
+        // 경로 수정 (네가 실제 사용하는 구조로 변경)
         ServletContext app = session.getServletContext();
         String saveDir = (fileLevel == 0)
-                ? app.getRealPath("/resources/upfiles/thumb/event/")
-                : app.getRealPath("/resources/upfiles/detail/event/");
+                ? app.getRealPath("/resources/upfiles/event/thumb/")
+                : app.getRealPath("/resources/upfiles/event/detail/");
         String relativePath = (fileLevel == 0)
-                ? "/resources/upfiles/thumb/event/"
-                : "/resources/upfiles/detail/event/";
+                ? "/resources/upfiles/event/thumb/"
+                : "/resources/upfiles/event/detail/";
 
         File dir = new File(saveDir);
-        if (!dir.exists()) dir.mkdirs();
+
+        // 폴더 자동 생성 + 성공 여부 로그
+        if (!dir.exists()) {
+            boolean created = dir.mkdirs();
+            log.info("업로드 폴더 생성: {} (성공여부: {})", saveDir, created);
+        }
 
         try {
-            file.transferTo(new File(saveDir, changeName));
+            File target = new File(saveDir, changeName);
+            file.transferTo(target);
+
+            // 저장 성공 로그
+            log.info("파일 저장 완료: {}", target.getAbsolutePath());
+
         } catch (Exception e) {
-            log.error("파일 저장 실패", e);
-            throw new RuntimeException("파일 저장 실패");
+            // 에러 로그 보강
+            log.error("파일 저장 실패: {}", e.getMessage(), e);
+            throw new RuntimeException("파일 저장 실패", e);
         }
 
         EventAttachment attach = new EventAttachment();
@@ -264,20 +308,27 @@ public class EventServiceImpl implements EventService {
         attach.setFileLevel(fileLevel);
 
         eventMapper.insertAttachment(attach);
-        log.info("파일 저장 완료: {}", attach);
+        log.info("DB 저장 완료: {}", attach);
     }
 
+
     /** 기존 파일 삭제 **/
-    private void deleteOldAttachment(Long eventNo, HttpSession session, int fileLevel) {
-        EventAttachment oldFile = eventMapper.selectAttachmentByLevel(eventNo, fileLevel);
-        if (oldFile != null && oldFile.getChangeName() != null) {
+    private void deleteOldAttachment(Long fileNo, HttpSession session) {
+        EventAttachment oldFile = eventMapper.selectAttachmentByFileNo(fileNo);
+        
+        if (oldFile != null) {
             ServletContext app = session.getServletContext();
             String fullPath = app.getRealPath(oldFile.getFilePath() + oldFile.getChangeName());
             File delFile = new File(fullPath);
+            
             if (delFile.exists() && delFile.delete()) {
-                log.info("기존 파일 삭제 완료: {}", delFile.getAbsolutePath());
+                log.info("파일 삭제 완료: {}", delFile.getAbsolutePath());
+            } else {
+                log.warn("파일 물리 삭제 실패: {}", fullPath);
             }
-            eventMapper.deleteAttachment(oldFile.getFileNo());
+            
+            eventMapper.deleteAttachment(fileNo); // DB STATUS = 'N' 처리
         }
     }
+   
 }

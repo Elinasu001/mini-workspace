@@ -76,7 +76,7 @@
            CT_EVENT_CATEGORY C ON (E.CATEGORY_NO = C.CATEGORY_NO)
       LEFT 
       JOIN 
-           CT_EVENT_ATTACHMENT A ON (A.REF_BNO = E.EVENT_NO AND A.FILE_LEVEL = 0)
+           CT_EVENT_ATTACHMENT A ON (A.REF_BNO = E.EVENT_NO AND A.FILE_LEVEL = 0 AND A.STATUS = 'Y') 
      WHERE 
            E.STATUS = 'Y'
        AND 
@@ -115,7 +115,7 @@
            CT_EVENT_CATEGORY C ON (E.CATEGORY_NO = C.CATEGORY_NO)
       LEFT 
       JOIN 
-           CT_EVENT_ATTACHMENT A ON (A.REF_BNO = E.EVENT_NO AND A.FILE_LEVEL = 0)
+           CT_EVENT_ATTACHMENT A ON (A.REF_BNO = E.EVENT_NO AND A.FILE_LEVEL = 0 AND A.STATUS = 'Y')
      WHERE 
            (E.STATUS = 'Y' AND E.END_DATE &lt; SYSDATE)
         OR 
@@ -272,28 +272,47 @@
 	        BY 
 	           CATEGORY_NO ASC
     </select>
+    
+    <!-- 이벤트 번호로 모든 첨부파일 조회 (update 시 사용) -->
+	<select id="selectAttachmentsByEventNo" parameterType="long" resultType="eventattachment"> <!-- ★ 추가됨 -->
+	    SELECT 
+	           FILE_NO        fileNo,
+	           REF_BNO        refBno,
+	           ORIGIN_NAME    originName,
+	           CHANGE_NAME    changeName,
+	           FILE_PATH      filePath,
+	           FILE_LEVEL     fileLevel,
+	           STATUS
+	      FROM 
+	           CT_EVENT_ATTACHMENT
+	     WHERE 
+	           REF_BNO = #{eventNo}
+	       AND 
+	           STATUS = 'Y'
+	     ORDER 
+	        BY 
+	           FILE_LEVEL ASC
+	</select>
+    
 
 	<!-- 첨부파일 단일 조회 (삭제용) -->
-    <select id="selectAttachmentByLevel" resultType="eventattachment">
-        SELECT 
-        	   FILE_NO		fileNo
-        	 , REF_BNO		refBno
-        	 , FILE_PATH	filePath
-        	 , CHANGE_NAME	changeName
-        	 , FILE_LEVEL	fileLevel
-        	 , STATUS
-          FROM 
-               CT_EVENT_ATTACHMENT
-         WHERE 
-               REF_BNO = #{eventNo}
-           AND 
-               FILE_LEVEL = #{fileLevel}
-           AND 
-               STATUS = 'Y'
-    </select>
+    <select id="selectAttachmentByFileNo" parameterType="long" resultType="eventattachment"> 
+	    SELECT 
+	           FILE_NO        fileNo
+	         , REF_BNO        refBno
+	         , FILE_PATH      filePath
+	         , CHANGE_NAME    changeName
+	         , FILE_LEVEL     fileLevel
+	         , STATUS
+	      FROM 
+	           CT_EVENT_ATTACHMENT
+	     WHERE 
+	           FILE_NO = #{fileNo}
+	       AND 
+	           STATUS = 'Y'
+	</select>
 	
-	
-	<!-- 기존 첨부파일 삭제 (DB 상태값만 N으로 변경) -->
+	<!-- 기존 첨부파일 삭제 (상태값 변경)  -->
 	<update id="deleteAttachment" parameterType="long">
 	    UPDATE 
 	           CT_EVENT_ATTACHMENT
@@ -330,7 +349,7 @@
 	           CT_EVENT_CATEGORY C ON (E.CATEGORY_NO = C.CATEGORY_NO)
 	      LEFT 
 	      JOIN 
-	           CT_EVENT_ATTACHMENT A ON (A.REF_BNO = E.EVENT_NO AND A.FILE_LEVEL = 0)
+	           CT_EVENT_ATTACHMENT A ON (A.REF_BNO = E.EVENT_NO AND A.FILE_LEVEL = 0 AND A.STATUS = 'Y')
 	     WHERE 
 	           E.STATUS = 'Y'
 	       AND 
@@ -339,7 +358,9 @@
 		       E.END_DATE >= SYSDATE	<!-- 종료일 오늘 이후 -->
 	     ORDER 
 	        BY 
-	           E.EVENT_NO DESC
+		       E.MAIN_EXPOSE DESC,  <!--  메인노출 우선 -->
+		       E.VIEW_COUNT DESC,   <!--  인기순 -->
+		       E.EVENT_NO DESC      <!--  최신순 -->
 	     FETCH FIRST 3 ROWS ONLY
 	</select>
 	

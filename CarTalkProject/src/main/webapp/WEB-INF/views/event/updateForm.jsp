@@ -222,6 +222,47 @@
 	    background-color: #e9ecef !important;
 	    border-radius: 6px;
 	}
+	
+	
+	/* 미리보기 기본 이미지 (선택되지 않았을 때) */
+	.no-image {
+	  width: 140px;
+	  height: 140px;
+	  background: #f8f9fa;
+	  color: #aaa;
+	  font-size: 13px;
+	  border: 1px solid #dee2e6;
+	  border-radius: 8px;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	}
+	
+	/* 미리보기 썸네일 */
+	.preview-img {
+	  width: 140px;
+	  height: 140px;
+	  object-fit: cover;
+	  border-radius: 8px;
+	  border: 1px solid #dee2e6;
+	  margin-top: 8px;
+	}
+	
+	.fileInput{
+		position:relative;
+	}
+	.fileInput .form-label{
+		position:absolute;
+		top:16px;
+		left:120px;
+		cursor:pointer;
+	}
+	
+	.fileInput .form-control{
+		color: transparent;
+	}
+	
+	
 	    	
 </style>
 <body>
@@ -283,26 +324,48 @@
 					<!-- 썸네일 -->
 					<div class="mb-4">
 					  <label class="form-label fw-semibold">대표 이미지 (썸네일)</label>
-					  <input type="file" class="form-control" name="thumbnail" accept="image/*">
+					  <div class="fileInput">
+					      <input type="file" id="thumbnailInput" class="form-control" name="thumbnail" accept="image/*">
+					      
+					      <!-- 파일 이름 표시용 -->
+						  <label for="thumbnailInput" id="thumbnailName" class="form-label">
+						    <c:choose>
+						      <c:when test="${not empty event.thumbnailName}">${event.thumbnailName}</c:when>
+						      <c:otherwise>선택된 파일이 없습니다.</c:otherwise>
+						    </c:choose>
+						  </label>
+					  </div>
 					  <small class="text-muted d-block py-3"">
 						※ 새 이미지를 선택하지 않으면 기존 이미지가 유지됩니다.
 					  </small>
-					  <c:if test="${not empty event.thumbnailName}">
-						  <img src="${pageContext.request.contextPath}${event.thumbnailPath}${event.thumbnailName}" 
-						       alt="기존 썸네일"
-						       style="width:140px;height:140px;object-fit:cover"
-						       class="border rounded">
-						</c:if>
+					  <div id="thumb-preview" class="mt-2"> 
+						  <c:if test="${not empty event.thumbnailName}">
+							  <img src="${pageContext.request.contextPath}${event.thumbnailPath}${event.thumbnailName}" 
+							       alt="기존 썸네일"
+							       style="width:140px;height:140px;object-fit:cover"
+							       class="border rounded">
+						  </c:if>
+						</div>
 					</div>
 	
 					<!-- 상세 이미지 -->
 					<div class="mb-4">
 					  <label class="form-label fw-semibold">상세 이미지</label>
-					  <input type="file" class="form-control" name="detailImage" accept="image/*">
+					  <div class="fileInput">
+						  <input type="file" id="detailInput"  class="form-control" name="detailImage" accept="image/*">
+						  <!-- 파일 이름 표시 -->
+						  <label for="detailInput" id="detailName"  class="form-label">
+						    <c:choose>
+						      <c:when test="${not empty event.detailName}">${event.detailName}</c:when>
+						      <c:otherwise>선택된 파일이 없습니다.</c:otherwise>
+						    </c:choose>
+						  </label>
+				      	</div>
+				      
 					  <small class="text-muted d-block py-3">
 						※ 새 이미지를 선택하지 않으면 기존 상세 이미지가 유지됩니다.
 					  </small>
-					    <div class="mt-2">
+					    <div id="detail-preview" class="mt-2">
 					      	<c:if test="${not empty event.detailName}">
 							  <img src="${pageContext.request.contextPath}${event.detailPath}${event.detailName}" 
 							       alt="기존 상세 이미지"
@@ -367,73 +430,70 @@
 
 <script>
 $(function() {
-   // 날짜 선택기 초기화
-   $('.datepicker').datepicker({
-       format: 'yyyy-mm-dd',
-       autoclose: true,
-       todayHighlight: true,
-       language: 'ko'
-  });
-   
-  // 썸네일 미리보기
-  $('input[name="thumbnail"]').on('change', function(e) {
-    previewImage(this, '#thumb-preview');
-  });
+	  // 날짜 선택기 초기화
+	  $('.datepicker').datepicker({
+	    format: 'yyyy-mm-dd',
+	    autoclose: true,
+	    todayHighlight: true,
+	    language: 'ko'
+	  });
 
-  // 상세 이미지 미리보기
-  $('input[name="detailImage"]').on('change', function(e) {
-    previewImage(this, '#detail-preview');
-  });
+	  // 썸네일 미리보기
+	  $('#thumbnailInput').on('change', function() {
+	    showPreview(this, '#thumb-preview', '#thumbnailName');
+	  });
 
-  // 공용 함수: 미리보기 처리
-  function previewImage(input, previewSelector) {
-    const file = input.files[0];
-    const $preview = $(previewSelector);
-    $preview.empty(); // 기존 미리보기 초기화
+	  // 상세 이미지 미리보기
+	  $('#detailInput').on('change', function() {
+	    showPreview(this, '#detail-preview', '#detailName');
+	  });
 
-    // 파일이 선택되지 않은 경우
-    if (!file) {
-      $preview.html(`
-        <div class="border rounded mt-2 d-flex align-items-center justify-content-center"
-             style="width:140px;height:140px;background:#f8f9fa;color:#aaa;font-size:13px;">
-          이미지 없음
-        </div>
-      `);
-      return;
-    }
+	  //파일 선택 시 즉시 이미지 미리보기
+	  function showPreview(input, previewSelector, nameSelector) {
+		  const file = input.files[0];
+		  const $preview = $(previewSelector);
+		  const $name = $(nameSelector);
+		
+		  if (!file) {
+		    $name.text('선택된 파일이 없습니다.');
+		    $preview.html('<div class="no-image">이미지 없음</div>');
+		    return;
+		  }
+		  
+		  // 파일명 표시
+		  $name.text(file.name);
+		
+		  // 이미지 아닌 경우 방어
+		  if (!file.type.startsWith('image/')) {
+		    alert('이미지 파일만 선택 가능합니다.');
+		    $(input).val('');
+		    return;
+		  }
+		  // blob URL 생성
+		  const blobUrl = URL.createObjectURL(file);
+		
+		  // 미리보기 이미지 생성
+		  const img = document.createElement("img");
+		  img.src = blobUrl;
+		  img.alt = "미리보기";
+		  img.className = "preview-img border rounded";
+		
+		  // 기존 내용 지우고 교체
+		  $preview.empty().append(img);
+		}
 
-    // 이미지 파일인지 확인
-    if (!file.type.startsWith("image/")) {
-      alert("이미지 파일만 선택할 수 있습니다.");
-      $(input).val(""); // 입력값 초기화
-      return;
-    }
 
-    // FileReader로 이미지 읽기
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const imgTag = `
-        <img src="${e.target.result}"
-             alt="미리보기"
-             class="border rounded mt-2"
-             style="width:140px;height:140px;object-fit:cover;">
-      `;
-      $preview.html(imgTag);
-    };
-    reader.readAsDataURL(file);
-  }
-  
-  // 삭제하기
-  var contextPath = "${pageContext.request.contextPath}";
+	  // 삭제하기 (모달)
+	  const contextPath = "${pageContext.request.contextPath}";
+	  $('#deleteConfirmModal').on('show.bs.modal', function (event) {
+	    const button = $(event.relatedTarget);
+	    const eventNo = button.data('event-no');
+	    const deleteLink = contextPath + "/event/delete?eventNo=" + eventNo;
+	    $('#modalDeleteLink').attr('href', deleteLink);
+	  });
 
-  $('#deleteConfirmModal').on('show.bs.modal', function (event) {
-      const button = $(event.relatedTarget); // 모달을 트리거한 버튼
-      const eventNo = button.data('event-no'); // 버튼에 저장해 둔 eventNo 값 가져오기
-      
-      const deleteLink = contextPath + "/event/delete?eventNo=" + eventNo;
-      $('#modalDeleteLink').attr('href', deleteLink);
-  });
-});
+	});
+
 </script>
 
 </html>

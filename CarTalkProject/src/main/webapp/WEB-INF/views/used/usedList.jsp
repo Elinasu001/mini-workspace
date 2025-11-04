@@ -70,13 +70,11 @@
 
 		<!-- 검색 -->
 		<div class="search-wrap">
-	<!--  로그인이 안됐을 경우 글쓰기 기능 막음 (로그인 구현되면 활성화) --> 
+		<div class="left-box">
 		<c:if test="${ not empty sessionScope.loginMember }">
 			<a href="${pageContext.request.contextPath}/used/insert" class="btn-write">글쓰기</a>
 		</c:if>
-		<!-- 로그인 구현시 밑에 항목 삭제 -->
-			<!--  <a href="${pageContext.request.contextPath}/used/insert" class="btn-write">글쓰기</a> -->
-
+		</div>
 			<form action="${pageContext.request.contextPath}/used/list" method="get" class="search-box">
 				<input type="text" name="keyword" placeholder="검색할 차량이름을 입력하세요." value="${keyword}">
 				<button type="submit">검색</button>

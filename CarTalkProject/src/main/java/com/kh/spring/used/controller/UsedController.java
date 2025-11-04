@@ -1,7 +1,11 @@
 package com.kh.spring.used.controller;
 
+import java.io.PrintWriter;
 import java.util.List;
+import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,14 +79,23 @@ public class UsedController {
 	public String usedForm(@ModelAttribute UsedDTO used
 						  ,@RequestParam(value = "upfile", required = false) List<MultipartFile> files
 						  , HttpSession session
-						  , RedirectAttributes redirectAttr) {
+						  , HttpServletRequest request
+						  , HttpServletResponse response
+						  , RedirectAttributes redirectAttr) throws IOException {
 		
 		
 		// 로그인이 안됐을 경우 글쓰기 기능 막음 (로그인 구현되면 활성화)
 		
 		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 		if( loginMember == null) {
-			return "redirect:/ct/login";
+			response.setContentType("text/html; charset=UTF-8");
+		    PrintWriter out = response.getWriter();
+		    out.println("<script>");
+		    out.println("alert('로그인 후 이용해주세요.');");
+		    out.println("location.href='" + request.getContextPath() + "/loginPage';");
+		    out.println("</script>");
+		    out.close();
+		    return null;
 		}
 		
 		//used.setUserNo(1L); // 테스트용
@@ -172,13 +185,60 @@ public class UsedController {
 	}
 	
 	@GetMapping("/updateForm/{usedNo}")
-	public String updateForm(@PathVariable("usedNo") int usedNo, Model model) {
+	public String updateForm(@PathVariable("usedNo") int usedNo
+			                , Model model
+			                , HttpServletRequest request
+			                , HttpServletResponse response
+			                , HttpSession session) throws IOException {
+		
+		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+		if( loginMember == null) {
+			response.setContentType("text/html; charset=UTF-8");
+		    PrintWriter out = response.getWriter();
+		    out.println("<script>");
+		    out.println("alert('로그인 후 이용해주세요.');");
+		    out.println("location.href='" + request.getContextPath() + "/loginPage';");
+		    out.println("</script>");
+		    out.close();
+		    return null;
+		}
 		
 		UsedListDTO used = usedService.selectUsedDetail(usedNo);
-		
 		model.addAttribute("used", used);
-		
 		return "used/usedUpdateForm";
+	}
+	
+	@PostMapping("/update")
+	public String updateUsed(@ModelAttribute UsedDTO used
+				            , HttpSession session
+				            , HttpServletRequest request
+				            , HttpServletResponse response
+				            , RedirectAttributes redirectAttr) throws IOException {
+		
+		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+		if( loginMember == null) {
+			response.setContentType("text/html; charset=UTF-8");
+		    PrintWriter out = response.getWriter();
+		    out.println("<script>");
+		    out.println("alert('로그인 후 이용해주세요.');");
+		    out.println("location.href='" + request.getContextPath() + "/loginPage';");
+		    out.println("</script>");
+		    out.close();
+		    return null;
+		}
+		
+		used.setUserNo(loginMember.getUserNo());
+		
+		int result = usedService.updateUsed(used, session);
+		
+		if(result > 0) {
+			redirectAttr.addFlashAttribute("message", "게시글이 수정되었습니다.");
+			return "redirect:/used/detail?no=" + used.getUsedNo();
+		} else {
+			redirectAttr.addFlashAttribute("message", "수정 실패!!");
+			return "redirect:/used/updateForm/" + used.getUsedNo();
+			
+		}
 	}
 
 }
