@@ -15,8 +15,8 @@
 			value="oracle.jdbc.driver.OracleDriver" />
 		<property name="url"
 			value="jdbc:oracle:thin:@115.90.212.20:10000:XE" />
-		<property name="username" value="CJY19" />
-		<property name="password" value="CJY191234" />
+		<property name="username" value="BJG12" />
+		<property name="password" value="BJG121234" />
 		<!-- 선택: 연결 풀 성능 설정 -->
 		<property name="initialSize" value="5" />
 		<property name="maxActive" value="20" />
