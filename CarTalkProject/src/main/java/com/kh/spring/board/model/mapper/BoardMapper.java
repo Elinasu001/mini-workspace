@@ -9,6 +9,7 @@ import org.apache.ibatis.session.RowBounds;
 import com.kh.spring.board.model.dto.AttachmentDTO;
 import com.kh.spring.board.model.dto.BoardDTO;
 import com.kh.spring.board.model.dto.LikeDTO;
+import com.kh.spring.board.model.dto.ReplyDTO;
 
 @Mapper
 public interface BoardMapper {
@@ -25,12 +26,6 @@ public interface BoardMapper {
 	
 	BoardDTO selectByBoardNo(Long boardNo);
 	
-	int insertReply();
-	
-	int updateReply();
-	
-	int deleteReply();
-	
 	int insertBoard(BoardDTO board);
 	
 	int updateBoard(BoardDTO board);
@@ -46,4 +41,14 @@ public interface BoardMapper {
 	LikeDTO selectLikes(LikeDTO likeNums);
 	
 	int insertLikes(LikeDTO likeNums);
+
+	int deleteLikes(LikeDTO likeNums);
+	
+	int insertReply(ReplyDTO reply);
+	
+	int updateReply(ReplyDTO reply);
+	
+	int deleteReply(ReplyDTO reply);
+
+	List<Long> selectAllBoard();
 }

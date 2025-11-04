@@ -228,6 +228,9 @@
 	       CT_BOARD.STATUS = 'Y'
 	   AND
 	       CT_BOARD.BOARD_NO = #{boardNo}
+	 ORDER
+	    BY
+	       replyEnrollDate DESC
 	
 	</select>
 	<!-- 댓글 작성자로 참조할 외래키 값이 USER_NO(NUMBER)라서 댓글 작성자의 NICKNAME 값을 따로 출력해 주기 위해
@@ -319,8 +322,8 @@
 	<select id="selectLikes" parameterType="com.kh.spring.board.model.dto.LikeDTO" 
 	resultType ="com.kh.spring.board.model.dto.LikeDTO">
 		SELECT
-		       USER_NO
-		     , BOARD_NO
+		       USER_NO userNo
+		     , BOARD_NO boardNo
 		  FROM
 		       CT_BOARD_LIKE
 		 WHERE
@@ -341,5 +344,73 @@
 		       )
 	
 	</insert>
+	
+	<delete id="deleteLikes" parameterType="com.kh.spring.board.model.dto.LikeDTO">
+		DELETE
+		  FROM
+		       CT_BOARD_LIKE
+		 WHERE
+		       USER_NO = #{userNo}
+		   AND
+		       BOARD_NO = #{boardNo}
+	
+	</delete>
+	
+	<select id="selectAllBoard" resultType="long">
+		SELECT
+			   BOARD_NO
+	      FROM
+	           CT_BOARD
+	     ORDER
+	        BY
+	           ENROLL_DATE DESC
+	
+	</select>
+	
+	<insert id="insertReply" parameterType="com.kh.spring.board.model.dto.ReplyDTO">
+		INSERT
+		  INTO
+		       CT_BOARD_REPLY
+		VALUES
+		       (
+		       SEQ_BOARD_REPLY.NEXTVAL
+		     , #{refBno}
+		     , #{replyWriter}
+		     , #{replyContent}
+		     , SYSDATE
+		     , 'Y'
+		       )
+		
+	
+	</insert>
+	
+	<update id="updateReply" parameterType="com.kh.spring.board.model.dto.ReplyDTO">
+		UPDATE
+			   CT_BOARD_REPLY
+		   SET
+		       REPLY_CONTENT = #{replyContent}
+		 WHERE
+		 	   REPLY_NO = #{replyNo}
+		   AND
+		       BOARD_NO = #{refBno}
+		   AND
+		       STATUS = 'Y'
+	
+	</update>
+	
+		<update id="deleteReply" parameterType="com.kh.spring.board.model.dto.ReplyDTO">
+		UPDATE
+			   CT_BOARD_REPLY
+		   SET
+		       STATUS = 'N'
+		 WHERE
+		 	   REPLY_NO = #{replyNo}
+		   AND
+		       BOARD_NO = #{refBno}
+		   AND
+		       STATUS = 'Y'
+	
+	</update>
+	
 
 </mapper>

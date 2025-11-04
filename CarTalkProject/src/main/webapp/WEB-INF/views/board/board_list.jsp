@@ -106,8 +106,9 @@
         </table>
         
         <div>
+        	<c:if test="${ sessionScope.loginMember ne null }">
         	<button class="btn btn-outline-info" onclick="location.href = '/ct/board/form'">글쓰기</button>
-        
+        	</c:if>
         </div>
         <script>
         	$('.boardOrderBy').click(e => {

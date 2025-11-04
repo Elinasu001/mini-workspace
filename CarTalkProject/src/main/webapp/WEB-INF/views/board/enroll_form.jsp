@@ -6,81 +6,85 @@
 
 <head>
     <meta charset="UTF-8">
+    <jsp:include page="../include/meta.jsp" />
     <title>게시글 작성 | CarTalk</title>
 
     <style>
-        .boardDetail {
-            width: 1200px;
-            height: 800px;
-            margin: auto;
-            align-content: center;
-            text-align: center;
-        }
+    
+.boardDetail {
+	width: 1000px;
+	height: 1000px;
+	margin: auto;
+	align-content: center;
+	text-align: center;
+}
 
-        .boardDetailTable {
-            margin: auto;
-        }
 
-        .boardDetailTable {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
+#boardContent {
+	width: 800px; 
+	height: 400px; 
+	text-align: left; 
+	padding: 25px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	margin: 20px;
+}
 
-        #boardContent {
-            background-color: aquamarine;
-            width: 80%;
-            height: 200px;
-        }
+.labelFont {
+	font-size: 20px;
+	font-weight: 700;
+}
+
+#boardTitle:hover{
+	cursor: text;
+}
+
     </style>
 </head>
 
 <body>
+<jsp:include page="../include/header.jsp" />
     <div class="boardDetail">
-    <form action="/ct/board" method="post" enctype="multipart/form-data">
-        <table class="boardDetailTable">
-            <thead>
-                <tr>
-                    <th width="500">작성자</th>
-                </tr>
-                <tr>
-                    <td width="50">${ sessionScope.loginMember.nickName }
+		<div class="container border rounded">
+		<form action="/ct/board" method="post" enctype="multipart/form-data">
+			<div class="form-group my-2">
+				<label class="labelFont">작성자</label> 
+				<span>${ sessionScope.loginMember.nickName }
                     <input type="hidden" name="boardWriter" value="${ sessionScope.loginMember.nickName }"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="10">
-                        카테고리
-                        <select name="category">
+                </span>
+			</div>
+
+			<div class="form-group my-2">
+				<label class="labelFont">카테고리</label> 
+				    <select class="form-select w-auto mx-auto" name="category">
                             <option value="1">자유</option>
                             <option value="2">질문</option>
                             <option value="3">정보</option>
-                        </select>
-                    </td>
-                </tr>
-            </thead>
-            <tbody class="mainBoard">
-                <tr>
-                    <td><input name="boardTitle" value="게시글 제목"></td>
-                </tr>
-                <tr>
-                    <td><textarea id="boardContent" name="boardContent" style="resize: none;">게시글 내용</textarea></td>
-                </tr>
-                <tr>
-                    <td>첨부파일<input type="file" name="boardUpfile"></td>
-                </tr>
-                <td>
-                <button type="submit">등록</button>
-                <button type="reset" onclick="history.back()">취소</button>
-                </td>
+                    </select>
+			</div>
 
-            </tbody>
+			<div class="form-group">
+				<input name="boardTitle" id="boardTitle" class="form-control w-50 mx-auto" placeholder="게시글 제목을 입력하세요." />
+			</div>
 
-        </table>
+			<div class="form-group">
+				<textarea class="mx-auto border rounded-3" id="boardContent" name="boardContent" style="resize: none;" placeholder="게시글 내용을 입력하세요."></textarea>
+			</div>
+			
+			<div class="form-group my-2" style="text-align: left;">
+			<label class="m-2 labelFont">첨부파일</label> <input type="file" name="boardUpfile">
+			</div>
+			
+			<div class="form-group my-2">
+			    <button class="btn btn-primary" type="submit">등록</button>
+                <button class="btn btn-primary" type="reset" onclick="history.back()">취소</button>
+			</div>
+
     </form>
-    </div>
+    </div>	
+</div>
 
 
-
+	<jsp:include page="../include/footer.jsp" />
 
 </body>
 
