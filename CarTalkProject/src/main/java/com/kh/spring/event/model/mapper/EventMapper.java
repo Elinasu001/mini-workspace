@@ -49,7 +49,10 @@ public interface EventMapper {
     int updateEvent(EventDTO event);
     
     // 기존 첨부파일 조회 (0 == 썸네일/1 == 상세이미지 구분)
-    EventAttachment selectAttachmentByLevel(Map<String, Object> params);
+    EventAttachment selectAttachmentByFileNo(Long fileNo);
+    
+    // 이벤트 번호로 전체 첨부파일 조회
+    List<EventAttachment> selectAttachmentsByEventNo(Long eventNo);
     
     // 첨부파일 삭제 (STATUS = 'N' 처리)
     int deleteAttachment(Long fileNo);

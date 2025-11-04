@@ -13,7 +13,7 @@
               <p class="feature rounded-3 mb-4 mt-n4">
                 <c:choose>
                   <c:when test="${not empty event.thumbnailPath and not empty event.thumbnailName}">
-                    <img src="${pageContext.request.contextPath}/${event.thumbnailPath}/${event.thumbnailName}" alt="대표이미지">
+                    <img src="${pageContext.request.contextPath}${event.thumbnailPath}${event.thumbnailName}" alt="대표이미지">
                   </c:when>
                   <c:otherwise>
                     <img src="<c:url value='/resources/upfiles/event/default.png' />" alt="기본이미지">
