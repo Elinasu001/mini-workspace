@@ -55,24 +55,24 @@
         <h3>거래 지역</h3>
         <select name="region">
           <option selected disabled>지역을 선택하세요</option>
-          <option>서울</option>
-          <option>경기 북부</option>
-          <option>경기 남부</option>
-          <option>인천</option>
-          <option>강원</option>
-          <option>대전</option>
-          <option>세종</option>
-          <option>충북</option>
-          <option>충남</option>
-          <option>광주</option>
-          <option>전북</option>
-          <option>전남</option>
-          <option>부산</option>
-          <option>울산</option>
-          <option>대구</option>
-          <option>경북</option>
-          <option>경남</option>
-          <option>제주</option>
+          <option value="">서울</option>
+          <option value="">경기 북부</option>
+          <option value="">경기 남부</option>
+          <option value="">인천</option>
+          <option value="">강원</option>
+          <option value="">대전</option>
+          <option value="">세종</option>
+          <option value="">충북</option>
+          <option value="">충남</option>
+          <option value="">광주</option>
+          <option value="">전북</option>
+          <option value="">전남</option>
+          <option value="">부산</option>
+          <option value="">울산</option>
+          <option value="">대구</option>
+          <option value="">경북</option>
+          <option value="">경남</option>
+          <option value="">제주</option>
         </select>
       </div>
 
