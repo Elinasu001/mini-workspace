@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <jsp:include page="../include/meta.jsp" />
-    <title>게시글 작성 | CarTalk</title>
+    <title>게시글 수정 | CarTalk</title>
 <style>
     
 .boardDetail {

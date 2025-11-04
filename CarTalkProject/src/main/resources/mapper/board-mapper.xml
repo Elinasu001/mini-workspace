@@ -356,6 +356,17 @@
 	
 	</delete>
 	
+	<select id="selectAllBoard" resultType="long">
+		SELECT
+			   BOARD_NO
+	      FROM
+	           CT_BOARD
+	     ORDER
+	        BY
+	           ENROLL_DATE DESC
+	
+	</select>
+	
 	<insert id="insertReply" parameterType="com.kh.spring.board.model.dto.ReplyDTO">
 		INSERT
 		  INTO

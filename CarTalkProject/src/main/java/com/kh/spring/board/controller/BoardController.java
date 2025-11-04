@@ -1,5 +1,6 @@
 package com.kh.spring.board.controller;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -15,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring.board.model.dto.BoardDTO;
 import com.kh.spring.board.model.service.BoardService;
-import com.kh.spring.member.model.dto.MemberDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -63,6 +63,7 @@ public class BoardController {
 		model.addAttribute("keyword",keyword);
 		model.addAttribute("condition",condition);
 		model.addAttribute("orderBy", orderBy);
+		model.addAttribute("pageNo", pageNo);
 		
 		return "board/board_list";
 		
@@ -73,7 +74,15 @@ public class BoardController {
 		
 		BoardDTO board = boardService.selectByBoardNo(boardNo);
 		
+		List<Long> boardNums = boardService.selectAllBoard();
+		
+		int boardIndex = boardNums.indexOf(boardNo);
+		int boardNumSize = boardNums.size();
+		
 		model.addAttribute("board",board);
+		model.addAttribute("boardNums", boardNums);
+		model.addAttribute("boardIndex", boardIndex);
+		model.addAttribute("boardNumSize", boardNumSize);
 		
 		return "board/board_detail";
 	}

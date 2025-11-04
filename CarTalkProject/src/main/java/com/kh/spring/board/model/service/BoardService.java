@@ -1,5 +1,6 @@
 package com.kh.spring.board.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -30,5 +31,7 @@ public interface BoardService {
 	String updateReply(ReplyDTO reply, HttpSession session);
 	
 	String deleteReply(ReplyDTO reply, HttpSession session);
+
+	List<Long> selectAllBoard();
 	
 }

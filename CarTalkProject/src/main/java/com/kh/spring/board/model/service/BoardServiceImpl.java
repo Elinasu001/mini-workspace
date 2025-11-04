@@ -361,5 +361,12 @@ public class BoardServiceImpl implements BoardService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<Long> selectAllBoard() {
+		
+		return boardMapper.selectAllBoard();
+		
+	}
 	
 }

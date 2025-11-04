@@ -7,7 +7,7 @@
 <head>
 <jsp:include page="../include/meta.jsp" />
 <meta charset="UTF-8">
-<title>1번 게시판 | CarTalk</title>
+<title>${ board.boardNo }번 게시판 | CarTalk</title>
 
 <style>
 .boardDetail {
@@ -38,11 +38,20 @@
 	font-weight: 700;
 }
 
-.nav {
+.prevPage{
+  width: 50%;
   display: flex;
-  justify-content: space-between;
-  align-items: center; 
-  padding: 10px; 
+  justify-content: flex-start;
+  align-items: left;
+
+}
+
+.nextPage{
+	width:50%;
+    display: flex;
+  justify-content: flex-end;
+  align-items: right;
+
 }
 
 #boardFile{
@@ -97,7 +106,7 @@
                 		url : '/ct/board/like',
                 		type : 'get',
                 		data : {
-                			boardNo : boardNo
+                			boardNo : boardNo,
                 		},
                 		success : function(response){
                 			
@@ -116,6 +125,7 @@
                 
                 function selectInfo(){
                 	
+                	
                 	const boardNo = ${board.boardNo};
                 	
                 	$.ajax({
@@ -127,13 +137,19 @@
                 			
                 			if(response.replies !== null){
                 			const str = response.replies.map(e => `
-                													<tr>
-																	<td>${ e.replyContent }</td>
-																	<td>${ e.replyWriter }</td>
-																	<td>${ e.enrollDate }</td>
+                													<tr class="border border-top">
+																	<td>\${ e.replyContent }</td>
+																	<td>\${ e.replyWriter }</td>
+																	<td>\${ e.enrollDate }</td>
+																	<td>
+																	<button class="btn btn-secondary" onclick="updateReply(${reply.replyNo})">수정하기</button>
+																	<button class="btn btn-danger" onclick="deleteReply()">삭제</button>
+																	</td>
 																	</tr>
                 												  `).join('');
                 				
+                				console.log(str);
+                			
                 				$('#reply-area').html(str);
                 				
                 				};
@@ -143,6 +159,9 @@
                 }
                 
                 </script>
+             
+            
+                
 			<div class="form-group boardButtons">
 				<c:if
 					test="${ sessionScope.loginMember.nickName eq board.boardWriter }">
@@ -186,7 +205,7 @@
 								<button class="btn btn-secondary" onclick="insertReply()">댓글
 									등록</button>
 							</div>
-							<script>
+			<script>
                 	// 미구현 AJAX로 댓글 비동기 등록
                 	function insertReply(){
                 		
@@ -213,7 +232,10 @@
                 		});
                 		selectInfo();
                 	}
+                	
+                	
                 </script>
+                
 						</form>
 					</c:when>
 					<c:otherwise>
@@ -224,42 +246,43 @@
 					</c:otherwise>
 				</c:choose>
 			</div>
-			
-			<div class="form-group">
+			<div class="form-group">			
 			<script>
-				function updateReply(num){
-					
-					const boardNo = ${board.boardNo};
-					const replyContent = document.getElementById("replyContent").value;
-					const replyNo = num;
-					
-					console.log(replyNo);
-					
-					$.ajax({
-						url : 'updateReply',
-						type : 'post',
-						data : {
-							replyNo : replyNo,
-               				refBno : boardNo,
-               				replyContent : replyContent,
-						},
-						success : function(response){
-               				if(response === 'success'){
-               					alert('댓글 수정 성공');
-               				} else {
-               					alert('댓글 수정 실패, 다시 시도해주세요');
-               				}
-							
-						}
+			
+			function updateReply(num){
+				
+				const boardNo = ${board.boardNo};
+				const replyContent = document.getElementById("replyContent").value;
+				const replyNo = num;
+				
+				console.log(replyNo);
+				
+				$.ajax({
+					url : 'updateReply',
+					type : 'post',
+					data : {
+						replyNo : replyNo,
+           				refBno : boardNo,
+           				replyContent : replyContent,
+					},
+					success : function(response){
+           				if(response === 'success'){
+           					alert('댓글 수정 성공');
+           				} else {
+           					alert('댓글 수정 실패, 다시 시도해주세요');
+           				}
 						
-					});
+					}
 					
-					selectInfo();
-				}
-		
+				});
+         		selectInfo();
+			}
+        
 			</script>
-			<table class="boardReplyTable">
-			<tbody id="reply-area">
+			<table class="boardReplyTable">		
+				
+
+			<tbody id="reply-area"> 
 				<c:choose>
 					<c:when test="${ not empty board.replies }">
 						<c:forEach var="reply" items="${ board.replies }">
@@ -288,10 +311,17 @@
 			</tbody>
 			</table>
 			</div>
-			
 			<div class="nav form-group">
-					<button class="btn btn-primary">이전 글</button>
-					<button class="btn btn-primary">다음 글</button>
+			<div class="prevPage">
+					<c:if test="${ boardIndex gt 0 }">
+					<button class="btn btn-primary" onclick="location.href ='/ct/board/${boardNums[boardIndex-1]}'">이전 글</button>
+					</c:if>
+			</div>
+			<div class="nextPage">
+					<c:if test="${ boardIndex lt boardNumSize -1 }">
+					<button class="btn btn-primary" onclick="location.href ='/ct/board/${boardNums[boardIndex+1]}'">다음 글</button>
+					</c:if>
+			</div>
 			</div>
 
 		</div>
