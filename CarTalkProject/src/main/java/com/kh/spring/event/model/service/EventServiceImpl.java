@@ -31,176 +31,108 @@ public class EventServiceImpl implements EventService {
     private final EventMapper eventMapper;
     private final Pagination pagination;
     
+    // ===================== 메인 페이지 =====================
     
-    /**
-     * 메인 페이지 진행 중 이벤트 조회
-     **/
+    
+    /** 진행 중 이벤트 Top3 조회 **/
     @Override
     public List<EventDTO> selectEventOngoingTop() {
     	 List<EventDTO> list = eventMapper.selectEventOngoingTop();
-         log.info("진행중 이벤트 3개: {}", list);
+         //log.info("진행중 이벤트 3개: {}", list);
          return list;
     }
     
-    /**
-     * 진행중 이벤트 게시글 조회
-     **/
+    
+    // ===================== 목록 조회 =====================
+    
+    /** 진행 중 이벤트 목록 조회**/
     @Override
     public Map<String, Object> selectOngoing(Long page) {
-        if (page == null || page < 1) {
-            throw new InvalidArgumentsException("잘못된 접근입니다.");
-        }
-
-        int listCount = eventMapper.selectOngoingCount();
-        PageInfo pi = pagination.getPageInfo(listCount, page.intValue(), 6, 6);
-
-        List<EventDTO> events = new ArrayList<>();
-        if (listCount > 0) {
-            RowBounds rb = new RowBounds((page.intValue() - 1) * 6, 6);
-            events = eventMapper.selectOngoing(rb);
-        }
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("pi", pi);
-        map.put("events", events);
-        return map;
+        return getEventList(page, "ongoing");
     }
     
-    /**
-     * 종료된 이벤트 게시글 조회
-     **/
+    /** 종료된 이벤트 목록 조회 **/
     @Override
     public Map<String, Object> selectEnded(Long page) {
-        if (page == null || page < 1) {
-            throw new InvalidArgumentsException("잘못된 접근입니다.");
-        }
-
-        int listCount = eventMapper.selectEndedCount();
-        PageInfo pi = pagination.getPageInfo(listCount, page.intValue(), 6, 6);
-
-        List<EventDTO> events = new ArrayList<>();
-        if (listCount > 0) {
-            RowBounds rb = new RowBounds((page.intValue() - 1) * 6, 6);
-            events = eventMapper.selectEnded(rb);
-        }
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("pi", pi);
-        map.put("events", events);
-        return map;
+        return getEventList(page, "ended");
     }
     
     
-    /**
-     * 이벤트 게시글 상세조회 (조회수 증가 포함)
-     **/
+    // ===================== 상세 조회 =====================
+    
+    /** 이벤트 상세 조회 + 조회수 증가 **/
     @Override
     public EventDTO selectByEventNo(Long eventNo) {
-    	
-        if (eventNo == null || eventNo < 1) {
-            throw new InvalidArgumentsException("유효하지 않은 요청입니다.");
-        }
-
-        int result = eventMapper.increaseCount(eventNo);
+    	 
+        validateEventNo(eventNo);// 이벤트 번호 유효성 검사 (PK 범위인지)
+        increaseViewCount(eventNo);// 조회수 증가 처리
         
-        if (result != 1) {
-            throw new BadRequestException("조회수 증가 중 오류 발생");
-        }
-
+        // DB 조회
         EventDTO event = eventMapper.selectByEventNo(eventNo);
         if (event == null) {
             throw new BadRequestException("존재하지 않는 이벤트입니다.");
         }
         
-        // 파일 목록 중 썸네일 / 상세 이미지 세팅
-        if (event.getFiles() != null && !event.getFiles().isEmpty()) {
-            for (EventAttachment file : event.getFiles()) {
-                if (file.getFileLevel() == 0) { // 썸네일
-                    event.setThumbnailPath(file.getFilePath());
-                    event.setThumbnailName(file.getChangeName());
-                } else if (file.getFileLevel() == 1) { // 상세 이미지
-                    event.setDetailPath(file.getFilePath());
-                    event.setDetailName(file.getChangeName());
-                }
-            }
-        }
+        // DB 조회 결과 후처리 : 파일 정보 DTO에 매핑
+        setEventFileData(event);
 
         return event;
     }
     
+    // ===================== 등록 =====================
     
-    /**
-     * 이벤트 게시글 등록
-     **/
+    
+    /** 이벤트 등록 **/
     @Override
     public int insertEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session) {
-        
-    	validateUser(event, session);
-        validateEvent(event);
+       
+    	validateUser(event, session);// 관리자 권한 검증
+        validateEvent(event);// 제목/내용 기본 검증
+        validateInsertFiles(thumbnail, detailImage);// 첨부파일 필수 검증
 
         int result = eventMapper.insertEvent(event);
         if (result != 1) throw new BadRequestException("이벤트 등록 실패");
 
         Long eventNo = event.getEventNo();
-
-        if (thumbnail != null && !thumbnail.isEmpty()) saveAttachment(thumbnail, eventNo, session, 0);
-        if (detailImage != null && !detailImage.isEmpty()) saveAttachment(detailImage, eventNo, session, 1);
+        
+        // 썸네일 저장 / 상세 이미지 저장
+        saveAttachment(thumbnail, eventNo, session, 0);
+        saveAttachment(detailImage, eventNo, session, 1);
 
         return result;
     }
     
+    // ===================== 수정 =====================
     
-    /**
-     * 이벤트 게시글 수정
-     **/
+    
+    /** 이벤트 수정 **/
     @Override
     public int updateEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session) {
         
-    	validateUser(event, session);
-        validateEvent(event);
-
-        int result = eventMapper.updateEvent(event);
-        if (result != 1) throw new BadRequestException("이벤트 수정 실패");
+    	validateUser(event, session);// 관리자 권한 검증
+        validateEvent(event);// 제목/내용 기본 검증
 
         Long eventNo = event.getEventNo();
-        log.info("번호 : {}", eventNo);
+        List<EventAttachment> attachments = eventMapper.selectAttachmentsByEventNo(eventNo);// 기존 파일 조회
         
-        // 기존 첨부파일 목록 조회
-        List<EventAttachment> attachments = eventMapper.selectAttachmentsByEventNo(eventNo);
         
-        // 썸네일 교체
-        if (thumbnail != null && !thumbnail.isEmpty()) {
-            EventAttachment oldThumb = attachments.stream()
-                    .filter(f -> f.getFileLevel() == 0)
-                    .findFirst()
-                    .orElse(null);
-
-            if (oldThumb != null) {
-                deleteOldAttachment(oldThumb.getFileNo(), session); // fileNo 기준 삭제
-            }
-            saveAttachment(thumbnail, eventNo, session, 0); // 새 파일 저장
-        }
+        validateUpdateFiles(attachments, thumbnail, detailImage);// 첨부파일 필수 검증
         
-        // 상세 이미지 교체
-        if (detailImage != null && !detailImage.isEmpty()) {
-            EventAttachment oldDetail = attachments.stream()
-                    .filter(f -> f.getFileLevel() == 1)
-                    .findFirst()
-                    .orElse(null);
+        int result = eventMapper.updateEvent(event);
+        if (result != 1) throw new BadRequestException("이벤트 수정 실패");// 트랜잭션 안정성 : DB 실행 직후 처리
 
-            if (oldDetail != null) {
-                deleteOldAttachment(oldDetail.getFileNo(), session); // fileNo 기준 삭제
-            }
-            saveAttachment(detailImage, eventNo, session, 1); // 새 파일 저장
-        }
-
+        //log.info("번호 : {}", eventNo);
+        
+        
+        // 파일 교체 공통 처리
+        replaceAttachment(attachments, thumbnail, eventNo, session, 0); // 썸네일
+        replaceAttachment(attachments, detailImage, eventNo, session, 1); // 상세 이미지
+        
         return result;
     }
     
     
-    /**
-     * 이벤트 게시글 삭제 (상태 변경)
-     **/
+    /** 이벤트 삭제 (상태값 변경) **/
     @Override
     public Long deleteEvent(Long eventNo) {
         Long result = eventMapper.deleteEvent(eventNo);
@@ -212,42 +144,124 @@ public class EventServiceImpl implements EventService {
         }
         return result;
     }
-
-    /**
-     * 카테고리 조회
-     **/
+    
+    
+    // ===================== 카테고리 =====================
+    
+    /** 카테고리 목록 조회 **/
     @Override
     public List<EventCategory> selectCategoryList() {
         return eventMapper.selectCategoryList();
     }
 
     
-    //--- 내부 공통 로직 ---
     
-    /**
-     * 내부 공통 유효성 검증
-     **/
-    private void validateEvent(EventDTO event) {
-        if (event.getEventTitle() == null || event.getEventTitle().trim().isEmpty()
-         || event.getEventContent() == null || event.getEventContent().trim().isEmpty()) {
-            throw new InvalidArgumentsException("제목 또는 내용이 비어 있습니다.");
+    //=========== 유효성 검증 =========== 
+    
+    /** 페이지 번호 유효성 검사 (1 이상인지 확인) */
+    private void validatePage(Long page) {
+        if (page == null || page < 1) {
+            throw new InvalidArgumentsException("잘못된 접근입니다.");
         }
     }
 
+    /** 이벤트 번호 유효성 검사 (유효한 PK 범위인지 확인) **/
+    private void validateEventNo(Long eventNo) {
+        if (eventNo == null || eventNo < 1) {
+            throw new InvalidArgumentsException("유효하지 않은 요청입니다.");
+        }
+    }
+    
+    /** 관리자 권한 검증 **/
     private void validateUser(EventDTO event, HttpSession session) {
         MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
         if (loginMember == null || !"Y".equals(loginMember.getManager())) {
             throw new AuthenticationException("관리자만 접근 가능합니다.");
         }
 
-        // HTML 필터링
         event.setEventTitle(event.getEventTitle().replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
         event.setEventContent(event.getEventContent().replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
         event.setUserNo(loginMember.getUserNo());
     }
     
+    /** 제목/내용 기본 검증 **/
+    private void validateEvent(EventDTO event) {
+        if (event.getEventTitle() == null || event.getEventTitle().trim().isEmpty()
+         || event.getEventContent() == null || event.getEventContent().trim().isEmpty()) {
+            throw new InvalidArgumentsException("제목 또는 내용이 비어 있습니다.");
+        }
+    }
     
-    /** 파일 저장 **/
+    /** 이벤트 등록 시 파일 필수 검증 **/
+    private void validateInsertFiles(MultipartFile thumbnail, MultipartFile detailImage) {
+        if (thumbnail == null || thumbnail.isEmpty()) {
+            throw new BadRequestException("썸네일 이미지는 필수입니다.");
+        }
+        if (detailImage == null || detailImage.isEmpty()) {
+            throw new BadRequestException("상세 이미지는 필수입니다.");
+        }
+    }
+
+    /** 이벤트 수정 시 파일 검증 **/
+    private void validateUpdateFiles(List<EventAttachment> existingFiles, MultipartFile thumbnail, MultipartFile detailImage) {
+
+        boolean hasThumb = existingFiles.stream().anyMatch(f -> f.getFileLevel() == 0);
+        boolean hasDetail = existingFiles.stream().anyMatch(f -> f.getFileLevel() == 1);
+
+        boolean newThumb = (thumbnail != null && !thumbnail.isEmpty());
+        boolean newDetail = (detailImage != null && !detailImage.isEmpty());
+
+        if ((!hasThumb && !newThumb) || (!hasDetail && !newDetail)) {
+            throw new BadRequestException("썸네일과 상세 이미지는 최소 1개 이상 필요합니다.");
+        }
+    }
+    
+    //=========== 파일 처리 관련 내부 유틸 메서드 =========== 
+    
+    /** 
+     * DB 파일 목록 : DTO 썸네일/상세 이미지 필드 매핑
+     * (fileLevel 0=썸네일, 1=상세)
+     */
+    private void setEventFileData(EventDTO event) {
+        if (event.getFiles() == null || event.getFiles().isEmpty()) {
+            return;
+        }
+
+        for (EventAttachment file : event.getFiles()) {
+            if (file.getFileLevel() == 0) {
+                event.setThumbnailPath(file.getFilePath());
+                event.setThumbnailName(file.getChangeName());
+            } else if (file.getFileLevel() == 1) {
+                event.setDetailPath(file.getFilePath());
+                event.setDetailName(file.getChangeName());
+            }
+        }
+    }
+    
+    /** 파일 교체 처리 (기존 삭제 + 신규 저장) **/
+    private void replaceAttachment(List<EventAttachment> attachments,
+                                   MultipartFile newFile, Long eventNo,
+                                   HttpSession session, int fileLevel) {
+        
+        if (newFile != null && !newFile.isEmpty()) {
+
+            EventAttachment oldFile = attachments.stream()
+                    .filter(f -> f.getFileLevel() == fileLevel)
+                    .findFirst()
+                    .orElse(null);
+
+            if (oldFile != null) {
+                deleteOldAttachment(oldFile.getFileNo(), session);
+            }
+
+            saveAttachment(newFile, eventNo, session, fileLevel);
+        }
+    }
+
+    
+    
+    
+    /** 파일 저장 (물리 저장 및 DB저장) **/
     private void saveAttachment(MultipartFile file, Long eventNo, HttpSession session, int fileLevel) {
 
         //  파일 비어있을 경우 업로드 스킵
@@ -270,7 +284,7 @@ public class EventServiceImpl implements EventService {
         String prefix = (fileLevel == 0) ? "EVT_TH_" : "EVT_DE_";
         String changeName = prefix + currentTime + "_" + rand + ext;
 
-        // 경로 수정 (네가 실제 사용하는 구조로 변경)
+        // 경로 수정 (실제 사용하는 구조로 변경)
         ServletContext app = session.getServletContext();
         String saveDir = (fileLevel == 0)
                 ? app.getRealPath("/resources/upfiles/event/thumb/")
@@ -312,7 +326,7 @@ public class EventServiceImpl implements EventService {
     }
 
 
-    /** 기존 파일 삭제 **/
+    /** 기존 파일 삭제 (물리 저장 및 DB 상태 변경)**/
     private void deleteOldAttachment(Long fileNo, HttpSession session) {
         EventAttachment oldFile = eventMapper.selectAttachmentByFileNo(fileNo);
         
@@ -330,5 +344,55 @@ public class EventServiceImpl implements EventService {
             eventMapper.deleteAttachment(fileNo); // DB STATUS = 'N' 처리
         }
     }
+    
+    // ================= 조회 관련 내부 비즈니스 로직 ========================
+    /** 조회수 증가 **/
+    private void increaseViewCount(Long eventNo) {
+        int result = eventMapper.increaseCount(eventNo);
+        if (result != 1) {// 트랜잭션 안정성: DB 결과 즉시 검증
+            throw new BadRequestException("조회수 증가 중 오류 발생");
+        }
+    }
+    
+    
+    
+    /**
+     * 공통 페이징 조회 처리
+     * @param page 요청 페이지 번호
+     */
+    private Map<String, Object> getEventList(Long page, String type) {
+
+        validatePage(page);
+
+        int listCount = 0;
+        List<EventDTO> events = new ArrayList<>();
+
+        switch (type) {
+	        case "ongoing":
+	            listCount = eventMapper.selectOngoingCount();
+	            break;
+	        case "ended":
+	            listCount = eventMapper.selectEndedCount();
+	            break;
+	        default:
+	            throw new IllegalArgumentException("지원하지 않는 이벤트 타입입니다.");
+	    }
+
+        PageInfo pi = pagination.getPageInfo(listCount, page.intValue(), 6, 6);
+
+        if (listCount > 0) {
+            RowBounds rb = new RowBounds((page.intValue() - 1) * 6, 6);
+
+            if ("ongoing".equals(type)) {
+                events = eventMapper.selectOngoing(rb);
+            } else if ("ended".equals(type)) {
+                events = eventMapper.selectEnded(rb);
+            }
+        }
+
+        return Map.of("pi", pi, "events", events);
+    }
+
+
    
 }
