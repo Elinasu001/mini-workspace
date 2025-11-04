@@ -13,6 +13,7 @@ import lombok.ToString;
 @ToString
 public class UsedListDTO {
 	
+	private int userNo;
 	private int usedNo;
     private String usedTitle;
     private int usedPrice;
@@ -30,5 +31,7 @@ public class UsedListDTO {
     private String phone;
     private String thumbnail;
     private String category;
+    private String categoryName;
+    private String usedContent;
 
 }

@@ -27,7 +27,6 @@ body {
 
 h2 {
   margin-bottom: 25px;
-  border-left: 5px solid #2d77ff;
   padding-left: 10px;
   font-size: 22px;
 }
@@ -130,9 +129,8 @@ h2 {
 /* 글쓰기 + 검색 한 줄 정렬 */
 .search-wrap {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 /* 글쓰기 버튼 */
@@ -153,10 +151,10 @@ h2 {
 
 /* 검색 박스 */
 .search-box {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
 }
 
 .search-box input {
