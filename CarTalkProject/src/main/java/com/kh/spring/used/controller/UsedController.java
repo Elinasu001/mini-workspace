@@ -50,6 +50,7 @@ public class UsedController {
 	public String usedList(@RequestParam(value = "page", defaultValue = "1") int currentPage,
 			@RequestParam(value = "keyword", required = false) String keyword, Model model, HttpSession session) {
 
+	    if(keyword == null)keyword ="";
 		int listCount = usedService.selectListCount(keyword);
 		PageInfo pi = pagination.getPageInfo(listCount, currentPage, 10, 6);
 
@@ -119,43 +120,48 @@ public class UsedController {
 
 	@GetMapping("/detail")
 	public String selectUsedDetail(@RequestParam("no") int usedNo
+							     , @RequestParam(value = "page", required = false, defaultValue = "1") int page
+							     , @RequestParam(value = "keyword", required = false) String keyword
 								 , Model model
 								 , HttpSession session
 								 , HttpServletRequest request
 								 , HttpServletResponse response) {
 		
-		Cookie[] cookies = request.getCookies();
+		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+		
+		UsedListDTO used = usedService.selectUsedDetail(usedNo);
+		
+		boolean isAuthor = (loginMember != null  && used.getUserNo() == loginMember.getUserNo());
 		boolean viewed = false;
 		
-		if(cookies != null) {
-			for(Cookie c : cookies) {
-				if(("viewedUsed" + usedNo).equals(c.getName())) {
-					viewed = true;
-					break;
+		if(!isAuthor) {
+			Cookie[] cookies = request.getCookies();
+			if(cookies != null) {
+				for(Cookie c : cookies) {
+					if(("viewedUsed" + usedNo).equals(c.getName())) {
+						viewed = true;
+						break;
+					}
 				}
+			}
+			
+			if(!viewed) {
+				usedService.increaseViewCount(usedNo);
+				Cookie newCookie = new Cookie("viewedUsed" + usedNo, "true");
+				response.addCookie(newCookie);
 			}
 		}
 		
-		if(!viewed) {
-			usedService.increaseViewCount(usedNo);
-			Cookie newCookie = new Cookie("viweedUsed" + usedNo, "true");
-			response.addCookie(newCookie);
-		}
-		
-
-		
-		UsedListDTO used = usedService.selectUsedDetail(usedNo);
 
 		UsedDTO car = usedService.selectCarInfo(usedNo);
-
 		List<UsedAttachmentDTO> attachments = usedService.selectAttachments(usedNo);
 
-		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 		model.addAttribute("loginMember", loginMember);
-
 		model.addAttribute("used", used);
 		model.addAttribute("car", car);
 		model.addAttribute("attachments", attachments);
+		model.addAttribute("page", page);
+		model.addAttribute("keyword", keyword);
 
 		return "used/usedDetail";
 	}

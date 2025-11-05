@@ -30,7 +30,7 @@
 			<c:choose>
 				<c:when test="${ not empty usedList }">
 					<c:forEach var="car" items="${ usedList }">
-						<a href="${pageContext.request.contextPath}/used/detail?no=${car.usedNo}" class="car-link">
+						<a href="${pageContext.request.contextPath}/used/detail?no=${car.usedNo}&page=${pi.currentPage}&keyword=${keyword}" class="car-link">
 							<div class="car-card">
 								<div class="car-info">
 									<div>${ car.status }| ${ car.categoryName }</div>
@@ -46,11 +46,14 @@
 					</c:forEach>
 				</c:when>
 				<c:otherwise>
-					<tr>
-						<th>등록된 매물이 존재하지 않습니다.</th>
-					</tr>
+    				<div class="no-result text-center" style="margin: 80px 0; color: #666;">
+       					 <i class="bi bi-exclamation-circle" style="font-size: 2rem; color: #999;"></i><br>
+        					<p style="font-size: 1.1rem; margin-top: 10px;">
+            					등록된 매물이 존재하지 않습니다.
+        					</p>
+    				</div>
 				</c:otherwise>
-			</c:choose>
+				</c:choose>
 		</div>
 
 		<!-- 페이징 -->

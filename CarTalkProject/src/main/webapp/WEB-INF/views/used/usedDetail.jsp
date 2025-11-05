@@ -133,9 +133,7 @@
       <button type="button" class="btn btn-outline-danger" data-no="${used.usedNo}">삭제</button>
       </c:if>
       
-			
-			<button type="button" class="btn btn-outline-info"
-				onclick="location.href='${pageContext.request.contextPath}/used/list'">목록으로</button>
+			<a class="btn btn-primary" href="${pageContext.request.contextPath}/used/list?page=${param.page}&keyword=${param.keyword}" role="button">목록으로</a>
 		</div>
 	</main>
 
