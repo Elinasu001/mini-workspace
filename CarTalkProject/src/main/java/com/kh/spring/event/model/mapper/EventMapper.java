@@ -58,6 +58,6 @@ public interface EventMapper {
     int deleteAttachment(Long fileNo);
     
     // 이벤트 게시글 삭제 (STATUS = 'N' 처리)
-	Long deleteEvent(Long eventNo);
+    int deleteEvent(Long eventNo);
 	
 }

@@ -137,13 +137,13 @@ public class EventServiceImpl implements EventService {
     
     /** 이벤트 삭제 (상태값 변경) **/
     @Override
-    public Long deleteEvent(Long eventNo, HttpSession session) {
+    public int deleteEvent(Long eventNo, HttpSession session) {
     	
     	eventValidator.validateAdminSession(session);// 관리자 권한 검증
 	    eventValidator.validateEventNo(eventNo); // 번호 검증
 	    
-	    Long result = eventMapper.deleteEvent(eventNo);
-        eventValidator.validateDmlResult(result.intValue(), "이벤트 삭제 실패"); // DB 수정 수행 및 결과 검증
+	    int result = eventMapper.deleteEvent(eventNo);
+        eventValidator.validateDmlResult(result, "이벤트 삭제 실패"); // DB 수정 수행 및 결과 검증
 	    
 	    // 종료 이벤트는  이미지 유지 — 물리 삭제하지 않음
 	    //List<EventAttachment> files = eventMapper.selectAttachmentsByEventNo(eventNo);
@@ -160,10 +160,8 @@ public class EventServiceImpl implements EventService {
     
     /** 조회수 증가 **/
     private void increaseViewCount(Long eventNo) {
-        int result = eventMapper.increaseCount(eventNo);
-        if (result != 1) {// 트랜잭션 안정성: DB 결과 즉시 검증
-            throw new BadRequestException("조회수 증가 중 오류 발생");
-        }
+    	int result = eventMapper.increaseCount(eventNo);
+        eventValidator.validateDmlResult(result, "조회수 증가 중 오류 발생");// DB 수정 수행 및 결과 검증
     }
     
     

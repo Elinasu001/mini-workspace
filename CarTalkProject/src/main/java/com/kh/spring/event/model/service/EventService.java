@@ -35,6 +35,6 @@ public interface EventService {
     int updateEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session);
     
     // 이벤트 게시글 삭제
-    Long deleteEvent(Long eventNo, HttpSession session);
+    int deleteEvent(Long eventNo, HttpSession session);
     
 }
