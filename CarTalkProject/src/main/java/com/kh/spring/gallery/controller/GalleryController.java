@@ -36,7 +36,7 @@ public class GalleryController {
 		Map<String, Object> map = galleryService.selectGalleryList(page);
 		model.addAttribute("map", map);
 		
-		log.info("{}", map.values());
+//		log.info("결과 : {}", map.values());
 		
 		return "gallery/list";
 	}
@@ -47,7 +47,7 @@ public class GalleryController {
 		
 		GalleryDTO gallery = galleryService.selectGalleryByNo(galleryNo);
 		model.addAttribute("gallery", gallery);
-		log.info("{}", gallery);
+//		log.info("{}", gallery);
 		
 		return "gallery/detail";
 	}
@@ -59,12 +59,45 @@ public class GalleryController {
 	
 	@PostMapping("/insert")
 	public String insertGallery(GalleryDTO gallery, MultipartFile thumnail, List<MultipartFile> upfiles, HttpSession session) {
-//		log.info("board: {} / thumnail: {}", board, thumnail);
+		log.info("gallery: {} / thumnail: {}", gallery, thumnail);
 //		log.info("upfiles: {}", upfiles);
 		
 		galleryService.insertGallery(gallery, thumnail, upfiles, session);
 		
 		return "redirect:/gallery";
 	}
+	
+	@GetMapping("/{id}/form")
+	public String toGalleryUpdate(@PathVariable(name="id")Long galleryNo,
+														  Model model) {
+		
+//		log.info("업데이트 들어감:");
+		
+		GalleryDTO gallery = galleryService.selectGalleryByNo(galleryNo);
+		model.addAttribute("gallery", gallery);
+		
+		return "gallery/update";
+	}
+	
+	@PostMapping("/{id}/update")
+	public String updateGallery(@PathVariable(name="id") Long galleryNo, GalleryDTO gallery, 
+	                            MultipartFile thumnail, List<MultipartFile> upfiles, HttpSession session) {
+	    gallery.setGalleryNo(galleryNo);
+	    log.info("업데이트 요청 galleryNo = {}", gallery.getGalleryNo());
+	    galleryService.updateGallery(gallery, thumnail, upfiles, session);
+	    return "redirect:/gallery";
+	}
+
+	
+	@GetMapping("/{id}/delete")
+	public String deleteGallery(@PathVariable(name="id")Long galleryNo) {
+		
+//		log.info("딜리트 들어감:");
+		
+		galleryService.deleteGallery(galleryNo);
+		
+		return "redirect:/gallery";
+	}
+	
 	
 }

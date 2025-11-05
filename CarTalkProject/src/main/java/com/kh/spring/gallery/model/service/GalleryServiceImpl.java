@@ -12,6 +12,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring.gallery.model.dto.AttachmentDTO;
@@ -79,11 +80,14 @@ public class GalleryServiceImpl implements GalleryService {
 		
 		replys = galleryMapper.selectReplysByNo(galleryNo);
 		
+		galleryMapper.increaseCount(galleryNo);
+		
 		int replyCount = galleryMapper.selectReplyCount(galleryNo);
 		
 		GalleryDTO gallery = galleryMapper.selectGalleryByNo(galleryNo);
 		
-		gallery.setAttatchments(attachments);
+		
+		gallery.setAttachments(attachments);
 		
 		gallery.setReplies(replys);
 		
@@ -98,43 +102,108 @@ public class GalleryServiceImpl implements GalleryService {
 		
 		int result = 0;
 		
+		/*
+		int userNo = ((MemberDTO)session.getAttribute("loginMember")).getUserNo();
+		
+		gallery.setNickname(String.valueOf(userNo)); */
+		gallery = getLoginName(gallery, session);
+		
+		int gallResult = galleryMapper.insertGallery(gallery);
+		
+		if(gallResult == 1) {
+			
+			result = insertAttachment(gallery, thumnail, upfiles, session);
+		}
+		
+		return result;
+	}
+
+	private GalleryDTO getLoginName(GalleryDTO gallery, HttpSession session) {
+		
 		int userNo = ((MemberDTO)session.getAttribute("loginMember")).getUserNo();
 		
 		gallery.setNickname(String.valueOf(userNo));
 		
-		log.info("유저넘버 뜨냐 {}", gallery);
-	
-		int gallResult = galleryMapper.insertGallery(gallery);
-		
-		Long galleryNo = gallery.getGalleryNo();
-		log.info("{}", galleryNo);
-//		log.info("썸네일:{} 파일:{}", thumnail, upfiles);
-		
-//		if(gallResult == 1) {
-//			
-//			result = insertAttachment(gallery, thumnail, upfiles, session);
-//		}
-		
-		return result;
+		return gallery;
 	}
 
 	private int insertAttachment(GalleryDTO gallery, MultipartFile thumnail, List<MultipartFile> upfiles,
 			HttpSession session) {
 		
 		int result = 0;
-		int orderNo = 1;
 		
 		// 1. 첨부파일 정렬
 		List<MultipartFile> sortedUpfiles = sortUpfiles(thumnail, upfiles);
 		
 		// 2. 반복해서 올려잇
+		/*
 		for(MultipartFile upfile : sortedUpfiles) {
+			
+			if(upfile.isEmpty()) {
+				return result;
+			}
 			
 			AttachmentDTO at = new AttachmentDTO();
 			
 			Map<String, String> saveAt = setAttachmentNamePath(upfile, session);
 			
-//			log.info("진짜 되나? {}, {}", saveAt.get("changeName"), saveAt.get("savePath")); 되네;;;왜됨;;
+			
+			try {
+				upfile.transferTo(new File(saveAt.get("savePath") + saveAt.get("changeName")));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			at.setOriginName(upfile.getOriginalFilename());
+			at.setChangeName(saveAt.get("changeName"));
+			at.setFilePath("/ct/resources/upfiles/gallery");
+			at.setRefGno(gallery.getGalleryNo());
+			at.setOrderNo(Long.valueOf(orderNo++));
+		
+		
+			int atResult = galleryMapper.insertAttachment(at);
+			
+			// 실패하면 예외 ㄱㄱ
+			if(atResult != 1) {
+				log.info("중간에 먼가잘못된거임!!!!");
+			}
+			
+			
+			result++;
+			
+		}																			*/
+		List<AttachmentDTO> ats = changeUpfilesName(gallery, sortedUpfiles, session);
+		
+		for(AttachmentDTO at : ats) {
+			int atResult = galleryMapper.insertAttachment(at);
+			
+			if(atResult != 1) {
+				log.info("중간에 먼가잘못된거임!!!!");
+			}
+			
+			result++;
+		}
+		
+		return result;
+	}
+
+	private List<AttachmentDTO> changeUpfilesName(GalleryDTO gallery, List<MultipartFile> sortedUpfiles, HttpSession session) {
+		
+		int orderNo = 1;
+		
+		List<AttachmentDTO> ats = new ArrayList();
+		
+		for(MultipartFile upfile : sortedUpfiles) {
+					
+			if(upfile.isEmpty()) {
+				return ats;
+			}
+			
+			AttachmentDTO at = new AttachmentDTO();
+			
+			Map<String, String> saveAt = setAttachmentNamePath(upfile, session);
+			
 			
 			try {
 				upfile.transferTo(new File(saveAt.get("savePath") + saveAt.get("changeName")));
@@ -149,21 +218,10 @@ public class GalleryServiceImpl implements GalleryService {
 			at.setRefGno(gallery.getGalleryNo());
 			at.setOrderNo(Long.valueOf(orderNo++));
 			
-			log.info("뽑아: {}", at);
-			
-			int atResult = galleryMapper.insertAttachment(at);
-			
-			// 실패하면 예외 ㄱㄱ
-			if(atResult != 1) {
-				log.info("먼가잘못된거임!!!!");
-			}
-			
-			
-			result++;
-			
-		}
+			ats.add(at);
 		
-		return result;
+		}
+		return ats;
 	}
 
 	private Map<String, String> setAttachmentNamePath(MultipartFile upfile, HttpSession session) {
@@ -191,10 +249,61 @@ public class GalleryServiceImpl implements GalleryService {
 
 	private List<MultipartFile> sortUpfiles(MultipartFile thumnail, List<MultipartFile> upfiles) {
 
-		List<MultipartFile> fl = upfiles;
-		fl.add(0, thumnail);
+		List<MultipartFile> fl = new ArrayList();
+		
+		if(!(upfiles.isEmpty())){
+			fl = upfiles;
+			fl.add(0, thumnail);
+		} else {
+			fl.add(thumnail);
+		}
+		
 		
 		return fl;
+	}
+
+	@Transactional
+	@Override
+	public void updateGallery(GalleryDTO gallery, MultipartFile thumnail, List<MultipartFile> upfiles,
+			HttpSession session) {
+		
+		int result = 0;
+		
+		getLoginName(gallery, session);
+		
+		int gallResult = galleryMapper.updateGallery(gallery);
+		
+		if(gallResult == 1) {
+			
+			// 1. 기존 업로드 파일은 수정여부 상관없이 삭제처리
+			Long galleryNo = gallery.getGalleryNo();
+			galleryMapper.deleteAllAttachment(galleryNo);
+			// 2. 새로운 업로드 파일을 새롭게 추가
+			result = insertNewAttachment(gallery, thumnail, upfiles, session);
+		}
+	}
+
+	private int insertNewAttachment(GalleryDTO gallery, MultipartFile thumnail, List<MultipartFile> upfiles,
+			HttpSession session) {
+		 int result = 0;
+		    List<MultipartFile> sortedUpfiles = sortUpfiles(thumnail, upfiles);
+		    List<AttachmentDTO> ats = changeUpfilesName(gallery, sortedUpfiles, session);
+		    
+		    for (AttachmentDTO at : ats) {
+		        int atResult = galleryMapper.insertAttachment(at);
+		        if (atResult != 1) {
+		            log.info("첨부파일 삽입 중 오류 발생!");
+		        }
+		        result++;
+		    }
+		    return result;
+	}
+
+	@Transactional
+	@Override
+	public void deleteGallery(Long galleryNo) {
+		galleryMapper.deleteGallery(galleryNo);
+		
 	}
 
 }

@@ -16,4 +16,8 @@ public interface GalleryService {
 	GalleryDTO selectGalleryByNo(Long galleryNo);
 
 	int insertGallery(GalleryDTO gallery, MultipartFile thumnail, List<MultipartFile> upfiles, HttpSession session);
+
+	void updateGallery(GalleryDTO gallery, MultipartFile thumnail, List<MultipartFile> upfiles, HttpSession session);
+
+	void deleteGallery(Long galleryNo);
 }

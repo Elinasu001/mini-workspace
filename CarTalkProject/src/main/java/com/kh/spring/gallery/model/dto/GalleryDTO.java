@@ -23,7 +23,7 @@ public class GalleryDTO {
 	private Date enrollDate;
 	private String status;
 	private List<ReplyDTO> replies;
-	private List<AttachmentDTO> attatchments;
+	private List<AttachmentDTO> attachments;
 	private String thumnailPath;
 	private int replyCount;
 }
