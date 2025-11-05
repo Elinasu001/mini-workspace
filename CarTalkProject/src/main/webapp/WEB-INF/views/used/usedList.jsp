@@ -40,7 +40,16 @@
 									<div class="meta">가격: ${ car.usedPrice }만원 | 조회수 ${ car.viewCount }
 										| 등록일 ${ car.enrollDate }</div>
 								</div>
-								<img src="${pageContext.request.contextPath}${car.thumbnail}" alt="썸네일 이미지" width="120" height="80">
+								<c:choose>
+  									<c:when test="${empty car.thumbnail}">
+    									<img src="${pageContext.request.contextPath}/resources/upfiles/used/default.png"
+							        	 alt="기본 이미지" width="120" height="80">
+							  		</c:when>
+							  		<c:otherwise>
+							    		<img src="${pageContext.request.contextPath}${car.thumbnail}"
+							         	alt="썸네일 이미지" width="120" height="80">
+							  		</c:otherwise>
+								</c:choose>
 							</div>
 						</a>
 					</c:forEach>

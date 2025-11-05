@@ -50,8 +50,16 @@
 				<div class="carousel-inner">
 					<!-- 대표 이미지 -->
 					<div class="carousel-item active">
-						<img src="${pageContext.request.contextPath}${used.thumbnail}" 
-     											class="d-block w-100" alt="대표 이미지">
+						<c:choose>
+					  	<c:when test="${empty used.thumbnail}">
+					    	<img src="${pageContext.request.contextPath}/resources/upfiles/used/default.png"
+					        class="d-block w-100" alt="기본 이미지">
+					  	</c:when>
+					  	<c:otherwise>
+					    	<img src="${pageContext.request.contextPath}${used.thumbnail}"
+					         class="d-block w-100" alt="대표 이미지">
+					  	</c:otherwise>
+						</c:choose>
 
 							
 					</div>
