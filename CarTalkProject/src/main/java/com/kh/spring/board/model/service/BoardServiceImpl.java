@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring.board.model.dto.AttachmentDTO;
@@ -20,8 +21,10 @@ import com.kh.spring.board.model.dto.BoardDTO;
 import com.kh.spring.board.model.dto.LikeDTO;
 import com.kh.spring.board.model.dto.ReplyDTO;
 import com.kh.spring.board.model.mapper.BoardMapper;
+import com.kh.spring.exception.BadRequestException;
 import com.kh.spring.exception.BoardSaveFailedException;
-import com.kh.spring.exception.InvalidArgumentsException;
+import com.kh.spring.exception.InvalidAttachmentException;
+import com.kh.spring.exception.PageNotFoundException;
 import com.kh.spring.member.model.dto.MemberDTO;
 import com.kh.spring.util.PageInfo;
 import com.kh.spring.util.Pagination;
@@ -103,9 +106,7 @@ public class BoardServiceImpl implements BoardService {
 		BoardDTO board = boardMapper.selectByBoardNo(boardNo);
 		
 		// 조회된 값이 없는 경우 예외 발생
-		if(board == null) {
-			
-		}
+		boardValidator.validateBoard(board);
 		
 		return board;
 		
@@ -144,7 +145,7 @@ public class BoardServiceImpl implements BoardService {
 		try {
 			boardUpfile.transferTo(new File(saveAt.get("savePath") + saveAt.get("changeName")));
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new InvalidAttachmentException("서버에 첨부파일 추가 실패.");
 		}
 
 		at.setOriginName(boardUpfile.getOriginalFilename());
@@ -157,12 +158,13 @@ public class BoardServiceImpl implements BoardService {
 		
 		// 첨부파일 첨부 실패 시 예외 발생
 		if(atResult != 1) {
-			
+			throw new InvalidAttachmentException("첨부파일 추가에 실패했습니다.");
 		}
 		
 	}
 	
 	// 게시판 작성
+	@Transactional
 	@Override
 	public void insertBoard(BoardDTO board, MultipartFile boardUpfile, HttpSession session) {
 		
@@ -188,17 +190,16 @@ public class BoardServiceImpl implements BoardService {
 
 	
 	// 게시판 수정
+	@Transactional
 	@Override
 	public void updateBoard(BoardDTO board, MultipartFile boardUpfile, HttpSession session) {
 
 		AttachmentDTO at = null;
 		String boardWriter = board.getBoardWriter();
-		String loginMember = ((MemberDTO)session.getAttribute("loginMember")).getNickName();
+		MemberDTO loginMember = ((MemberDTO)session.getAttribute("loginMember"));
 		
 		// 로그인하지 않았거나 && 로그인한 회원과 수정중인 회원이 같지 않은 경우
-		if(loginMember ==null && !boardWriter.equals(loginMember)){
-			
-		}
+		boardValidator.validateAuthorization(boardWriter, loginMember);
 		
 		int boardResult = boardMapper.updateBoard(board);
 		
@@ -237,25 +238,36 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 
+	@Transactional
 	@Override
 	public void deleteBoard(BoardDTO board, HttpSession session) {
 
 		//System.out.println(board);
 		
 		//유효성 검증(예외 처리)
+		String boardWriter = board.getBoardWriter();
+		MemberDTO loginMember = ((MemberDTO)session.getAttribute("loginMember"));
 
 		// 로그인한 사용자와 같은 지 검증
+		boardValidator.validateAuthorization(boardWriter, loginMember);
 
-		int userNo = ((MemberDTO)session.getAttribute("loginMember")).getUserNo();
+		int userNo = loginMember.getUserNo();
 		
 		board.setBoardWriter(String.valueOf(userNo));
 		
 		boardMapper.deleteBoard(board);
 		
+		// 게시글 삭제 시 첨부파일이 존재하면 같이 삭제
 		if(board.getAttachment() != null) {
-			
 			boardMapper.deleteAttachment(board.getAttachment());
-			
+		}
+		
+		// 게시글 삭제 시 댓글이 존재하면 같이 삭제
+		if(!board.getReplies().isEmpty()) {
+			// 댓글이 여러 개일 수 있으니 반복문으로 순회하면서 삭제
+			for(ReplyDTO reply : board.getReplies()) {
+				boardMapper.deleteReply(reply);
+			}
 		}
 		
 	}
@@ -276,18 +288,20 @@ public class BoardServiceImpl implements BoardService {
 		if(likes == null) {
 			// 존재하지 않을 경우 - 좋아요를 처음 누른 상태
 			int pushResult = boardMapper.insertLikes(likeNums);
+			
 			if(pushResult != 1) { // 좋아요 추가 (INSERT) 실패 시 예외처리
-				
+				throw new BadRequestException("기능 수행중 문제가 발생했습니다.");
 			}
 			
 			
 			return "success";
 		} 
+		
 		//존재할 경우 - 이미 좋아요를 누른 상태 - 좋아요 취소(테이블 삭제)
 		int popResult = boardMapper.deleteLikes(likeNums);
 		
 		if(popResult != 1) { // 좋아요 삭제 (DELETE) 실패 시 예외처리
-			
+			throw new BadRequestException("취소에 실패했습니다.");
 		}
 		
 		return "cancle";
@@ -307,7 +321,7 @@ public class BoardServiceImpl implements BoardService {
 		int result = boardMapper.insertReply(reply);
 		
 		if(result != 1) { // 댓글 작성 실패 시
-			
+			throw new BadRequestException("댓글 작성에 실패했습니다.");
 		}
 		
 		
@@ -317,11 +331,8 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public String updateReply(ReplyDTO reply, HttpSession session) {
 		
-		MemberDTO member = ((MemberDTO)session.getAttribute("loginMember"));
-		
-		if(member == null) { // 로그인하지 않은 사용자가 댓글 입력을 시도 할 경우
-			
-		}
+		// 로그인 검증
+		MemberDTO member = boardValidator.validateLogin(session);
 
 		// 유효 값 검증 (댓글이 null이거나 공백문자밖에 없을 경우)
 		boardValidator.validateReply(reply);
@@ -331,8 +342,7 @@ public class BoardServiceImpl implements BoardService {
 		int result = boardMapper.updateReply(reply);
 		
 		if(result != 1) {
-			
-			
+			throw new BadRequestException("댓글 변경에 실패했습니다.");
 		}
 		
 		
@@ -344,19 +354,19 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public String deleteReply(ReplyDTO reply, HttpSession session) {
 		
-		MemberDTO member = boardValidator.validateLogin(session);
+		boardValidator.validateLogin(session);
 		
 		int result = boardMapper.deleteReply(reply);
 		
 		if(result != 1) {
-			
-			
+			throw new BadRequestException("댓글 삭제에 실패했습니다.");
 		}
 		
 		
 		return "success";
 	}
 
+	// 이전 / 다음 글 기능 구현용 전체 조회
 	@Override
 	public List<Long> selectAllBoard() {
 		
