@@ -32,6 +32,8 @@ public class GalleryController {
 		Map<String, Object> map = galleryService.selectGalleryList(page);
 		model.addAttribute("map", map);
 		
+		
+		
 		log.info("{}", map.values());
 		
 		return "gallery/list";

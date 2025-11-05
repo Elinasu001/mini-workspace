@@ -32,7 +32,7 @@
 					       , C.CAR_COLOR carColor
 					       , C.PHONE phone
 					       , CAT.CATEGORY_NAME categoryName          
-					       , ATT.FILE_PATH thumbnail
+					       , U.THUMBNAIL thumbnail
 					    FROM
 					         CT_USED_LISTING U
 					    JOIN
@@ -84,25 +84,37 @@
     	SELECT SEQ_USED.NEXTVAL FROM DUAL
 	</select>
 	
-	<insert id="insertUsed"
+	<insert id="insertUsed" 
 			parameterType="UsedDTO">
-		INSERT
-		  INTO
-		       CT_USED_LISTING
-		VALUES
-			   (
-			   #{usedNo}
-		     , #{userNo}
-		     , #{usedTitle}
-		     , #{usedContent}
-		     , #{usedPrice}
-		     , #{category}
-		     , '판매중'
-		     , SYSDATE
-		     , DEFAULT
-		     , #{thumbnail}
+  		INSERT 
+  		  INTO 
+  		  	   CT_USED_LISTING 
+  		  	   (
+		       USED_NO,
+		       USER_NO,
+		       USED_TITLE,
+		       USED_CONTENT,
+		       USED_PRICE,
+		       CATEGORY,
+		       STATUS,
+		       ENROLL_DATE,
+		       VIEW_COUNT,
+		       THUMBNAIL
 		       ) 
-	</insert>
+	    VALUES 
+	    	   (
+		       #{usedNo},
+		       #{userNo},
+		       #{usedTitle},
+		       #{usedContent},
+		       #{usedPrice},
+		       #{category},
+		       '판매중',
+		       SYSDATE,
+		       DEFAULT,
+		       #{thumbnail}
+		       )
+      </insert>
 	
 	
 	<insert id="insertCarInfo"
@@ -304,6 +316,16 @@
 	         , ENROLL_DATE = SYSDATE
 	     WHERE
 	           USED_NO = #{usedNo}  
+	</update>
+	
+	<update id="updateThumbnail"
+			parameterType="UsedDTO">
+		UPDATE
+		       CT_USED_LISTING
+		   SET
+		       THUMBNAIL = #{thumbnail}
+		 WHERE
+		       USED_NO = #{usedNo}      		
 	</update>
 	
 

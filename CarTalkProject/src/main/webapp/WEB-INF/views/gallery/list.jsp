@@ -11,6 +11,7 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include/header.jsp" />
+	<jsp:include page="/WEB-INF/views/include/meta.jsp" />
 	<main class="main-wrap">
 		<h2>사진 게시판</h2>
 
