@@ -11,7 +11,7 @@
 <body>
 
 	<div id="wrap">
-	
+		<jsp:include page="/WEB-INF/views/include/toast.jsp"/>
 		<jsp:include page="../include/header.jsp"/>
 		
 	 	<div class="contentWrap">

@@ -9,11 +9,8 @@
 <title>이벤트 등록 | 관리자 전용</title>
 </head>
 <body>
-<c:if test="${not empty alertMsg}">
-    <script>alert("${alertMsg}");</script>
-</c:if>
+
 <div id="wrap">
-	
 	<jsp:include page="../include/header.jsp"/>
 		
 	 	<div class="contentWrap">
