@@ -48,6 +48,11 @@ public class UsedServiceImpl implements UsedService {
 	public int selectListCount(String keyword) {
 		return usedMapper.selectListCount(keyword);
 	}
+	
+	@Override
+	public void increaseViewCount(int usedNo) {
+		usedMapper.increaseViewCount(usedNo);
+	}
 
 	@Transactional
 	@Override

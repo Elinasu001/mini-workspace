@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -117,16 +118,32 @@ public class UsedController {
 	}
 
 	@GetMapping("/detail")
-	public String selectUsedDetail(@RequestParam("no") int usedNo, Model model, HttpSession session) {
+	public String selectUsedDetail(@RequestParam("no") int usedNo
+								 , Model model
+								 , HttpSession session
+								 , HttpServletRequest request
+								 , HttpServletResponse response) {
+		
+		Cookie[] cookies = request.getCookies();
+		boolean viewed = false;
+		
+		if(cookies != null) {
+			for(Cookie c : cookies) {
+				if(("viewedUsed" + usedNo).equals(c.getName())) {
+					viewed = true;
+					break;
+				}
+			}
+		}
+		
+		if(!viewed) {
+			usedService.increaseViewCount(usedNo);
+			Cookie newCookie = new Cookie("viweedUsed" + usedNo, "true");
+			response.addCookie(newCookie);
+		}
+		
 
-		/*
-		 * 로그인 테스트용 MemberDTO temp = new MemberDTO(); temp.setUserNo(1);
-		 * temp.setUserName("테스트"); session.setAttribute("loginMember", temp);
-		 */
-
-		// log.info("세션 loginMember 확인 = {}", session.getAttribute("loginMember"));
-
-		// 로그인 완료시 윗 코드 주석처리 or 삭제
+		
 		UsedListDTO used = usedService.selectUsedDetail(usedNo);
 
 		UsedDTO car = usedService.selectCarInfo(usedNo);
