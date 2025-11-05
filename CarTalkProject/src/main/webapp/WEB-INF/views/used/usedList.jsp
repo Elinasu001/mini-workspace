@@ -57,18 +57,18 @@
 		</div>
 
 		<!-- 페이징 -->
-		<div class="pagination">
-			<c:if test="${ pi.currentPage > 1}">
-				<a href="list?page=${ pi.currentPage -1 }">◀</a>
-			</c:if>
+			<div class="pagination">
+    			<c:if test="${pi.currentPage > 1}">
+        			<a href="list?page=${pi.currentPage - 1}&keyword=${keyword}">◀</a>
+   				</c:if>
 
-			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-				<a href="list?page=${p}" class=${pi.currentPage}>${p}</a>
-			</c:forEach>
+    			<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+        			<a href="list?page=${p}&keyword=${keyword}" class="${p == pi.currentPage ? 'active' : ''}">${p}</a>
+    			</c:forEach>
 
-			<c:if test="${ pi.currentPage < pi.maxPage }">
-				<a href="list?page=${ pi.currentPage + 1 }">▶</a>
-			</c:if>
+    			<c:if test="${pi.currentPage < pi.maxPage}">
+        			<a href="list?page=${pi.currentPage + 1}&keyword=${keyword}">▶</a>
+    			</c:if>
 		</div>
 
 		<!-- 검색 -->
