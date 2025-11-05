@@ -60,7 +60,6 @@ public class EventController {
 		EventDTO event = eventService.selectByEventNo(eventNo);
 		model.addAttribute("event", event);
 		return "event/detail";
-		
 	}
 	
 	// 이벤트 게시글 등록페이지

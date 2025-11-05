@@ -154,9 +154,9 @@ public class EventServiceImpl implements EventService {
 	    Long result = eventMapper.deleteEvent(eventNo);
 	    if (result != 1) throw new BadRequestException("이벤트 삭제 실패");
 
-	    // 첨부파일 물리 삭제
-	    List<EventAttachment> files = eventMapper.selectAttachmentsByEventNo(eventNo);
-	    eventFileHandler.deleteAttachments(files, session);
+	    // 종료 이벤트는  이미지 유지 — 물리 삭제하지 않음
+	    //List<EventAttachment> files = eventMapper.selectAttachmentsByEventNo(eventNo);
+	    //eventFileHandler.deleteAttachments(files, session);
 	    
         return result;
     }
