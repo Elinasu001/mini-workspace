@@ -5,120 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <jsp:include page="/WEB-INF/views/include/meta.jsp"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/event/list.css">
 <title>이벤트 게시판</title>
 </head>
-<style>
-
-.btn-primary {
-	background:var(--primary);
-}
-
-.eventBanner{
-	 background:rgb(216 221 228);
-}
-.eventBanner .text-center p{
-	color: #343a40;
-	line-height:1.5;
-}
-
-.feature {
-	position: relative;
-	display:inline-flex;
-	align-items:center;
-	justify-content:center;
-	height:18rem;
-	width:18rem;
-	overflow:hidden;
-	font-size:2rem;
-	background-color:var(--bs-gray-200);
-}
-
-
-.feature img {
-	width:100%;
-	height:100%;
-	object-fit:cover;
-}
-
-.card:hover:not(.ended) img {
-  transform: scale(1.05);
-  transition: transform 0.4s ease, box-shadow 0.3s ease;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.20);
-  cursor: pointer;
-}
-
-/*커서 방지*/
-.card.ended .card-body a{
-	pointer-events: none;
-    cursor: not-allowed;
-}
-
-/* 딤 오버레이 */
-.card.ended .feature::after {
-  content: "종료된 이벤트";
-  position: absolute;
-  left:50%;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 1.2rem;
-  letter-spacing: 0.05em;
-  width:18rem;
-  height:18rem;
-}
-
-.category {
-  color: var(--color-1);
-  font-size: var(--font14);
-  background-color:rgb(13 110 253 / 18%);
-  padding:6px 10px;
-  border-radius:20px;
-}
-
-.row {
-  --bs-gutter-x: 1.5rem;
-  --bs-gutter-y: 0;
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: calc(-1 * var(--bs-gutter-y));
-  margin-right: calc(-0.5 * var(--bs-gutter-x));
-  margin-left: calc(-0.5 * var(--bs-gutter-x));
-}
-
-/* 비활성 탭 텍스트 */
-.nav-tabs .nav-link {
-  color: #444;
-  border: none;
-  background-color: rgba(0, 0, 0, 0.125) !important;
-  border-bottom: 3px solid transparent; /* hover 시 살짝 밑줄 효과 */
-  transition: all 0.3s ease;
-}
-
-/* hover 시 효과 */
-.nav-tabs .nav-link:hover {
-  color: #212529;
-}
-
-/* 활성 탭은 진한 실선으로 강조 */
-.nav-tabs .nav-link.active {
-  color: #fff !important;
-  background-color: rgba(33,37,41,1) !important;
-  border: none;
-  border-bottom: 3px solid rgba(33,37,41,1) !important;
-}
-
-.pagination{
-	--bs-pagination-padding-x: 1rem;
-	--bs-pagination-padding-y: 1rem;
-	--bs-pagination-color:#333;
-}
-
-
-</style>
 <body>
 
 	<div id="wrap">
@@ -128,7 +17,7 @@
 	 	<div class="contentWrap">
             <div class="contArea">
             
-            	<!-- Header-->
+            	<!-- 이벤트 배너 -->
 		        <header class="eventBanner">
 		            <div class="container px-lg-5">
 		                <div class="p-4 p-lg-5 rounded-3 text-center">
@@ -144,10 +33,10 @@
 		            
 		        </header>
 		        
-		        <!-- 탭 영역 추가 -->
+		        <!-- 탭 및 등록하기 버튼 -->
 			    <div class="container py-5">
 			    
-			    	<!-- [D] : 관리자로그인 상태일 경우만 보여지는 글쓰기 버튼 -->
+			    	<!-- [D] : 관리자로그인 상태일 경우만 보여지는 등록하기 버튼 -->
 			      	<c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.manager eq 'Y'}">
 						<div class="d-flex justify-content-end">
 							<a class="btn btn-primary btn btn-primary px-5 py-2 ms-2" href="${pageContext.request.contextPath}/event/insertForm">등록하기</a>
@@ -168,11 +57,10 @@
 				    </ul>
 				</div>
 
-		        
+		        <!-- Ajax 데이터 영역 -->
 		        <section class="pt-4" > 
 		        	<div class="container ">
 		        		<div id="eventArea" class="row gx-lg-5" >
-				       	<!-- Page Content-->
 				       	<!-- [D] : 데이터 들어가는 자리 -->
 				     		
 			           </div>
@@ -188,7 +76,8 @@
 <script>
 
 $(function() {
-	// 기본 탭: 진행중 이벤트
+	
+	 // 기본 탭 : 진행중 이벤트
 	 loadEvents("ongoing", 1); 
 	
 	 // 진행중인 게시글
@@ -206,7 +95,7 @@ $(function() {
 	 });
 	 
 	 
-	 
+	 // Ajax 목록 호출 함수
 	 function loadEvents(type, page) {
 	   $.ajax({
 	     url: "${pageContext.request.contextPath}/event/" + type + "?page=" + page,
@@ -215,7 +104,7 @@ $(function() {
 	     success: function(data) {
 	       $("#eventArea").html(data);
 	       
-	       // 페이징 클릭 이벤트 재바인딩
+	       // 페이징 클릭 이벤트 
 	       $("#eventArea .pagination a").on("click", function(e) {
 	           e.preventDefault();
 	           const pageNum = $(this).data("page");

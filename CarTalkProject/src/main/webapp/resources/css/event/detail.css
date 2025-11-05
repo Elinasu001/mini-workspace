@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+
+.btn-primary {
+	background:var(--primary);
+}
+
+.eventBanner{
+	 background:rgb(216 221 228);
+}
+
+.eventBanner .text-center p{
+	color: #343a40;
+	line-height:1.5;
+}
+
+.category {
+  color: var(--color-1);
+  font-size: var(--font14);
+  background-color: rgb(13 110 253 / 18%);
+  padding: 6px 10px;
+  border-radius: 20px;
+}
+
+.event-content {
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.8;
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.category {
+  font-size: 0.95rem;
+  color: #666;
+  margin-top: 1rem;
+}
+
+.btn-wrap {
+  margin-top: 3rem;
+}
