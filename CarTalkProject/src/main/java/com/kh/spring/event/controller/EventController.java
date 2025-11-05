@@ -37,7 +37,7 @@ public class EventController {
 		return "event/list";
 	}
 	
-	// 진행중인 이벤트 조회
+	// 진행중인 이벤트 조회_Ajax 
 	@GetMapping("/ongoing")
 	public String selectOngoing(@RequestParam(name="page", defaultValue="1") Long page, Model model) {
 		Map<String, Object> map = eventService.selectOngoing(page);
@@ -54,7 +54,7 @@ public class EventController {
 	    
 	}
 	
-	// 이벤트 게시글 상세_Ajax 
+	// 이벤트 게시글 상세
 	@GetMapping("/detail/{eventNo}")
 	public String selectByEventNo(@PathVariable("eventNo") Long eventNo, Model model) {
 		EventDTO event = eventService.selectByEventNo(eventNo);
