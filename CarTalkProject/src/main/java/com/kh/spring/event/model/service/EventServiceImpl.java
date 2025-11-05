@@ -33,19 +33,15 @@ public class EventServiceImpl implements EventService {
     
     
     // ===================== 메인 페이지 =====================
-    
-    
     /** 진행 중 이벤트 Top3 조회 **/
     @Override
     public List<EventDTO> selectEventOngoingTop() {
     	 List<EventDTO> list = eventMapper.selectEventOngoingTop();
-         //log.info("진행중 이벤트 3개: {}", list);
          return list;
     }
     
     
     // ===================== 목록 조회 =====================
-    
     /** 진행 중 이벤트 목록 조회**/
     @Override
     public Map<String, Object> selectOngoing(Long page) {
@@ -60,7 +56,6 @@ public class EventServiceImpl implements EventService {
     
     
     // ===================== 상세 조회 =====================
-    
     /** 이벤트 상세 조회 + 조회수 증가 **/
     @Override
     public EventDTO selectByEventNo(Long eventNo) {
@@ -74,15 +69,18 @@ public class EventServiceImpl implements EventService {
             throw new BadRequestException("존재하지 않는 이벤트입니다.");
         }
         
+        // 첨부 파일 조회 및 DTO에 세팅
+        List<EventAttachment> files = eventMapper.selectAttachmentsByEventNo(eventNo);
+        event.setFiles(files);
+        
         // DB 조회 결과 후처리 : 파일 정보 DTO에 매핑
         eventFileHandler.setEventFileData(event);
 
         return event;
     }
     
+    
     // ===================== 등록 =====================
-    
-    
     /** 이벤트 등록 **/
     @Override
     public int insertEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session) {
@@ -91,34 +89,30 @@ public class EventServiceImpl implements EventService {
     	eventValidator.validateEvent(event);// 제목/내용 기본 검증
     	eventValidator.validateInsertFiles(thumbnail, detailImage);// 첨부파일 필수 검증
 
-        int result = eventMapper.insertEvent(event);
-        if (result != 1) throw new BadRequestException("이벤트 등록 실패");
+    	int result = eventMapper.insertEvent(event);
+        eventValidator.validateDmlResult(result, "이벤트 등록 실패"); // DB 수정 수행 및 결과 검증
 
         Long eventNo = event.getEventNo();
         
         // 썸네일 저장 / 상세 이미지 저장
-        eventFileHandler.saveAttachment(thumbnail, eventNo, session, 0);
+        eventFileHandler.saveAttachment(thumbnail, eventNo, session, 0); 
         eventFileHandler.saveAttachment(detailImage, eventNo, session, 1);
 
         return result;
     }
     
-    // ===================== 카테고리 =====================
     
+    // ===================== 카테고리 =====================
     /** 카테고리 목록 조회 **/
     @Override
     public List<EventCategory> selectCategoryList() {
-    	
     	List<EventCategory> list = eventMapper.selectCategoryList();
-
         eventValidator.validateCategoryList(list);
-
         return list;
     }
     
+    
     // ===================== 수정 =====================
-    
-    
     /** 이벤트 수정 **/
     @Override
     public int updateEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session) {
@@ -129,12 +123,10 @@ public class EventServiceImpl implements EventService {
         Long eventNo = event.getEventNo();
         List<EventAttachment> attachments = eventMapper.selectAttachmentsByEventNo(eventNo);// 기존 파일 조회
         
-        
         eventValidator.validateUpdateFiles(attachments, thumbnail, detailImage);// 첨부파일 필수 검증
         
         int result = eventMapper.updateEvent(event);
-        if (result != 1) throw new BadRequestException("이벤트 수정 실패");// 트랜잭션 안정성 : DB 실행 직후 처리
-
+        eventValidator.validateDmlResult(result, "이벤트 수정 실패");// DB 수정 수행 및 결과 검증
         
         // 파일 교체 공통 처리
         eventFileHandler.replaceAttachment(attachments, thumbnail, eventNo, session, 0); // 썸네일
@@ -142,7 +134,6 @@ public class EventServiceImpl implements EventService {
         
         return result;
     }
-    
     
     /** 이벤트 삭제 (상태값 변경) **/
     @Override
@@ -152,8 +143,8 @@ public class EventServiceImpl implements EventService {
 	    eventValidator.validateEventNo(eventNo); // 번호 검증
 	    
 	    Long result = eventMapper.deleteEvent(eventNo);
-	    if (result != 1) throw new BadRequestException("이벤트 삭제 실패");
-
+        eventValidator.validateDmlResult(result.intValue(), "이벤트 삭제 실패"); // DB 수정 수행 및 결과 검증
+	    
 	    // 종료 이벤트는  이미지 유지 — 물리 삭제하지 않음
 	    //List<EventAttachment> files = eventMapper.selectAttachmentsByEventNo(eventNo);
 	    //eventFileHandler.deleteAttachments(files, session);
@@ -163,13 +154,10 @@ public class EventServiceImpl implements EventService {
     
     
     
-    
-    
-    
-    
-    
    
     // ================= 조회 관련 내부 비즈니스 로직 ========================
+    
+    
     /** 조회수 증가 **/
     private void increaseViewCount(Long eventNo) {
         int result = eventMapper.increaseCount(eventNo);

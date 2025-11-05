@@ -24,7 +24,6 @@ public class MainController {
     public String main(Model model) {
         List<EventDTO> ongoingEvents = eventService.selectEventOngoingTop();
         model.addAttribute("ongoingEvents", ongoingEvents);
-        log.info("메인 진행중 이벤트 목록: {}", ongoingEvents);
         return "main";
     }
 }

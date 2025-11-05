@@ -42,6 +42,15 @@ public class EventValidator {
         }
     }
     
+    /** DB 수정 수행 및 결과 검증 _트랜잭션 안정성 : DB 실행 직후 처리 **/
+    public int validateDmlResult(int result, String message) {
+        if (result != 1) {
+            throw new BadRequestException(message);
+        }
+        return result;
+    }
+
+    
     /** 관리자 권한 검증 **/
     public void validateAdmin(EventDTO event, HttpSession session) {
         MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
@@ -63,8 +72,6 @@ public class EventValidator {
         }
     }
 
-    
-    
     
     /** 제목/내용 기본 검증 **/
     public void validateEvent(EventDTO event) {
