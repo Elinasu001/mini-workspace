@@ -65,6 +65,7 @@ public class EventServiceImpl implements EventService {
         
         // DB 조회
         EventDTO event = eventMapper.selectByEventNo(eventNo);
+        
         if (event == null) {
             throw new BadRequestException("존재하지 않는 이벤트입니다.");
         }
@@ -88,15 +89,14 @@ public class EventServiceImpl implements EventService {
     	eventValidator.validateAdmin(event, session);// 관리자 권한 검증
     	eventValidator.validateEvent(event);// 제목/내용 기본 검증
     	eventValidator.validateInsertFiles(thumbnail, detailImage);// 첨부파일 필수 검증
-
     	int result = eventMapper.insertEvent(event);
         eventValidator.validateDmlResult(result, "이벤트 등록 실패"); // DB 수정 수행 및 결과 검증
 
         Long eventNo = event.getEventNo();
         
-        // 썸네일 저장 / 상세 이미지 저장
-        eventFileHandler.saveAttachment(thumbnail, eventNo, session, 0); 
-        eventFileHandler.saveAttachment(detailImage, eventNo, session, 1);
+        //파일 저장 공통 처리
+        eventFileHandler.saveAttachment(thumbnail, eventNo, session, 0); // 썸네일 저장 
+        eventFileHandler.saveAttachment(detailImage, eventNo, session, 1); // 상세 이미지 저장
 
         return result;
     }
@@ -124,10 +124,8 @@ public class EventServiceImpl implements EventService {
         List<EventAttachment> attachments = eventMapper.selectAttachmentsByEventNo(eventNo);// 기존 파일 조회
         
         eventValidator.validateUpdateFiles(attachments, thumbnail, detailImage);// 첨부파일 필수 검증
-        
         int result = eventMapper.updateEvent(event);
         eventValidator.validateDmlResult(result, "이벤트 수정 실패");// DB 수정 수행 및 결과 검증
-        
         // 파일 교체 공통 처리
         eventFileHandler.replaceAttachment(attachments, thumbnail, eventNo, session, 0); // 썸네일
         eventFileHandler.replaceAttachment(attachments, detailImage, eventNo, session, 1); // 상세 이미지
@@ -141,7 +139,6 @@ public class EventServiceImpl implements EventService {
     	
     	eventValidator.validateAdminSession(session);// 관리자 권한 검증
 	    eventValidator.validateEventNo(eventNo); // 번호 검증
-	    
 	    int result = eventMapper.deleteEvent(eventNo);
         eventValidator.validateDmlResult(result, "이벤트 삭제 실패"); // DB 수정 수행 및 결과 검증
 	    
