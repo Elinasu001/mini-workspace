@@ -1,0 +1,109 @@
+@charset "UTF-8";
+
+btn-primary {
+	background:var(--primary);
+}
+
+.eventBanner{
+	 background:rgb(216 221 228);
+}
+.eventBanner .text-center p{
+	color: #343a40;
+	line-height:1.5;
+}
+
+.feature {
+	position: relative;
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	height:18rem;
+	width:18rem;
+	overflow:hidden;
+	font-size:2rem;
+	background-color:var(--bs-gray-200);
+}
+
+
+.feature img {
+	width:100%;
+	height:100%;
+	object-fit:cover;
+}
+
+.card:hover:not(.ended) img {
+  transform: scale(1.05);
+  transition: transform 0.4s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.20);
+  cursor: pointer;
+}
+
+/*커서 방지*/
+.card.ended .card-body a{
+	pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* 딤 오버레이 */
+.card.ended .feature::after {
+  content: "종료된 이벤트";
+  position: absolute;
+  left:50%;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  width:18rem;
+  height:18rem;
+}
+
+.category {
+  color: var(--color-1);
+  font-size: var(--font14);
+  background-color:rgb(13 110 253 / 18%);
+  padding:6px 10px;
+  border-radius:20px;
+}
+
+.row {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+}
+
+/* 비활성 탭 텍스트 */
+.nav-tabs .nav-link {
+  color: #444;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.125) !important;
+  border-bottom: 3px solid transparent; /* hover 시 살짝 밑줄 효과 */
+  transition: all 0.3s ease;
+}
+
+/* hover 시 효과 */
+.nav-tabs .nav-link:hover {
+  color: #212529;
+}
+
+/* 활성 탭은 진한 실선으로 강조 */
+.nav-tabs .nav-link.active {
+  color: #fff !important;
+  background-color: rgba(33,37,41,1) !important;
+  border: none;
+  border-bottom: 3px solid rgba(33,37,41,1) !important;
+}
+
+.pagination{
+	--bs-pagination-padding-x: 1rem;
+	--bs-pagination-padding-y: 1rem;
+	--bs-pagination-color:#333;
+}

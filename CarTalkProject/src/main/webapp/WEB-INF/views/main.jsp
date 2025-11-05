@@ -9,6 +9,10 @@
 <title>Insert title here</title>
 </head>
 <style>
+
+	*{
+	    transition: 0.2s;
+	}
 	.main-title{
 	  position: absolute;
 	  z-index: 2;
@@ -118,6 +122,7 @@
 		display:flex;
 		flex-direction:row;
 		align-items: center;
+		flex-wrap: wrap;
 		max-width:1200px;
 		padding: 0 1rem;
 		margin:0 auto;
