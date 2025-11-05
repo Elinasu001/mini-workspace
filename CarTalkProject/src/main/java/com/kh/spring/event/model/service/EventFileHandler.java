@@ -136,6 +136,7 @@ public class EventFileHandler {
 
     /** 기존 파일 삭제 (물리 저장 및 DB 상태 변경)_ (UPDATE용 단일삭제)**/
     public void deleteOldAttachment(Long fileNo, HttpSession session) {
+    	
         EventAttachment oldFile = eventMapper.selectAttachmentByFileNo(fileNo);
         
         if (oldFile != null) {
@@ -165,8 +166,8 @@ public class EventFileHandler {
             ServletContext app = session.getServletContext();
             String fullPath = app.getRealPath(file.getFilePath() + file.getChangeName());
 
-            File f = new File(fullPath);
-            if (f.exists() && f.delete()) {
+            File delFile = new File(fullPath);
+            if (delFile.exists() && delFile.delete()) {
                 log.info("파일 삭제: {}", fullPath);
             } else {
                 log.warn("삭제 실패/없음: {}", fullPath);

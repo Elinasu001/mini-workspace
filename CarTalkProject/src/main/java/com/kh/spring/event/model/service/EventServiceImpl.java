@@ -33,7 +33,10 @@ public class EventServiceImpl implements EventService {
     
     
     // ===================== 메인 페이지 =====================
-    /** 진행 중 이벤트 Top3 조회 **/
+    /** 
+     * 메인용 진행중 이벤트 Top3 조회
+     * - 노출 우선 / 조회수 기준 / 최신순 상위 3개
+     */
     @Override
     public List<EventDTO> selectEventOngoingTop() {
     	 List<EventDTO> list = eventMapper.selectEventOngoingTop();
@@ -42,13 +45,16 @@ public class EventServiceImpl implements EventService {
     
     
     // ===================== 목록 조회 =====================
-    /** 진행 중 이벤트 목록 조회**/
+    /** 
+     * 진행 중 이벤트 리스트 (페이징)
+     * @param page 요청 페이지 번호
+     */
     @Override
     public Map<String, Object> selectOngoing(Long page) {
         return getEventList(page, "ongoing");
     }
     
-    /** 종료된 이벤트 목록 조회 **/
+    /** 종료된 이벤트 리스트 (페이징) **/
     @Override
     public Map<String, Object> selectEnded(Long page) {
         return getEventList(page, "ended");
@@ -56,7 +62,12 @@ public class EventServiceImpl implements EventService {
     
     
     // ===================== 상세 조회 =====================
-    /** 이벤트 상세 조회 + 조회수 증가 **/
+    /**
+     * 이벤트 상세 조회 + 조회수 증가
+     * - 이벤트 번호 유효성 검사
+     * - 조회수 증가 후 DB 조회
+     * - 첨부파일 별도 조회하여 DTO에 세팅
+     */
     @Override
     public EventDTO selectByEventNo(Long eventNo) {
     	 
@@ -82,7 +93,12 @@ public class EventServiceImpl implements EventService {
     
     
     // ===================== 등록 =====================
-    /** 이벤트 등록 **/
+    /**
+     * 이벤트 등록
+     * - 관리자 검증
+     * - 제목/내용/파일 검증
+     * - 이벤트 저장 후 첨부파일 저장
+     */
     @Override
     public int insertEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session) {
        
@@ -113,7 +129,12 @@ public class EventServiceImpl implements EventService {
     
     
     // ===================== 수정 =====================
-    /** 이벤트 수정 **/
+    /**
+     * 이벤트 수정
+     * - 관리자 권한 확인
+     * - 기존 파일 조회 후 첨부파일 유효성 검사
+     * - DB 업데이트 후 파일 교체 처리
+     */
     @Override
     public int updateEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session) {
         
@@ -133,7 +154,10 @@ public class EventServiceImpl implements EventService {
         return result;
     }
     
-    /** 이벤트 삭제 (상태값 변경) **/
+    /**
+     * 이벤트 삭제 (논리 삭제)
+     * - 파일은 삭제하지 않음 (종료 이벤트에서 사용 위해 유지)
+     */
     @Override
     public int deleteEvent(Long eventNo, HttpSession session) {
     	
@@ -155,16 +179,16 @@ public class EventServiceImpl implements EventService {
     // ================= 조회 관련 내부 비즈니스 로직 ========================
     
     
-    /** 조회수 증가 **/
+    /** 조회수 증가 (트랜잭션 검증 포함) */
     private void increaseViewCount(Long eventNo) {
     	int result = eventMapper.increaseCount(eventNo);
         eventValidator.validateDmlResult(result, "조회수 증가 중 오류 발생");// DB 수정 수행 및 결과 검증
     }
     
     
-    /**
-     * 공통 페이징 조회 처리
-     * @param page 요청 페이지 번호
+    /** 
+     * 공통 페이징 처리 
+     * 진행 / 종료 공통 로직 - type으로 분기
      */
     private Map<String, Object> getEventList(Long page, String type) {
 
