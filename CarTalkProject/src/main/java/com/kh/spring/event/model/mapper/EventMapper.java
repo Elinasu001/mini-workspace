@@ -24,7 +24,7 @@ public interface EventMapper {
 	// 진행중 이벤트 리스트 조회
 	List<EventDTO> selectOngoing(RowBounds rb);
 	
-	// 진행중 이벤트 개수 조회
+	// 종료된 이벤트 개수 조회
 	int selectEndedCount();
 	
 	// 종료된 이벤트 리스트 조회 
