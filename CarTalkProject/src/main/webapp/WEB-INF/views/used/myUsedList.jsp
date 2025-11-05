@@ -43,14 +43,24 @@
 										| 등록일 ${ car.enrollDate }</div>
 								</div>
 								<c:choose>
-							  	<c:when test="${empty car.thumbnail}">
-							    	<img src="${pageContext.request.contextPath}/resources/upfiles/used/default.png"
-							         alt="기본 이미지" width="120" height="80">
-							  	</c:when>
-							  	<c:otherwise>
-							    	<img src="${pageContext.request.contextPath}${car.thumbnail}"
-							         alt="썸네일 이미지" width="120" height="80">
-							  	</c:otherwise>
+								  <c:when test="${empty car.thumbnail}">
+								    <div class="thumbnail-wrap ${car.status eq '판매완료' ? 'is-sold' : ''}">
+								      <img src="${pageContext.request.contextPath}/resources/upfiles/used/default.png"
+								           alt="기본 이미지">
+								      <c:if test="${car.status eq '판매완료'}">
+								        <div class="sold-overlay">판매완료</div>
+								      </c:if>
+								    </div>
+								  </c:when>
+								  <c:otherwise>
+								    <div class="thumbnail-wrap ${car.status eq '판매완료' ? 'is-sold' : ''}">
+								      <img src="${pageContext.request.contextPath}${car.thumbnail}"
+								           alt="썸네일 이미지">
+								      <c:if test="${car.status eq '판매완료'}">
+								        <div class="sold-overlay">판매완료</div>
+								      </c:if>
+								    </div>
+								  </c:otherwise>
 								</c:choose>
 							</div>
 						</a>

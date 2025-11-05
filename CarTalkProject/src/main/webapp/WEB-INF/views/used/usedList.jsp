@@ -46,8 +46,12 @@
 							        	 alt="기본 이미지" width="120" height="80">
 							  		</c:when>
 							  		<c:otherwise>
-							    		<img src="${pageContext.request.contextPath}${car.thumbnail}"
-							         	alt="썸네일 이미지" width="120" height="80">
+							    		<div class="thumbnail-wrap ${car.status eq '판매완료' ? 'blurred' : ''}" style="position: relative;">
+									    	<img src="${pageContext.request.contextPath}${car.thumbnail}" alt="썸네일 이미지" width="120" height="80">
+									  	<c:if test="${car.status eq '판매완료'}">
+									    	<div class="sold-overlay">판매완료</div>
+									  	</c:if>
+										</div>
 							  		</c:otherwise>
 								</c:choose>
 							</div>

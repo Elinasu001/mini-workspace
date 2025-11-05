@@ -48,30 +48,36 @@
 
 				<!-- 실제 이미지 슬라이드 -->
 				<div class="carousel-inner">
-					<!-- 대표 이미지 -->
-					<div class="carousel-item active">
-						<c:choose>
-					  	<c:when test="${empty used.thumbnail}">
-					    	<img src="${pageContext.request.contextPath}/resources/upfiles/used/default.png"
-					        class="d-block w-100" alt="기본 이미지">
-					  	</c:when>
-					  	<c:otherwise>
-					    	<img src="${pageContext.request.contextPath}${used.thumbnail}"
-					         class="d-block w-100" alt="대표 이미지">
-					  	</c:otherwise>
-						</c:choose>
-
-							
+				  
+					  <!-- 대표 이미지 -->
+					  <div class="carousel-item active ${used.status eq '판매완료' ? 'is-sold' : ''}">
+					    <c:choose>
+					      <c:when test="${empty used.thumbnail}">
+					        <img src="${pageContext.request.contextPath}/resources/upfiles/used/default.png"
+					             class="d-block w-100" alt="기본 이미지">
+					      </c:when>
+					      <c:otherwise>
+					        <img src="${pageContext.request.contextPath}${used.thumbnail}"
+					             class="d-block w-100" alt="대표 이미지">
+					      </c:otherwise>
+					    </c:choose>
+					
+					    <c:if test="${used.status eq '판매완료'}">
+					      <div class="sold-overlay">판매완료</div>
+					    </c:if>
+					  </div>
+					
+					  <!-- 첨부 이미지들 -->
+					  <c:forEach var="img" items="${attachments}">
+					    <div class="carousel-item ${used.status eq '판매완료' ? 'is-sold' : ''}">
+					      <img src="${pageContext.request.contextPath}${img.filePath}"
+					           class="d-block w-100" alt="${img.originName}">
+					      <c:if test="${used.status eq '판매완료'}">
+					        <div class="sold-overlay">판매완료</div>
+					      </c:if>
+					    </div>
+					  </c:forEach>
 					</div>
-
-					<!-- 첨부 이미지들 -->
-					<c:forEach var="img" items="${attachments}">
-						<div class="carousel-item">
-							<img src="${pageContext.request.contextPath}${img.filePath}"
-								class="d-block w-100" alt="${img.originName}">
-						</div>
-					</c:forEach>
-				</div>
 
 				<!-- 이전/다음 버튼 -->
 				<button class="carousel-control-prev" type="button"

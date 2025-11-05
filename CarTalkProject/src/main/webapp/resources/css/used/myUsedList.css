@@ -168,3 +168,45 @@ h2 {
   color: #fff;
   border-color: #2d77ff;
 }
+
+.thumbnail-wrap {
+  position: relative;
+  width: 150px;
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-left: 20px;
+}
+
+.thumbnail-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  background: #f4f4f4;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+/* 판매완료 블러 처리 */
+.thumbnail-wrap.is-sold img {
+  filter: blur(3px);
+  opacity: 0.6;
+}
+
+/* 오버레이 텍스트 */
+.sold-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 8px;
+  pointer-events: none;
+}
