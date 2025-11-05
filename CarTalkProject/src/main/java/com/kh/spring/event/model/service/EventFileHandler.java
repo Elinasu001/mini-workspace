@@ -154,7 +154,7 @@ public class EventFileHandler {
     }
     
     
-    // 다중 파일 삭제 (단일 삭제 재사용)_  (DELETE 용) 
+    /** 다중 파일 삭제 (단일 삭제 재사용)_  (DELETE 용) **/
     public void deleteAttachments(List<EventAttachment> files, HttpSession session) {
         if (files == null || files.isEmpty()) {
             log.info("삭제할 파일 없음");

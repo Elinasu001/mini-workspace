@@ -31,9 +31,6 @@ public class EventController {
 	
 	private final EventService eventService;
 	
-	// ===================== 목록 페이지 ===================== //
-	
-	
 	// 이벤트 게시글 목록페이지
 	@GetMapping("/list")
 	public String selectEventPage(HttpSession session) {
@@ -56,8 +53,6 @@ public class EventController {
 	    return "event/listFragment";
 	    
 	}
-	
-	// ===================== 상세 페이지 ===================== //
 	
 	// 이벤트 게시글 상세_Ajax 
 	@GetMapping("/detail/{eventNo}")
