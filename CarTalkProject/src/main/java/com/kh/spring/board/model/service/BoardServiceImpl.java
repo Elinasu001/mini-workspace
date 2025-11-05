@@ -266,6 +266,7 @@ public class BoardServiceImpl implements BoardService {
 		if(!board.getReplies().isEmpty()) {
 			// 댓글이 여러 개일 수 있으니 반복문으로 순회하면서 삭제
 			for(ReplyDTO reply : board.getReplies()) {
+				reply.setRefBno(board.getBoardNo());
 				boardMapper.deleteReply(reply);
 			}
 		}
@@ -336,8 +337,6 @@ public class BoardServiceImpl implements BoardService {
 
 		// 유효 값 검증 (댓글이 null이거나 공백문자밖에 없을 경우)
 		boardValidator.validateReply(reply);
-		
-		System.out.println(reply);
 		
 		int result = boardMapper.updateReply(reply);
 		
