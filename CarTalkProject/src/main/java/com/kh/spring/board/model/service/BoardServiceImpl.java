@@ -100,11 +100,6 @@ public class BoardServiceImpl implements BoardService {
 		
 		int count = boardMapper.increaseBoardCount(boardNo);
 		
-		// 조회수가 늘어나지 않는 경우 예외 발생
-		if(count != 1) {
-			
-		}
-		
 		BoardDTO board = boardMapper.selectByBoardNo(boardNo);
 		
 		// 조회된 값이 없는 경우 예외 발생

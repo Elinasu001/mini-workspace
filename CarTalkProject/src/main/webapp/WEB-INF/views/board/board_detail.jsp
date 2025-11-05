@@ -273,7 +273,7 @@
 					return false;
 				}
 				
-				if(replyContent === ''){
+				if(replyContent === '' || replyContent.trim() === ''){
 					alert('변경할 댓글 내용이 없습니다.');
 					return false;
 				}
