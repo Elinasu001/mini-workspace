@@ -38,7 +38,7 @@ public class BoardValidator {
 	
 	private void checkReplyNull(String replyContent) {
 		
-		if(replyContent == null && "".equals(replyContent.trim())){
+		if(replyContent == null || "".equals(replyContent.trim())){
 			throw new NullPointerException("값이 존재하지 않습니다.");
 		}
 		
