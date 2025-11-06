@@ -53,40 +53,41 @@ Ajax로 부분 갱신을 적용한 하이브리드 형태의 이벤트 게시판
 
 src/
 └─ main/
-├─ java/com/kh/spring/
-│ ├─ main/
-│ │ └─ controller/MainController.java
-│ ├─ event/
-│ │ ├─ controller/EventController.java
-│ │ ├─ model/dto/EventDTO.java
-│ │ ├─ model/vo/EventCategory.java
-│ │ ├─ model/vo/EventAttachment.java
-│ │ ├─ model/mapper/EventMapper.java
-│ │ ├─ model/service/EventService.java
-│ │ ├─ model/service/EventServiceImpl.java
-│ │ ├─ model/service/EventValidator.java
-│ │ └─ model/service/EventFileHandler.java
-│ ├─ exception/
-│ │ └─ controller/ExceptionHandlingController.java
-│ └─ util/
-│ ├─ PageInfo.java
-│ └─ Pagenation.java
-├─ resources/
-│ ├─ mybatis-config.xml
-│ └─ mapper/event-mapper.xml
-└─ webapp/
-├─ WEB-INF/views/
-│ ├─ main.jsp
-│ ├─ event/
-│ │ ├─ list.jsp                            -- Ajax 기반 부분 렌더링 구조
-│ │ ├─ listFragment.jsp
-│ │ ├─ detail.jsp
-│ │ ├─ insertForm.jsp
-│ │ └─ updateForm.jsp
-│ └─ include/ : 공통 header/footer/toast 관리
-└─ resources/upfiles/event/
-├─ thumb/
-└─ detail/
+   ├─ java/com/kh/spring/
+   │  ├─ main/
+   │  │   └─ controller/MainController.java
+   │  ├─ event/
+   │  │   ├─ controller/EventController.java
+   │  │   ├─ model/dto/EventDTO.java
+   │  │   ├─ model/vo/EventCategory.java
+   │  │   ├─ model/vo/EventAttachment.java
+   │  │   ├─ model/mapper/EventMapper.java
+   │  │   ├─ model/service/EventService.java
+   │  │   ├─ model/service/EventServiceImpl.java
+   │  │   ├─ model/service/EventValidator.java
+   │  │   └─ model/service/EventFileHandler.java
+   │  ├─ exception/
+   │  │   └─ controller/ExceptionHandlingController.java
+   │  └─ util/
+   │      ├─ PageInfo.java
+   │      └─ Pagenation.java
+   ├─ resources/
+   │  ├─ mybatis-config.xml
+   │  └─ mapper/event-mapper.xml
+   └─ webapp/
+       ├─ WEB-INF/views/
+       │   ├─ main.jsp
+       │   ├─ event/
+       │   │   ├─ list.jsp
+       │   │   ├─ listFragment.jsp
+       │   │   ├─ detail.jsp
+       │   │   ├─ insertForm.jsp
+       │   │   └─ updateForm.jsp
+       │   └─ include/
+       └─ resources/upfiles/event/
+           ├─ thumb/
+           └─ detail/
+
 
 - 서버에서는 JSP Fragment(listFragment.jsp)만 렌더링하여 반환하고,
 - 클라이언트는 해당 영역만 갱신하는 하이브리드 SSR 구조를 사용했습니다.
@@ -99,7 +100,7 @@ src/
 ### 3) CT_EVENT_CATEGORY  (이벤트 카테고리)
 CREATE TABLE CT_EVENT_CATEGORY (                      
     CATEGORY_NO   NUMBER PRIMARY KEY,							  -- 카테고리 번호
-    CATEGORY_NAME VARCHAR2(100) NOT NULL						-- 카테고리명
+    CATEGORY_NAME VARCHAR2(100) NOT NULL						  -- 카테고리명
 );
 
 
@@ -123,14 +124,14 @@ CREATE TABLE CT_EVENT (                               			-- 이벤트 게시판
 
 ### 2) CT_EVENT_ATTACHMENT  (첨부파일)
 CREATE TABLE CT_EVENT_ATTACHMENT (
-  FILE_NO NUMBER PRIMARY KEY,									              -- 파일번호
-  REF_BNO NUMBER NOT NULL,									              	-- 참조번호
+  FILE_NO NUMBER PRIMARY KEY,									          -- 파일번호
+  REF_BNO NUMBER NOT NULL,									              -- 참조번호
   ORIGIN_NAME VARCHAR2(255) NOT NULL,							          -- 원본 파일명
   CHANGE_NAME VARCHAR2(255) NOT NULL,							          -- 서버 저장 파일명
   FILE_PATH VARCHAR2(2000) NOT NULL,							          -- 저장 경로
-  FILE_LEVEL NUMBER DEFAULT 0,									            -- 0 : 썸네일, 1 : 상세이미지
-  UPLOAD_DATE DATE DEFAULT SYSDATE NOT NULL,					      -- 업로드 일
-  STATUS VARCHAR2(1) DEFAULT 'Y' CHECK(STATUS IN('Y', 'N')),-- 상태('Y')
+  FILE_LEVEL NUMBER DEFAULT 0,									          -- 0 : 썸네일, 1 : 상세이미지
+  UPLOAD_DATE DATE DEFAULT SYSDATE NOT NULL,					          -- 업로드 일시
+  STATUS VARCHAR2(1) DEFAULT 'Y' CHECK(STATUS IN('Y', 'N')),              -- 상태('Y')
   FOREIGN KEY (REF_BNO) REFERENCES CT_EVENT(EVENT_NO)
 );
 
