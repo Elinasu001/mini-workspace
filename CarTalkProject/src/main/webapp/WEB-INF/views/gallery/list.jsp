@@ -6,12 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<jsp:include page="/WEB-INF/views/include/meta.jsp" />
 <title>사진게시판 | CarTalk</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/used/usedList.css">
 </head>
 <body>
-	<jsp:include page="../include/header.jsp" />
+<jsp:include page="/WEB-INF/views/include/meta.jsp" />
+	<jsp:include page="/WEB-INF/views/include/header.jsp" />
 	<main class="main-wrap">
 		<h2>사진 게시판</h2>
 

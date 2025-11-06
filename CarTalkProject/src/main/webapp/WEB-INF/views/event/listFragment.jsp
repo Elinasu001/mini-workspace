@@ -55,6 +55,3 @@
     <div class="col-12 text-center py-5">등록된 게시글이 존재하지 않습니다.</div>
   </c:otherwise>
 </c:choose>
-
-
-<!-- <img src="<c:url value='/${ event.filePath }/${ event.changeName }'/>" alt="대표이미지"> -->

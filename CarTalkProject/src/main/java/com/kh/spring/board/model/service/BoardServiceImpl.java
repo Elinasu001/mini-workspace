@@ -18,7 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.spring.board.model.dto.AttachmentDTO;
 import com.kh.spring.board.model.dto.BoardDTO;
 import com.kh.spring.board.model.dto.LikeDTO;
+import com.kh.spring.board.model.dto.ReplyDTO;
 import com.kh.spring.board.model.mapper.BoardMapper;
+import com.kh.spring.exception.BoardSaveFailedException;
+import com.kh.spring.exception.InvalidArgumentsException;
 import com.kh.spring.member.model.dto.MemberDTO;
 import com.kh.spring.util.PageInfo;
 import com.kh.spring.util.Pagination;
@@ -33,6 +36,7 @@ public class BoardServiceImpl implements BoardService {
 
 	private final BoardMapper boardMapper;
 	private final Pagination pagination;
+	private final BoardValidator boardValidator;
 
 	/**
 	 * 페이지 번호를 인자값으로 전달받아서 
@@ -45,13 +49,12 @@ public class BoardServiceImpl implements BoardService {
 		List<BoardDTO> boards = new ArrayList();
 		
 		// 페이지 번호가 1보다 낮은 경우 예외 발생
-		if(pageNo < 1) {
-			
-		}
+		boardValidator.validateSelectBoard(pageNo);
+		
 		int count = boardMapper.selectBoardCount(searchBy);
 		// 게시글이 존재하지 않을 경우 수행하지 않음
 		if(count > 0) {
-			//페이징 처리용 클래스
+			//페이징 처리용 RowBounds
 			RowBounds rb = new RowBounds((pageNo.intValue() -1)*10, 10);
 			boards = boardMapper.selectBoardList(rb, searchBy);
 		}
@@ -69,9 +72,8 @@ public class BoardServiceImpl implements BoardService {
 		List<BoardDTO> boards = new ArrayList();
 		
 		// 페이지 번호가 1보다 낮은 경우 예외 발생
-		if(pageNo < 1) {
-			
-		}
+		boardValidator.validateSelectBoard(pageNo);
+		
 		int count = boardMapper.selectBoardCountByKeyword(searchBy);
 		// 게시글이 존재하지 않을 경우 수행하지 않음
 		if(count > 0) {
@@ -94,12 +96,9 @@ public class BoardServiceImpl implements BoardService {
 	public BoardDTO selectByBoardNo(Long boardNo) {
 		
 		// 보드 번호가 1보다 낮은 경우 예외 발생
-		if(boardNo < 1) {
-			
-		}
+		boardValidator.validateSelectBoard(boardNo);
 		
 		int count = boardMapper.increaseBoardCount(boardNo);
-		System.out.println(count);
 		
 		// 조회수가 늘어나지 않는 경우 예외 발생
 		if(count != 1) {
@@ -172,11 +171,9 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void insertBoard(BoardDTO board, MultipartFile boardUpfile, HttpSession session) {
 		
+		MemberDTO member = boardValidator.validateLogin(session);
+		
 		int userNo = ((MemberDTO)session.getAttribute("loginMember")).getUserNo();
-		
-		//유효성 검증(예외 처리)
-		
-		
 		
 		board.setBoardWriter(String.valueOf(userNo));
 		
@@ -184,7 +181,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		// 게시글 작성 실패 시 예외 발생
 		if(boardResult != 1) {
-			
+			throw new BoardSaveFailedException("게시글 작성에 실패했습니다.");
 		}
 		
 		//첨부파일 존재 시 첨부파일 업로드
@@ -212,7 +209,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		// 게시판 수정 실패 시 예외처리
 		if(boardResult != 1) {
-			
+			throw new BoardSaveFailedException("게시글 변경에 실패했습니다.");
 		}
 		
 		if(!boardUpfile.getOriginalFilename().isEmpty()) { //새 첨부파일 있을 시
@@ -248,7 +245,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void deleteBoard(BoardDTO board, HttpSession session) {
 
-		System.out.println(board);
+		//System.out.println(board);
 		
 		//유효성 검증(예외 처리)
 
@@ -269,31 +266,107 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int insertLikes(Long boardNo, HttpSession session) {
+	public String insertLikes(Long boardNo, HttpSession session) {
 		
 		// 로그인 한 상태인지 검증
+		MemberDTO member = boardValidator.validateLogin(session);
 		
-		Long userNo = (long)((MemberDTO)session.getAttribute("loginMember")).getUserNo();
+		int userNo = ((MemberDTO)session.getAttribute("loginMember")).getUserNo();
 		
-		LikeDTO likeNums = new LikeDTO(boardNo, userNo);
+		LikeDTO likeNums = new LikeDTO(userNo, boardNo);
 		
 		// 좋아요 테이블을 먼저 조회해서 값이 존재하는 지 확인
 		LikeDTO likes = boardMapper.selectLikes(likeNums);
 		
-		if(likes != null) {
-			//존재할 경우 - 이미 좋아요를 누른 상태
-			
-			
-		} else {
+		if(likes == null) {
 			// 존재하지 않을 경우 - 좋아요를 처음 누른 상태
-			int result = boardMapper.insertLikes(likeNums);
+			int pushResult = boardMapper.insertLikes(likeNums);
+			if(pushResult != 1) { // 좋아요 추가 (INSERT) 실패 시 예외처리
+				
+			}
+			
+			
+			return "success";
+		} 
+		//존재할 경우 - 이미 좋아요를 누른 상태 - 좋아요 취소(테이블 삭제)
+		int popResult = boardMapper.deleteLikes(likeNums);
+		
+		if(popResult != 1) { // 좋아요 삭제 (DELETE) 실패 시 예외처리
+			
+		}
+		
+		return "cancle";
+	}
+
+	@Override
+	public String insertReply(ReplyDTO reply, HttpSession session) {
+		
+		
+		MemberDTO member = boardValidator.validateLogin(session);
+
+		// 유효 값 검증 (댓글이 null이거나 공백문자밖에 없을 경우)
+		boardValidator.validateReply(reply);
+		
+		reply.setReplyWriter(String.valueOf(member.getUserNo()));
+		
+		int result = boardMapper.insertReply(reply);
+		
+		if(result != 1) { // 댓글 작성 실패 시
+			
+		}
+		
+		
+		return "success";
+	}
+
+	@Override
+	public String updateReply(ReplyDTO reply, HttpSession session) {
+		
+		MemberDTO member = ((MemberDTO)session.getAttribute("loginMember"));
+		
+		if(member == null) { // 로그인하지 않은 사용자가 댓글 입력을 시도 할 경우
+			
+		}
+
+		// 유효 값 검증 (댓글이 null이거나 공백문자밖에 없을 경우)
+		boardValidator.validateReply(reply);
+		
+		System.out.println(reply);
+		
+		int result = boardMapper.updateReply(reply);
+		
+		if(result != 1) {
 			
 			
 		}
 		
 		
+		return "success";
+	}
+
+
+	
+	@Override
+	public String deleteReply(ReplyDTO reply, HttpSession session) {
 		
-		return 0;
+		MemberDTO member = boardValidator.validateLogin(session);
+		
+		int result = boardMapper.deleteReply(reply);
+		
+		if(result != 1) {
+			
+			
+		}
+		
+		
+		return "success";
+	}
+
+	@Override
+	public List<Long> selectAllBoard() {
+		
+		return boardMapper.selectAllBoard();
+		
 	}
 	
 }

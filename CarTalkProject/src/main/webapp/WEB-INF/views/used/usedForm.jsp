@@ -27,30 +27,65 @@
 			method="post" enctype="multipart/form-data">
 
 			<div class="section">
-				<h3>상품 이미지</h3>
-				<div class="upload-box">
-					<input type="file" name="upfile" id="upfile" accept="image/*"
-						multiple>
-					<p class="upload-count">
-						<span id="file-count">0</span> / 5
-					</p>
-				</div>
+				<h3>대표 이미지 (썸네일)</h3>
+				<input type="file" name="upfile1" accept="image/*" id="upfile1">
+				<div id="preview1" class="preview-box"></div>
+			</div>
+
+			<div class="section">
+				<h3>추가 이미지</h3>
+				<input type="file" name="upfile2" accept="image/*" id="upfile2">
+				<input type="file" name="upfile3" accept="image/*" id="upfile3">
+				<input type="file" name="upfile4" accept="image/*" id="upfile4">
+				<input type="file" name="upfile5" accept="image/*" id="upfile5">
+				<div id="previewExtra" class="preview-box"></div>
 			</div>
 
 			<script>
-				$('#upfile').on('change', function() {
-					const files = this.files;
-					const count = files.length;
-
-					if (count > 5) {
-						alert("최대 5장까지 등록가능합니다.");
-						$(this).val("");
-						$('#file-count').text("0");
-					} else {
-						$('#file-count').text(count);
-					}
-				});
-			</script>
+			      function previewImage(inputId, previewContainer) {
+			        const input = document.getElementById(inputId);
+			        const container = document.getElementById(previewContainer);
+			        input.addEventListener("change", e => {
+			          container.innerHTML = "";
+			          const file = e.target.files[0];
+			          if (file) {
+			            const reader = new FileReader();
+			            reader.onload = function(ev) {
+			              const img = document.createElement("img");
+			              img.src = ev.target.result;
+			              img.style.width = "150px";
+			              img.style.height = "150px";
+			              img.style.objectFit = "cover";
+			              img.style.margin = "5px";
+			              container.appendChild(img);
+			            };
+			            reader.readAsDataURL(file);
+			          }
+			        });
+			      }
+			
+			      previewImage("upfile1", "preview1");
+			
+			      ["upfile2","upfile3","upfile4","upfile5"].forEach(id => {
+			        document.getElementById(id).addEventListener("change", e => {
+			          const container = document.getElementById("previewExtra");
+			          const file = e.target.files[0];
+			          if (file) {
+			            const reader = new FileReader();
+			            reader.onload = ev => {
+			              const img = document.createElement("img");
+			              img.src = ev.target.result;
+			              img.style.width = "120px";
+			              img.style.height = "120px";
+			              img.style.objectFit = "cover";
+			              img.style.margin = "5px";
+			              container.appendChild(img);
+			            };
+			            reader.readAsDataURL(file);
+			          }
+			        });
+			      });
+	    </script>
 
 			<div class="section">
 				<h3>상품명</h3>
@@ -60,20 +95,19 @@
 			<div class="section">
 				<h3>카테고리</h3>
 
-				브랜드<input type="text" name="manufacturer"
-					placeholder="브랜드 (예: 현대, 기아, BMW)"> 모델명<input type="text"
-					name="model" placeholder="모델명 (예: 쏘나타, K5, 3시리즈)"> 판매 가격<input
-					type="number" name="usedPrice" value="0" required
-					placeholder="판매 가격 만원(₩)"> 연식 <input type="text"
-					name="carYear" placeholder="연식 (예: 2020.05(20년식))"> 연료 타입 <input
-					type="text" name="fuelType" placeholder="연료 타입 (예: 휘발유, 경유, LPG)">
-				주행 거리<input type="number" name="distance" value="0" required
-					placeholder="주행거리 (km)"> 변속기 <input type="text"
-					name="transmission" placeholder="변속기 (오토 / 수동)"> 사고 여부<input
-					type="text" name="accident" placeholder="사고 여부 (예: 무사고)">
+
+				브랜드<input type="text" name="manufacturer" placeholder="브랜드 (예: 현대, 기아, BMW)"> 
+				모델명<input type="text" name="model" placeholder="모델명 (예: 쏘나타, K5, 3시리즈)"> 
+				판매 가격<input type="number" name="usedPrice" placeholder="판매 가격 만원(₩)"> 
+				연식 <input type="text" name="carYear" placeholder="연식 (예: 2020.05(20년식))"> 
+				연료 타입 <input type="text" name="fuelType" placeholder="연료 타입 (예: 휘발유, 경유, LPG)">
+				주행 거리<input type="number" name="distance" placeholder="주행거리 (km)"> 
+				변속기 <input type="text" name="transmission" placeholder="변속기 (오토 / 수동)"> 
+				사고 여부<input type="text" name="accident" placeholder="사고 여부 (예: 무사고)">
 				차량 색상<input type="text" name="carColor" placeholder="차량 색상 (예: 흰색)">
 				판매자 연락처<input type="text" name="phone" placeholder="-제외하고 입력해주세요.">
 			</div>
+
 
 			<div class="section">
 				<h3>상품 설명</h3>

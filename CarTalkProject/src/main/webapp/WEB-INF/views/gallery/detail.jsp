@@ -59,10 +59,10 @@
   </style>
 </head>
 <body>
+	<jsp:include page="/WEB-INF/views/include/meta.jsp" />
+	<jsp:include page="/WEB-INF/views/include/header.jsp" />
 <div class="wrapper">
   <article class="post-card" aria-labelledby="post-title">
-	<jsp:include page="/WEB-INF/views/include/header.jsp" />
-	<jsp:include page="/WEB-INF/views/include/meta.jsp" />
     <div class="post-header">
       <div class="title-row">
         <h1 id="post-title" class="post-title">${gallery.galleryTitle}</h1>
