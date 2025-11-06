@@ -3,6 +3,7 @@
 Spring MVC, MyBatis, Oracle 기반으로 구현된 이벤트 게시판 미니 프로젝트입니다. 메인 페이지에는 진행 중인 이벤트 상위 3개를 노출하며, 목록 페이지는 진행/종료 탭 구분과 **Ajax 기반 부분 갱신**을 제공하는 하이브리드 SSR 구조를 채택했습니다.
 
 ---
+![프로젝트시여영상_박수현 (2)](https://github.com/user-attachments/assets/e8f81d05-6b0d-4d06-85bf-98e4aae023d9)
 
 ## 1. 개요 (Overview)
 
@@ -181,6 +182,6 @@ git push -u origin main
 ```
 
 
-![프로젝트시여영상_박수현 (2)](https://github.com/user-attachments/assets/e8f81d05-6b0d-4d06-85bf-98e4aae023d9)
+
 
 
