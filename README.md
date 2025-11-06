@@ -179,3 +179,8 @@ git branch -M main
 git remote add origin https://github.com/Elinasu001/mini-workspace.git
 git push -u origin main
 ```
+
+
+![프로젝트시여영상_박수현 (2)](https://github.com/user-attachments/assets/e8f81d05-6b0d-4d06-85bf-98e4aae023d9)
+
+
