@@ -81,10 +81,15 @@ public class EventController {
 	        HttpSession session,
 	        RedirectAttributes ra
 	        ) {
-	    
-	    eventService.insertEvent(event, thumbnail, detailImage, session);
-	    ra.addFlashAttribute("alertMsg", "이벤트가 성공적으로 등록되었습니다.");
-	    return "redirect:/event/list";
+		int result = eventService.insertEvent(event, thumbnail, detailImage, session);
+		
+		if(result > 0) {
+	    	ra.addFlashAttribute("alertMsg", "이벤트가 등록에 성공하였습니다..");
+	    	return "redirect:/event/list/";
+	    }else {
+	    	ra.addFlashAttribute("alertMsg", "이벤트 등록에 실패하였습니다.");
+	    	return "redirect:event/list"; 
+	    }
 	}
 	
 	// 이벤트 게시글 수정페이지
@@ -105,10 +110,17 @@ public class EventController {
 	        @RequestParam(value = "detailImage", required = false) MultipartFile detailImage,
 	        HttpSession session,
 	        RedirectAttributes ra) {
-
-		eventService.updateEvent(event, thumbnail, detailImage, session);
-	    ra.addFlashAttribute("alertMsg", "이벤트가 성공적으로 수정되었습니다.");
-	    return "redirect:/event/detail/" + event.getEventNo();
+		
+		int result = eventService.updateEvent(event, thumbnail, detailImage, session);
+	    
+	    if(result > 0) {
+	    	ra.addFlashAttribute("alertMsg", "이벤트가 성공적으로 수정되었습니다.");
+	    	return "redirect:/event/detail/" + event.getEventNo();
+	    }else {
+	    	ra.addFlashAttribute("alertMsg", "이벤트 수정해 실패하였습니다.");
+	    	return "redirect:event/dtail/update" + event.getEventNo(); 
+	    }
+	  
 	}
 	
 	// 이벤트 게시글 삭제
@@ -117,9 +129,16 @@ public class EventController {
     		@RequestParam("eventNo") Long eventNo,
     		HttpSession session,
     		RedirectAttributes ra) {
-       eventService.deleteEvent(eventNo, session);
-       ra.addFlashAttribute("alertMsg", "이벤트가 성공적으로 삭제되었습니다.");
-       return "redirect:/event/list";
+	   
+       int result = eventService.deleteEvent(eventNo, session);
+       if(result > 0) {
+    	   ra.addFlashAttribute("alertMsg", "이벤트가 성공적으로 삭제되었습니다.");
+    	   return "redirect:/event/list";
+       }else {
+    	   ra.addFlashAttribute("alertMsg", "이벤트가 성공적으로 삭제되었습니다.");
+    	   return "redirect:/event/update";
+       }
+       
     }
 	
 	

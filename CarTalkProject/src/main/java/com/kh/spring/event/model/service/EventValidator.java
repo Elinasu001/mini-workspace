@@ -51,8 +51,10 @@ public class EventValidator {
     }
 
     
-    /** 관리자 권한 검증 **/
-    public void validateAdmin(EventDTO event, HttpSession session) {
+    /** 관리자 권한 검증 &&  제목/내용 기본 검증 **/
+    public void validateAdminAndEvent(EventDTO event, HttpSession session) {
+    	
+    	
         MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
         if (loginMember == null || !"Y".equals(loginMember.getManager())) {
             throw new AuthenticationException("관리자만 접근 가능합니다.");
@@ -60,7 +62,15 @@ public class EventValidator {
 
         event.setEventTitle(event.getEventTitle().replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
         event.setEventContent(event.getEventContent().replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+        
         event.setUserNo(loginMember.getUserNo());
+        
+        if (event.getEventTitle() == null || event.getEventTitle().trim().isEmpty()
+        || event.getEventContent() == null || event.getEventContent().trim().isEmpty()) {
+           throw new InvalidArgumentsException("제목 또는 내용이 비어 있습니다.");
+       }
+        
+        
     }
     
     /** 관리자 권한 검증  (삭제용) */
@@ -69,15 +79,6 @@ public class EventValidator {
         
         if (loginMember == null || !"Y".equals(loginMember.getManager())) {
             throw new AuthenticationException("관리자만 접근 가능합니다.");
-        }
-    }
-
-    
-    /** 제목/내용 기본 검증 **/
-    public void validateEvent(EventDTO event) {
-        if (event.getEventTitle() == null || event.getEventTitle().trim().isEmpty()
-         || event.getEventContent() == null || event.getEventContent().trim().isEmpty()) {
-            throw new InvalidArgumentsException("제목 또는 내용이 비어 있습니다.");
         }
     }
     

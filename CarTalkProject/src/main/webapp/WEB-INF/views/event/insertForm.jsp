@@ -34,7 +34,7 @@
 				        <div class="mb-4 ">
 				            <label for="categoryNo" class="form-label">카테고리</label>
 				            <select id="categoryNo" class="form-select" name="category.categoryNo" required>
-							  <option value="">카테고리를 선택하세요</option>
+							  <option>카테고리를 선택하세요</option>
 							  <c:forEach var="cat" items="${categoryList}">
 							    <option value="${cat.categoryNo}">${cat.categoryName}</option>
 							  </c:forEach>
@@ -75,7 +75,7 @@
 				            <input type="text" id="startDate" name="startDate" class="form-control datepicker" placeholder="YYYY-MM-DD" required>
 				        </div>
 				
-				        <!-- 7종료일 -->
+				        <!-- 종료일 -->
 				        <div class="mb-4">
 				            <label for="endDate" class="form-label">이벤트 종료일</label>
 				            <input type="text" id="endDate" name="endDate" class="form-control datepicker" placeholder="YYYY-MM-DD" required>

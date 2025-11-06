@@ -102,9 +102,9 @@ public class EventServiceImpl implements EventService {
     @Override
     public int insertEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session) {
        
-    	eventValidator.validateAdmin(event, session);// 관리자 권한 검증
-    	eventValidator.validateEvent(event);// 제목/내용 기본 검증
+    	eventValidator.validateAdminAndEvent(event, session);// 관리자 권한 검증, 제목/내용 기본 검증
     	eventValidator.validateInsertFiles(thumbnail, detailImage);// 첨부파일 필수 검증
+    	
     	int result = eventMapper.insertEvent(event);
         eventValidator.validateDmlResult(result, "이벤트 등록 실패"); // DB 수정 수행 및 결과 검증
 
@@ -138,9 +138,8 @@ public class EventServiceImpl implements EventService {
     @Override
     public int updateEvent(EventDTO event, MultipartFile thumbnail, MultipartFile detailImage, HttpSession session) {
         
-    	eventValidator.validateAdmin(event, session);// 관리자 권한 검증
-    	eventValidator.validateEvent(event);// 제목/내용 기본 검증
-
+    	eventValidator.validateAdminAndEvent(event, session);// 관리자 권한 검증, 제목/내용 기본 검증
+    	
         Long eventNo = event.getEventNo();
         List<EventAttachment> attachments = eventMapper.selectAttachmentsByEventNo(eventNo);// 기존 파일 조회
         
@@ -172,8 +171,6 @@ public class EventServiceImpl implements EventService {
 	    
         return result;
     }
-    
-    
     
    
     // ================= 조회 관련 내부 비즈니스 로직 ========================
