@@ -171,9 +171,11 @@ CREATE TABLE CT_EVENT_ATTACHMENT (
 ---
 
 ## 8. Git 명령 예시
+```
 echo "# CarTalk Mini Project - Event Board" > README.md
 git add .
 git commit -m "docs: add README for CarTalk Event Board"
 git branch -M main
 git remote add origin https://github.com/Elinasu001/mini-workspace.git
 git push -u origin main
+```
