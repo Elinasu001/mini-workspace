@@ -9,10 +9,15 @@
 <title>이벤트 수정</title>
 </head>
 <body>
-
+<c:if test="${empty sessionScope.loginMember or sessionScope.loginMember.role ne 'ADMIN'}">
+    <script>
+        alert("관리자만 접근 가능한 페이지입니다.");
+        location.href = "${pageContext.request.contextPath}/main";
+    </script>
+</c:if>
 <div id="wrap">
 	<jsp:include page="../include/header.jsp"/>
-
+	
 	<div class="contentWrap">
 		<div class="contArea admin">
 			

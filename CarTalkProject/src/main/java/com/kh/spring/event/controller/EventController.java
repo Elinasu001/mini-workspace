@@ -65,6 +65,7 @@ public class EventController {
 	// 이벤트 게시글 등록페이지
 	@GetMapping("/insertForm")
 	public String insertEventForm(HttpSession session, Model model){
+		
 	    List<EventCategory> categoryList = eventService.selectCategoryList();
 	    model.addAttribute("categoryList", categoryList);
 	    return "event/insertForm";
