@@ -135,7 +135,7 @@ public class EventController {
     	   ra.addFlashAttribute("alertMsg", "이벤트가 성공적으로 삭제되었습니다.");
     	   return "redirect:/event/list";
        }else {
-    	   ra.addFlashAttribute("alertMsg", "이벤트가 성공적으로 삭제되었습니다.");
+    	   ra.addFlashAttribute("alertMsg", "이벤트 삭제에 실패하였습니다.");
     	   return "redirect:/event/update";
        }
        
