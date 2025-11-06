@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.spring.exception.BadRequestException;
+import com.kh.spring.exception.BoardSaveFailedException;
+import com.kh.spring.exception.UserIdNotFoundException;
 import com.kh.spring.gallery.model.dto.AttachmentDTO;
 import com.kh.spring.gallery.model.dto.GalleryDTO;
 import com.kh.spring.gallery.model.dto.ReplyDTO;
@@ -34,20 +37,31 @@ public class GalleryServiceImpl implements GalleryService {
 	private final GalleryMapper galleryMapper;
 	private final Pagination pagination;
 	
+	private void isNegativeNum (Long number) {
+		if( number < 1) {
+			throw new BadRequestException("잘못된 페이지 요청입니다. (페이지 음수값)");
+		}
+	}
+	
 	@Override
 	public Map<String, Object> selectGalleryList(Long page) {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<GalleryDTO> gallerys = new ArrayList();
 		
-		//TODO: 유효성검증- 요청 페이지수가 -1 등 유효하지 않을경우 
-		if(page < 1) {}
+		// 유효성검증: 요청 페이지가 유효하지 않은 값- 음수
+		isNegativeNum(page);
 		
 		int count = galleryMapper.selectTotalcount();
-//		log.info("{}", count);
-		PageInfo pi = pagination.getPageInfo(count, page.intValue(), 5, 4);
-//		log.info("{}, {}", count, page.intValue());
 		
+		
+		PageInfo pi = pagination.getPageInfo(count, page.intValue(), 5, 4);
+		
+		// 유효성검증: 요청 페이지가 유효하지 않은 값- 존재하는 페이지보다 큰 숫자 요청
+		if(page > pi.getMaxPage() ) {
+			
+			throw new BadRequestException("잘못된 페이지 요청입니다. (존재하지 않는 페이지)");
+		}
 		
 		if(count > 0) {
 			int offset = (page.intValue() - 1) * 4;
@@ -72,10 +86,9 @@ public class GalleryServiceImpl implements GalleryService {
 		
 		List<AttachmentDTO> attachments = new ArrayList();
 		List<ReplyDTO> replys = new ArrayList();
-//		log.info("{}",galleryNo);
 		
-		//TODO: 유효성검증
-		/*			*/
+		isNegativeNum(galleryNo);
+			
 		attachments = galleryMapper.selectAttachmentsByNo(galleryNo);
 		
 		replys = galleryMapper.selectReplysByNo(galleryNo);
@@ -85,6 +98,10 @@ public class GalleryServiceImpl implements GalleryService {
 		int replyCount = galleryMapper.selectReplyCount(galleryNo);
 		
 		GalleryDTO gallery = galleryMapper.selectGalleryByNo(galleryNo);
+		
+		if(gallery == null) {
+			throw new BadRequestException("존재하지 않는 게시물입니다.");
+		}
 		
 		
 		gallery.setAttachments(attachments);
@@ -120,11 +137,19 @@ public class GalleryServiceImpl implements GalleryService {
 
 	private GalleryDTO getLoginName(GalleryDTO gallery, HttpSession session) {
 		
-		int userNo = ((MemberDTO)session.getAttribute("loginMember")).getUserNo();
-		
+		int userNo = getLoginNo(session);
 		gallery.setNickname(String.valueOf(userNo));
 		
 		return gallery;
+	}
+
+	private int getLoginNo(HttpSession session) {
+		
+		if(session.getAttribute("loginMember") == null) {
+			throw new UserIdNotFoundException("로그인이 유효하지 않습니다.");
+		}
+		
+		return ((MemberDTO)session.getAttribute("loginMember")).getUserNo();
 	}
 
 	private int insertAttachment(GalleryDTO gallery, MultipartFile thumnail, List<MultipartFile> upfiles,
@@ -180,6 +205,7 @@ public class GalleryServiceImpl implements GalleryService {
 			
 			if(atResult != 1) {
 				log.info("중간에 먼가잘못된거임!!!!");
+				throw new BoardSaveFailedException("첨부파일 업로드 중 오류가 발생했습니다. 다시 시도해주세요");
 			}
 			
 			result++;
@@ -209,6 +235,7 @@ public class GalleryServiceImpl implements GalleryService {
 				upfile.transferTo(new File(saveAt.get("savePath") + saveAt.get("changeName")));
 			} catch (Exception e) {
 				e.printStackTrace();
+				throw new BoardSaveFailedException("첨부파일 업로드 중 오류가 발생했습니다. 다시 시도해주세요");
 			}
 			
 			
@@ -293,6 +320,7 @@ public class GalleryServiceImpl implements GalleryService {
 		        int atResult = galleryMapper.insertAttachment(at);
 		        if (atResult != 1) {
 		            log.info("첨부파일 삽입 중 오류 발생!");
+		            throw new BoardSaveFailedException("첨부파일 업로드 중 오류가 발생했습니다. 다시 시도해주세요");
 		        }
 		        result++;
 		    }
@@ -305,5 +333,21 @@ public class GalleryServiceImpl implements GalleryService {
 		galleryMapper.deleteGallery(galleryNo);
 		
 	}
+
+	@Override
+	public void insertReply(Long galleryNo, ReplyDTO reply, HttpSession session) {
+
+		isNegativeNum(galleryNo);
+		
+		int writerNo = getLoginNo(session);
+		
+		reply.setReplyWriter(String.valueOf(writerNo));
+		
+		reply.setRefGno(galleryNo);
+		
+		galleryMapper.insertReply(reply);
+		
+	}
+
 
 }

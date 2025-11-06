@@ -156,8 +156,8 @@
 		VALUES
 				(
 				  SEQ_RNO.NEXTVAL
-				, #{galleryNo}
-				, #{userNo}
+				, #{refGno}
+				, #{replyWriter}
 				, #{replyContent}
 				, SYSDATE
 				, 'Y'

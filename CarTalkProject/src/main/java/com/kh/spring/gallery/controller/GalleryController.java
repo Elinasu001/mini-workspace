@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring.gallery.model.dto.GalleryDTO;
+import com.kh.spring.gallery.model.dto.ReplyDTO;
 import com.kh.spring.gallery.model.service.GalleryService;
 
 import lombok.RequiredArgsConstructor;
@@ -99,5 +100,13 @@ public class GalleryController {
 		return "redirect:/gallery";
 	}
 	
+	@PostMapping("/{id}/reply")
+	public String insertReply(@PathVariable(name="id") Long galleryNo, ReplyDTO reply, HttpSession session) {
+//		log.info("id:{}, reply:{}", galleryNo, reply);
+		
+		galleryService.insertReply(galleryNo, reply, session);
+		
+		return "redirect:/gallery/{id}";
+	}
 	
 }

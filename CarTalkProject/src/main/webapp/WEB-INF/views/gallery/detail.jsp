@@ -15,11 +15,12 @@
       font-family: Inter, "Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
     *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:#111;line-height:1.6;padding:36px 20px;display:flex;justify-content:center}
+    body{margin:0;background:var(--bg);color:#111;line-height:1.6;padding:36px 20px;}
 
     .post-card{
       width:100%;max-width:var(--maxw);background:var(--card);border-radius:var(--radius);box-shadow:0 6px 20px rgba(16,24,40,0.08);overflow:hidden;
     }
+    .wrapper { display: flex; justify-content: center;}
 
     /* 상단 제목 영역 */
     .post-header{padding:28px 32px;border-bottom:1px solid #eef2f7}
@@ -58,6 +59,7 @@
   </style>
 </head>
 <body>
+<div class="wrapper">
   <article class="post-card" aria-labelledby="post-title">
 	<jsp:include page="/WEB-INF/views/include/header.jsp" />
 	<jsp:include page="/WEB-INF/views/include/meta.jsp" />
@@ -81,7 +83,7 @@
 							<!-- changeName을 사용하여 이미지 파일 경로를 출력합니다 -->
 							<img src="${attachment.filePath}/${attachment.changeName}"
 								alt="attachment image"
-								style="width: 100px">
+								>
 						</figure>
 					</c:forEach>
 				</c:when>
@@ -116,16 +118,18 @@
 		
 		<div class="post-footer">
       <div class="actions">
+      <form action="/ct/gallery/${gallery.galleryNo}/reply" method="post">
         <table id="replyArea" class="table" align="center">
                 <thead>
-                    <tr>
-                        <th colspan="2">
-                            <textarea class="form-control" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
-                        </th>
-                        <th style="vertical-align:middle">
-                        	<button class="btn btn-secondary">등록하기</button>
-                        </th> 
-                    </tr>
+                     <tr>
+				        <th colspan="2">
+				          <textarea class="form-control" name="replyContent" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
+				        </th>
+				        <th style="vertical-align:middle">
+				          <button type="submit" class="btn btn-secondary">등록하기</button>
+				        </th>
+				      </tr>
+                    
                     <tr>
                         <td colspan="3">댓글(<span id="rcount">${ gallery.replyCount }</span>)</td>
                     </tr>
@@ -153,7 +157,8 @@
             </table>
       </div>
     </div>
-  	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
   </article>
+  </div>
+  	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>

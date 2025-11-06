@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-<script >
+<script>
 $( document ).ready(function() {
 
 	var btObj = $("#loginBt");
@@ -98,7 +98,7 @@ $( document ).ready(function() {
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/event/list">이벤트 게시판</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">일반 게시판</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">사진 게시판</a></li>
+                    <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/gallery">사진 게시판</a></li>
                     <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/used/list">거래 게시판</a></li>
                 </ul>
             </div>

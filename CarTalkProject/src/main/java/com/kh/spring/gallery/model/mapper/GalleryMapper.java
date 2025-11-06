@@ -37,4 +37,6 @@ public interface GalleryMapper {
 	void deleteAllAttachment(Long galleryNo);
 
 	void deleteGallery(Long galleryNo);
+
+	void insertReply(ReplyDTO reply);
 }
