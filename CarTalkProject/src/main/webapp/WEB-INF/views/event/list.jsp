@@ -11,6 +11,7 @@
 <body>
 
 	<jsp:include page="/WEB-INF/views/include/toast.jsp"/>
+	
 	<div id="wrap">
 		<jsp:include page="../include/header.jsp"/>
 		

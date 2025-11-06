@@ -118,7 +118,7 @@ public class EventController {
 	    	return "redirect:/event/detail/" + event.getEventNo();
 	    }else {
 	    	ra.addFlashAttribute("alertMsg", "이벤트 수정해 실패하였습니다.");
-	    	return "redirect:event/dtail/update" + event.getEventNo(); 
+	    	return "redirect:event/detail"; 
 	    }
 	  
 	}
