@@ -13,6 +13,7 @@ Spring MVC, MyBatis, Oracle 기반으로 구현된 이벤트 게시판 미니 �
 ## 2. 주요 기능 (Core Features)
 
 ### 2.1. 메인 페이지 (`/main`)
+* **메인 전체
 * **Top 3 이벤트 노출**: `STATUS='Y'` 이며, 현재 진행 중인 (`START_DATE <= SYSDATE <= END_DATE`) 이벤트 중 상위 3개 표시.
 * **노출 우선순위**: `MAIN_EXPOSE`, `VIEW_COUNT`, `EVENT_NO` 순으로 정렬하여 메인 배너 우선순위를 결정합니다.
 
