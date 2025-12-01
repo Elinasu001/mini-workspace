@@ -10,38 +10,17 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/used/usedList.css">
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/include/meta.jsp" />
 	<jsp:include page="/WEB-INF/views/include/header.jsp" />
-	<jsp:include page="/WEB-INF/views/include/meta.jsp" />
 	<main class="main-wrap">
 		<h2>사진 게시판</h2>
 
 		<!-- 게시판 목록 -->
 		<div class="car-list">
-			
-			<!-- 양식 예시 
-			<div class="car-card">
-				<div class="car-info">
-					<div>리뷰/사진</div>
-					<h3>팰리세이드 리뷰</h3>
-					<p>이차 진짜 좋음</p>
-					<div class="meta">리뷰쟁이 | 댓글 5 | 25.10.11</div>
-				</div>
-				<img src="resources/upfiles/gallery/car01.png">
-			</div>
-			<div class="car-card">
-				<div class="car-info">
-					<div>(category)</div>
-					<h3>(title)</h3>
-					<p>(content)</p>
-					<div class="meta">(nickname) | 댓글 (replyCount) | (enrollDate)</div>
-				</div>
-				<img src="">
-			</div>-->
-			<!-- 실제 데이터 -->
-			
+		
 			<script>
 			    function toDetail(galleryNo){
-			        location.href = `gallery/\${galleryNo}`;
+			        location.href = `/ct/gallery/\${galleryNo}`;
 			    }
 			</script>
 			
@@ -52,10 +31,9 @@
 			                <div class="car-info">
 			                    <div>${gallery.categoryName}</div>
 			                    <h3>${gallery.galleryTitle}</h3>
-			                    <p>${gallery.thumnailPath}</p>
-			                    <div class="meta">${gallery.nickname} | 댓글 (replyCount) | ${gallery.enrollDate}</div>
+			                    <div class="meta">${gallery.nickname} | 조회수 ${gallery.viewCount} | ${gallery.enrollDate}</div>
 			                </div>
-			                <img src="${gallery.thumnailPath}">
+			                <img src="/ct/resources/upfiles/gallery/${gallery.thumnailPath}">
 			            </div>
 			        </c:forEach>
 			    </c:when>
@@ -79,17 +57,15 @@
 				</button>
 			</c:forEach>
 			<button>▶</button>
-			<!--  
-			<button class="active">1</button>
-			<button>2</button>
-			<button>3</button>
-			<button>4</button>
-			<button>5</button>
-			<button>▶</button>
-			-->
 		</div>
-
+		<!-- 글쓰기 버튼 -->
+		<div class="left-box">
+		<c:if test="${ not empty sessionScope.loginMember }">
+			<a href="${pageContext.request.contextPath}/gallery/form" class="btn-write">글쓰기</a>
+		</c:if>
+		</div>
 	</main>
-	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+	
+	<jsp:include page="../include/footer.jsp" />
 </body>
 </html>

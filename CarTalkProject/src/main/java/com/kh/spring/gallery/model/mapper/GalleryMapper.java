@@ -23,4 +23,20 @@ public interface GalleryMapper {
 	GalleryDTO selectGalleryByNo(Long galleryNo);
 	
 	int selectReplyCount(Long galleryNo);
+
+	int insertGallery(GalleryDTO gallery);
+
+	int insertAttachment(AttachmentDTO at);
+
+	void increaseCount(Long galleryNo);
+
+	int updateGallery(GalleryDTO gallery);
+
+	int updateAttachment(AttachmentDTO at);
+
+	void deleteAllAttachment(Long galleryNo);
+
+	void deleteGallery(Long galleryNo);
+
+	void insertReply(ReplyDTO reply);
 }
