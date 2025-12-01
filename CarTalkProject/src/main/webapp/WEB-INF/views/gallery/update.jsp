@@ -125,25 +125,34 @@ body {
   <div class="container">
     <h2>사진게시판 글등록</h2>
 
-    <form action="/ct/gallery/insert" method="post" enctype="multipart/form-data" class="upload-form">
+    <form action="/ct/gallery/${ gallery.galleryNo }/update" method="post" enctype="multipart/form-data" class="upload-form">
+    <input type="hidden" name="galleryNo" value="${gallery.galleryNo}">
     
       <!-- 카테고리 -->
-      <div class="form-group">
-        <label for="galleryCategory">카테고리</label>
-        <input type="radio" id="category-3" name="categoryName" value="리뷰"/>리뷰
-        <input type="radio" id="category-4" name="categoryName" value="자랑"/>자랑
-      </div>
+     <div class="form-group">
+    <label for="galleryCategory">카테고리</label>
+    <label>
+    <input type="radio" name="categoryName" value="리뷰"
+      ${gallery.categoryName eq '리뷰' ? 'checked' : ''}> 리뷰
+  </label>
+
+  <label>
+    <input type="radio" name="categoryName" value="자랑"
+      ${gallery.categoryName eq '자랑' ? 'checked' : ''}> 자랑
+  </label>
+  </div>
+
       
       <!-- 제목 -->
       <div class="form-group">
         <label for="title">제목</label>
-        <input type="text" id="galleryTitle" name="galleryTitle" placeholder="제목을 입력하세요" required />
+        <input type="text" id="galleryTitle" name="galleryTitle" value="${ gallery.galleryTitle }" required>
       </div>
 
       <!-- 내용 -->
       <div class="form-group">
         <label for="content">내용</label>
-        <textarea id="galleryContent" name="galleryContent" rows="6" placeholder="내용을 입력하세요" required></textarea>
+        <textarea id="galleryContent" name="galleryContent" rows="6" required>${ gallery.galleryContent }</textarea>
       </div>
 
       <!-- 파일 업로드 -->
@@ -155,8 +164,7 @@ body {
       <div class="form-group">
         <label for="imageUpload">사진 업로드</label>
         <input type="file" id="upfiles" name="upfiles" accept="image/*" multiple />
-        <div id="preview"></div>
-      </div>
+	      </div>
 
       <!-- 버튼 -->
       <div class="form-buttons">
@@ -176,7 +184,7 @@ body {
       preview.innerHTML = ''; // 기존 이미지 초기화
       const files = this.files;
       for (const file of files) {
-        const reader = new FileReader();
+        const reader = new FileReader();	
         reader.onload = e => {
           const img = document.createElement('img');
           img.src = e.target.result;

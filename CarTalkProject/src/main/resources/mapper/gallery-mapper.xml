@@ -25,7 +25,7 @@
 			    , CT_GALLERY.GALLERY_TITLE galleryTitle
 			    , CT_GALLERY.VIEW_COUNT viewCount
 			    , TO_CHAR(CT_GALLERY.ENROLL_DATE, 'YYYY-MM-DD') as enrollDate
-			    , CT_GALLERY_ATTACHMENT.FILE_PATH thumnailPath
+			    , CT_GALLERY_ATTACHMENT.CHANGE_NAME thumnailPath
 		FROM
     			CT_GALLERY
 		JOIN
@@ -40,7 +40,7 @@
 				CT_GALLERY_ATTACHMENT.ORDER_NO = 1
 		ORDER
 		BY 
-				CT_GALLERY.GALLERY_NO DESC
+				CT_GALLERY.ENROLL_DATE DESC
 		OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
 	</select>
 	<select id="selectGalleryByNo"
@@ -65,6 +65,7 @@
 				G.GALLERY_NO = #{galleryNo}
 		AND    
 				G.STATUS = 'Y'
+				
 	</select>
 	
 	<select id="selectAttachmentsByNo"
@@ -88,6 +89,8 @@
 				G.GALLERY_NO = #{galleryNo}
 		AND 	
 				G.STATUS = 'Y'
+		AND
+				A.STATUS = 'Y'
 		ORDER 
 		BY		
 				A.ORDER_NO ASC
@@ -138,7 +141,7 @@
 		UPDATE
 		       CT_GALLERY
 		   SET
-		       VIEW_COUNT = VIEW_COUNT + 1 viewCount
+		       VIEW_COUNT = VIEW_COUNT + 1
 		 WHERE
 		       GALLERY_NO = #{galleryNo}
 		   AND
@@ -152,9 +155,9 @@
 				CT_GALLERY_REPLY
 		VALUES
 				(
-				  R.SEQ_RNO.NEXTVAL
-				, #{galleryNo}
-				, #{userNo}
+				  SEQ_RNO.NEXTVAL
+				, #{refGno}
+				, #{replyWriter}
 				, #{replyContent}
 				, SYSDATE
 				, 'Y'
@@ -162,23 +165,24 @@
 	</insert>
 	
 	<insert id="insertGallery"
-			parameterType="com.kh.spring.gallery.model.dto.GalleryDTO">
-		INSERT
-		INTO
-				CT_GALLERY
-		VALUES
-				(
-				  SEQ_RNO.NEXTVAL
-				, #{categoryNo}
-				, #{userNo}
-				, #{galleryTitle}
-				, #{galleryContent}
-				, #{galleryContent}
-				, 0
-				, SYSDATE
-				, 'Y'
-				)
-	</insert>
+        parameterType="com.kh.spring.gallery.model.dto.GalleryDTO">
+    <selectKey keyProperty="galleryNo" resultType="long" order="BEFORE">
+        SELECT SEQ_GALLERY_NO.NEXTVAL FROM DUAL
+    </selectKey>
+    INSERT INTO CT_GALLERY
+    VALUES
+    (
+        #{galleryNo}
+        , (SELECT CATEGORY_NO FROM CT_GALLERY_CATEGORY WHERE CATEGORY_NAME = #{categoryName})
+        , #{nickname}
+        , #{galleryTitle}
+        , #{galleryContent}
+        , DEFAULT
+        , SYSDATE
+        , 'Y'
+    )
+</insert>
+
 	
 	<insert id="insertAttachment"
 			parameterType="com.kh.spring.gallery.model.dto.AttachmentDTO">
@@ -187,8 +191,8 @@
 				CT_GALLERY_ATTACHMENT
 		VALUES
 				(
-				  R.SEQ_RNO.NEXTVAL
-				, #{GalleryNo}
+				  SEQ_GALLERY_ATTACHMENT.NEXTVAL
+				, #{refGno}
 				, #{orderNo}
 				, #{originName}
 				, #{changeName}
@@ -197,5 +201,39 @@
 				, 'Y'
 				)
 	</insert>
+	
+	<update id="updateGallery"
+			parameterType="com.kh.spring.gallery.model.dto.GalleryDTO">
+		UPDATE
+				CT_GALLERY 
+		SET
+		  		  CATEGORY_NO = (SELECT CATEGORY_NO FROM CT_GALLERY_CATEGORY WHERE CATEGORY_NAME = #{categoryName})
+				, GALLERY_TITLE = #{galleryTitle}
+				, GALLERY_CONTENT = #{galleryContent}
+				, ENROLL_DATE = SYSDATE
+		WHERE
+				GALLERY_NO = #{galleryNo}
+	</update>
+	
+	<update id="deleteAllAttachment"
+			parameterType="Long">
+		UPDATE
+				CT_GALLERY_ATTACHMENT
+		SET
+		  		STATUS = 'N'
+		WHERE
+				GALLERY_NO = #{galleryNo}	
+	</update>
+	
+	<update id="deleteGallery"
+			parameterType="Long">
+			
+		UPDATE
+				CT_GALLERY
+		SET
+				STATUS = 'N'
+		WHERE
+				GALLERY_NO = #{galleryNo}
+	</update>
 
 </mapper>
