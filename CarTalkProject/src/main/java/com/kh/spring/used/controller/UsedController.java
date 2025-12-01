@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -49,6 +50,7 @@ public class UsedController {
 	public String usedList(@RequestParam(value = "page", defaultValue = "1") int currentPage,
 			@RequestParam(value = "keyword", required = false) String keyword, Model model, HttpSession session) {
 
+	    if(keyword == null)keyword ="";
 		int listCount = usedService.selectListCount(keyword);
 		PageInfo pi = pagination.getPageInfo(listCount, currentPage, 10, 6);
 
@@ -117,28 +119,49 @@ public class UsedController {
 	}
 
 	@GetMapping("/detail")
-	public String selectUsedDetail(@RequestParam("no") int usedNo, Model model, HttpSession session) {
-
-		/*
-		 * 로그인 테스트용 MemberDTO temp = new MemberDTO(); temp.setUserNo(1);
-		 * temp.setUserName("테스트"); session.setAttribute("loginMember", temp);
-		 */
-
-		// log.info("세션 loginMember 확인 = {}", session.getAttribute("loginMember"));
-
-		// 로그인 완료시 윗 코드 주석처리 or 삭제
+	public String selectUsedDetail(@RequestParam("no") int usedNo
+							     , @RequestParam(value = "page", required = false, defaultValue = "1") int page
+							     , @RequestParam(value = "keyword", required = false) String keyword
+								 , Model model
+								 , HttpSession session
+								 , HttpServletRequest request
+								 , HttpServletResponse response) {
+		
+		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+		
 		UsedListDTO used = usedService.selectUsedDetail(usedNo);
+		
+		boolean isAuthor = (loginMember != null  && used.getUserNo() == loginMember.getUserNo());
+		boolean viewed = false;
+		
+		if(!isAuthor) {
+			Cookie[] cookies = request.getCookies();
+			if(cookies != null) {
+				for(Cookie c : cookies) {
+					if(("viewedUsed" + usedNo).equals(c.getName())) {
+						viewed = true;
+						break;
+					}
+				}
+			}
+			
+			if(!viewed) {
+				usedService.increaseViewCount(usedNo);
+				Cookie newCookie = new Cookie("viewedUsed" + usedNo, "true");
+				response.addCookie(newCookie);
+			}
+		}
+		
 
 		UsedDTO car = usedService.selectCarInfo(usedNo);
-
 		List<UsedAttachmentDTO> attachments = usedService.selectAttachments(usedNo);
 
-		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 		model.addAttribute("loginMember", loginMember);
-
 		model.addAttribute("used", used);
 		model.addAttribute("car", car);
 		model.addAttribute("attachments", attachments);
+		model.addAttribute("page", page);
+		model.addAttribute("keyword", keyword);
 
 		return "used/usedDetail";
 	}

@@ -23,5 +23,6 @@ public interface UsedService {
 	int selectMyListCount(int userNo, String status);
 	List<UsedListDTO> selectMyUsedList(PageInfo pi, int userNo, String status);
 	int updateUsed(UsedDTO used, HttpSession session);
+	void increaseViewCount(int usedNo);
 	
 }

@@ -70,7 +70,13 @@
 			        document.getElementById(id).addEventListener("change", e => {
 			          const container = document.getElementById("previewExtra");
 			          const file = e.target.files[0];
-			          if (file) {
+			          if (!file) {
+			        	  container.innerHTML = "";
+			        	  return;
+			          }
+			          
+			          	container.innerHTML ="";
+			          	
 			            const reader = new FileReader();
 			            reader.onload = ev => {
 			              const img = document.createElement("img");
@@ -82,7 +88,6 @@
 			              container.appendChild(img);
 			            };
 			            reader.readAsDataURL(file);
-			          }
 			        });
 			      });
 	    </script>

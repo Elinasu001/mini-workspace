@@ -26,5 +26,6 @@ public interface UsedMapper {
 	List<UsedListDTO> selectMyUsedList(Map<String, Object> map);
 	int updateUsed(UsedDTO used);
 	int updateThumbnail(UsedDTO used);
+	void increaseViewCount(int usedNo);
 
 }

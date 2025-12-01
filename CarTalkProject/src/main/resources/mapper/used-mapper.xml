@@ -67,6 +67,16 @@
 	                               #{endRow}     
 	</select>
 	
+	<update id="increaseViewCount"
+			parameterType="_int">
+		UPDATE
+		       CT_USED_LISTING
+		   SET
+		       VIEW_COUNT = VIEW_COUNT + 1
+		 WHERE
+		       USED_NO = #{usedNo}
+	</update>
+	
 	<select id="selectListCount"
 			parameterType="string"
 			resultType="_int">
