@@ -9,9 +9,9 @@
 <title>이벤트 게시판</title>
 </head>
 <body>
-
-	<div id="wrap">
+	<jsp:include page="/WEB-INF/views/include/toast.jsp"/>
 	
+	<div id="wrap">
 		<jsp:include page="../include/header.jsp"/>
 		
 	 	<div class="contentWrap">
