@@ -35,7 +35,7 @@
 						<a href="${pageContext.request.contextPath}/used/detail?no=${car.usedNo}" class="car-link">
 							<div class="car-card">
 								<div class="car-info">
-									<div>${ car.status }| ${ car.categoryName }</div>
+									<div>${ car.status } | ${ car.categoryName }</div>
 									<h3>${ car.usedTitle }</h3>
 									<p>${ car.carYear }/ ${ car.distance }KM / ${ car.transmission }
 										/ ${ car.fuelType }</p>

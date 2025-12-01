@@ -210,3 +210,35 @@ h2 {
   border-radius: 8px;
   pointer-events: none;
 }
+
+.filter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.filter a {
+  padding: 6px 14px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #555;
+  background-color: #fff;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.filter a:hover {
+  background-color: #f7f7f7;
+  color: #000;
+}
+
+.filter a.active {
+  background-color: #007bff; /* 파란색 강조 */
+  color: #fff;
+  font-weight: 600;
+  border-color: #007bff;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
+}
+
