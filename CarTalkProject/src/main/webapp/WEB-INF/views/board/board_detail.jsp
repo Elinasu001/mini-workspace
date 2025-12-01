@@ -164,6 +164,7 @@
             
                 
 			<div class="form-group boardButtons">
+				<button class="btn btn-info" onclick="location.href = '/ct/board?page=1'">목록</button>
 				<c:if
 					test="${ sessionScope.loginMember.nickName eq board.boardWriter }">
 					<button class="btn btn-outline-primary" onclick="location.href = '/ct/board/${board.boardNo}/edit'">수정</button>
@@ -243,7 +244,6 @@
 							댓글 작성
 							<textarea id="replyContent" cols="50" rows="4" style="resize: none;" 
 							placeholder="댓글은 로그인 시에만 작성할 수 있습니다." readonly="readonly"></textarea>
-
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -273,7 +273,7 @@
 					return false;
 				}
 				
-				if(replyContent === ''){
+				if(replyContent === '' || replyContent.trim() === ''){
 					alert('변경할 댓글 내용이 없습니다.');
 					return false;
 				}

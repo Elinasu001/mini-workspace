@@ -4,16 +4,24 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Component;
 
+import com.kh.spring.board.model.dto.BoardDTO;
 import com.kh.spring.board.model.dto.ReplyDTO;
+import com.kh.spring.board.model.mapper.BoardMapper;
+import com.kh.spring.exception.AuthenticationException;
 import com.kh.spring.exception.InvalidArgumentsException;
+import com.kh.spring.exception.PageNotFoundException;
 import com.kh.spring.member.model.dto.MemberDTO;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class BoardValidator {
 
-
-	public void validateSelectBoard(Long num) {
-		checkBoardParam(num);
+	private final BoardMapper boardMapper;
+	
+	public void validateSelectBoard(Long boardNo) {
+		checkBoardParam(boardNo);
 	}
 	
 	private void checkBoardParam(Long num) {
@@ -22,13 +30,15 @@ public class BoardValidator {
 		}
 	}
 	
-	private void checkBoardNull() {
-		
+	private void checkBoardNull(BoardDTO board) {
+		if(board == null) {
+			throw new PageNotFoundException("페이지를 찾을 수 없습니다.");
+		}
 	}
 	
 	private void checkReplyNull(String replyContent) {
 		
-		if(replyContent == null && "".equals(replyContent.trim())){
+		if(replyContent == null || "".equals(replyContent.trim())){
 			throw new NullPointerException("값이 존재하지 않습니다.");
 		}
 		
@@ -40,8 +50,10 @@ public class BoardValidator {
 		}
 	}
 	
-	private void checkMemberDuplicate(String userNo ,HttpSession session) {
-		
+	private void checkAuthorization(String boardWriter, String loginMember) {
+		if(!boardWriter.equals(loginMember)) {
+			throw new AuthenticationException("사용자 정보가 불일치합니다.");
+		}
 	}
 	
 	public void validateReply(ReplyDTO reply) {
@@ -56,5 +68,17 @@ public class BoardValidator {
 		
 		return member;
 	}
+	
+	public void validateAuthorization(String boardWriter, MemberDTO loginMember) {
+		
+		checkUserNull(loginMember);
+		checkAuthorization(boardWriter, loginMember.getNickName());
+		
+	}
+
+	public void validateBoard(BoardDTO board) {
+		checkBoardNull(board);
+	}
+	
 	
 }
