@@ -26,4 +26,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ui/com/layout.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ui/com/style.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ui/com/nav.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ui/com/toast.css">
+
 <script src="${pageContext.request.contextPath}/resources/js/ui/com/layout.js"></script>
