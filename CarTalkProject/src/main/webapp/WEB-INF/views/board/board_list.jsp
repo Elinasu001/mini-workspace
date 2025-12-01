@@ -39,6 +39,37 @@
         margin-top: 20px;
         margin-left: 92px;
     }
+    .category {
+    	width: 100px;
+    }
+    
+    .category:hover{
+    	background-color: gray;
+    }
+    
+    .boardNo{
+    	width: 50px;
+    }
+    
+    .boardTitle{
+    	width: 400px;
+    }
+    
+    .boardWriter{
+    	width: 100px;
+    }
+    
+    .viewCount{
+    	width: 80px;
+    }
+    
+    .enrollDate{
+    	width : 120px;
+    }
+    
+    .likes{
+    	width: 50px;
+    }
 </style>
 
 <body>
@@ -49,10 +80,10 @@
         <table class="table boardListTable" style="margin-bottom: 25px;">
             <thead id="boardCategory">
                 <tr>
-                	<th width="100"><a href="/ct/board">전체 게시판</a></th>
-                    <th width="100"><a href="/ct/board?category=1">자유 게시판</a></th>
-                    <th width="100"><a href="/ct/board?category=2">질문 게시판</a></th>
-                    <th width="100"><a href="/ct/board?category=3">정보 게시판</a></th>
+                	<th class="category"><a href="/ct/board">전체 게시판</a></th>
+                    <th class="category"><a href="/ct/board?category=1">자유 게시판</a></th>
+                    <th class="category"><a href="/ct/board?category=2">질문 게시판</a></th>
+                    <th class="category"><a href="/ct/board?category=3">정보 게시판</a></th>
                 </tr>
             </thead>
         </table>
@@ -62,23 +93,23 @@
             <thead>
             <c:choose>
             	<c:when test="${ not empty condition }">
-	                <tr style="border: 1px solid gray;">
-	                    <th width="50" id="boardNo&category=${ category }&condition=${ condition }&keyword=${ keyword }" class="searchBoardOrderBy">번호</th>
-	                    <th width="400" id="boardTitle&category=${ category }&condition=${ condition }&keyword=${ keyword }" class="searchBoardOrderBy">제목</th>
-	                    <th width="100" id="boardWriter&category=${ category }&condition=${ condition }&keyword=${ keyword }" class="searchBoardOrderBy">작성자</th>
-	                    <th width="80" id="viewCount&category=${ category }&condition=${ condition }&keyword=${ keyword }" class="searchBoardOrderBy">조회수</th>
-	                    <th width="120" id="enrollDate&category=${ category }&condition=${ condition }&keyword=${ keyword }" class="searchBoardOrderBy">작성일</th>
-	                    <th width="50" id="likes&category=${ category }&condition=${ condition }&keyword=${ keyword }" class="searchBoardOrderBy">좋아요수</th>
+	                <tr>
+	                    <th id="boardNo&category=${ category }&condition=${ condition }&keyword=${ keyword }" class="boardNo searchBoardOrderBy">번호</th>
+	                    <th id="boardTitle&category=${ category }&condition=${ condition }&keyword=${ keyword }" class="boardTitle searchBoardOrderBy">제목</th>
+	                    <th id="boardWriter&category=${ category }&condition=${ condition }&keyword=${ keyword }" class="boardWriter searchBoardOrderBy">작성자</th>
+	                    <th id="viewCount&category=${ category }&condition=${ condition }&keyword=${ keyword }" class="viewCount searchBoardOrderBy">조회수</th>
+	                    <th id="enrollDate&category=${ category }&condition=${ condition }&keyword=${ keyword }" class="enrollDate searchBoardOrderBy">작성일</th>
+	                    <th id="likes&category=${ category }&condition=${ condition }&keyword=${ keyword }" class="likes searchBoardOrderBy">좋아요수</th>
 	                </tr>
 	            </c:when>
 	            <c:otherwise>
 		            <tr>
-	                    <th width="50" id="boardNo&category=${ category }" class="boardOrderBy">번호</th>
-	                    <th width="400" id="boardTitle&category=${ category }" class="boardOrderBy">제목</th>
-	                    <th width="100" id="boardWriter&category=${ category }" class="boardOrderBy">작성자</th>
-	                    <th width="80" id="viewCount&category=${ category }" class="boardOrderBy">조회수</th>
-	                    <th width="120" id="enrollDate&category=${ category }" class="boardOrderBy">작성일</th>
-	                    <th width="50" id="likes&category=${ category }" class="boardOrderBy">좋아요수</th>
+	                    <th id="boardNo&category=${ category }" class="boardNo boardOrderBy">번호</th>
+	                    <th id="boardTitle&category=${ category }" class="boardTitle boardOrderBy">제목</th>
+	                    <th id="boardWriter&category=${ category }" class="boardWriter boardOrderBy">작성자</th>
+	                    <th id="viewCount&category=${ category }" class="viewCount boardOrderBy">조회수</th>
+	                    <th id="enrollDate&category=${ category }" class="enrollDate boardOrderBy">작성일</th>
+	                    <th id="likes&category=${ category }" class="likes boardOrderBy">좋아요수</th>
 	                </tr>
 	            </c:otherwise>
 	        </c:choose>
@@ -88,7 +119,7 @@
             <c:choose>
             <c:when test="${ not empty map.boards }">
 	            <c:forEach var="board" items="${ map.boards }">
-	                <tr class="table table-light board" id="${ board.boardNo }">
+	                <tr class="table table-light board" id=${ board.boardNo }>
 	                    <td>${ board.boardNo }</td>
 	                    <td>${ board.boardTitle }</td>
 	                    <td>${ board.boardWriter }</td>
@@ -135,7 +166,35 @@
         		
         	})
         </script>
-        
+       
+       
+       <c:url value="http://localhost/ct/board" var="boardList">
+       
+    		<c:if test="${ not empty category }">
+    		<c:param name="category"  value="${ category }"/>
+    		</c:if>
+    		<c:if test="${ not empty orderBy }">
+    		<c:param name="orderBy"  value="${ orderBy }"/>
+    		</c:if>
+    		
+       </c:url>
+       
+              <c:url value="http://localhost/ct/board/search" var="boardSearchedList">
+       
+       		<c:if test="${ not empty condition }">
+    		<c:param name="condition" value="${ condition }"/>
+    		</c:if>
+    		<c:if test="${ not empty keyword }">
+    		<c:param name="keyword"  value="${ keyword }"/>
+    		</c:if>
+    		<c:if test="${ not empty category }">
+    		<c:param name="category"  value="${ category }"/>
+    		</c:if>
+    		<c:if test="${ not empty orderBy }">
+    		<c:param name="orderBy"  value="${ orderBy }"/>
+    		</c:if>
+    		
+       </c:url>
         
         <div id="boardSearchArea">
        	<c:if test="${ not empty map.boards }">
@@ -143,26 +202,26 @@
 	        	<c:when test="${ empty condition }">
 		            <div class="boardPageButtons">
 			            <c:if test="${ map.pi.currentPage gt 1 }">
-			            <button class="btn btn-primary" onclick="location.href = 'board?page=${ map.pi.currentPage - 1 }&condition=${ condition }&keyword=${ keyword }&category=${category}&orderBy=${ orderBy }'">이전</button>
+			            <button class="btn btn-primary" onclick="location.href = '${boardList}&page=${ map.pi.currentPage - 1 }">이전</button>
 			            </c:if>
 			            <c:forEach var="i" begin="${ map.pi.startPage }" end="${ map.pi.endPage }">
-			            <button class="btn btn-outline-primary" onclick="location.href = 'board?page=${i}&condition=${ condition }&keyword=${ keyword }&category=${category}&orderBy=${ orderBy }'">${i}</button>
+			            <button class="btn btn-outline-primary" onclick="location.href = '${boardList}&page=${i}'">${i}</button>
 			            </c:forEach>
 			            <c:if test="${ map.pi.currentPage ne map.pi.maxPage }">
-			            <button class="btn btn-primary" onclick="location.href = 'board?page=${map.pi.currentPage + 1}&condition=${ condition }&keyword=${ keyword }&category=${category}&orderBy=${ orderBy }'">다음</button>
+			            <button class="btn btn-primary" onclick="location.href = '${boardList}&page=${map.pi.currentPage + 1}'">다음</button>
 			            </c:if>
 		            </div>
 		        </c:when>
 		        <c:otherwise>
 		        	<div class="boardPageButtons">
 			            <c:if test="${ map.pi.currentPage gt 1 }">
-			            <button class="btn btn-primary" onclick="location.href = '/ct/board/search?page=${ map.pi.currentPage - 1 }&category=${category}&condition=${ condition }&keyword=${ keyword }&orderBy=${ orderBy }'">이전</button>
+			            <button class="btn btn-primary" onclick="location.href = '${boardSearchedList}&page=${ map.pi.currentPage - 1 }'">이전</button>
 			            </c:if>
 			            <c:forEach var="i" begin="${ map.pi.startPage }" end="${ map.pi.endPage }">
-			            <button class="btn btn-outline-primary" onclick="location.href = '/ct/board/search?page=${i}&category=${category}&condition=${ condition }&keyword=${ keyword }&orderBy=${ orderBy }'">${i}</button>
+			            <button class="btn btn-outline-primary" onclick="location.href = '${boardSearchedList}&page=${i}'">${i}</button>
 			            </c:forEach>
 			            <c:if test="${ map.pi.currentPage ne map.pi.maxPage }">
-			            <button class="btn btn-primary" onclick="location.href = '/ct/board/search?page=${map.pi.currentPage + 1}&category=${category}&condition=${ condition }&keyword=${ keyword }&orderBy=${ orderBy }'">다음</button>
+			            <button class="btn btn-primary" onclick="location.href = '${boardSearchedList}&page=${map.pi.currentPage + 1}'">다음</button>
 			            </c:if>
 		            </div>
 		        </c:otherwise>

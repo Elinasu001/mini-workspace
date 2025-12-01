@@ -118,4 +118,5 @@
 	<delete id="deleteMemberUpdateInfo" parameterType="com.kh.spring.member.model.dto.MemberUpdateDTO">
 		DELETE FROM CT_MEMBER_UPDATE WHERE USER_NO = #{userNo}
 	</delete>
+	
 </mapper>
