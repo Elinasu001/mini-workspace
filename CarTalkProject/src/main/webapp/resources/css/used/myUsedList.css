@@ -1,0 +1,244 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f9f9f9;
+  color: #222;
+}
+
+/* 메인 박스 */
+.main-wrap {
+  width: 1000px;
+  margin: 50px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 40px 50px;
+}
+
+h2 {
+  margin-bottom: 25px;
+  font-size: 22px;
+}
+
+/* 필터 영역 */
+.filter {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.filter a {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #f1f1f1;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.filter a:hover {
+  background: #2d77ff;
+  color: #fff;
+  border-color: #2d77ff;
+}
+
+.filter a.active {
+  background: #2d77ff;
+  color: #fff;
+  border-color: #2d77ff;
+  font-weight: bold;
+}
+
+/* 리스트 */
+.car-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 개별 카드 */
+.car-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px 20px;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+
+.car-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 정보 */
+.car-info h3 {
+  margin: 6px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.car-info p {
+  margin: 3px 0;
+  font-size: 13px;
+}
+
+.car-info .meta {
+  font-size: 12px;
+  color: #777;
+  margin-top: 6px;
+}
+
+/* 이미지 */
+.car-card img {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  margin-left: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #f4f4f4;
+}
+
+/* 상태 표시 라인 */
+.status-line {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.status-line.판매중 span:first-child {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.status-line.예약중 span:first-child {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.status-line.판매완료 span:first-child {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* 빈 메시지 */
+.empty-msg {
+  text-align: center;
+  color: #888;
+  margin-top: 40px;
+  font-size: 15px;
+}
+
+/* 페이징 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin: 30px 0 20px 0;
+}
+
+.pagination a {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  background: #fff;
+  color: #333;
+  font-size: 13px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+  background: #2d77ff;
+  color: #fff;
+  border-color: #2d77ff;
+}
+
+.pagination .active {
+  background: #2d77ff;
+  color: #fff;
+  border-color: #2d77ff;
+}
+
+.thumbnail-wrap {
+  position: relative;
+  width: 150px;
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-left: 20px;
+}
+
+.thumbnail-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  background: #f4f4f4;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+/* 판매완료 블러 처리 */
+.thumbnail-wrap.is-sold img {
+  filter: blur(3px);
+  opacity: 0.6;
+}
+
+/* 오버레이 텍스트 */
+.sold-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.filter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.filter a {
+  padding: 6px 14px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #555;
+  background-color: #fff;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.filter a:hover {
+  background-color: #f7f7f7;
+  color: #000;
+}
+
+.filter a.active {
+  background-color: #007bff; /* 파란색 강조 */
+  color: #fff;
+  font-weight: 600;
+  border-color: #007bff;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
+}
+

@@ -1,0 +1,176 @@
+/* 전체 공통 */
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+/* 메인 영역 */
+.main-wrap {
+  width: 1000px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 상단 영역 (이미지 + 정보) */
+.detail-top {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* 왼쪽: 이미지 캐러셀 */
+#usedCarousel {
+  width: 500px;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  background-color: #fafafa;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+#usedCarousel .carousel-inner {
+  width: 100%;
+  height: 100%;
+}
+
+#usedCarousel .carousel-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 캐러셀 버튼 컬러 조정 */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1) brightness(0.7);
+}
+
+/* 오른쪽: 차량 정보 */
+.car-info {
+  flex: 1;
+}
+
+.car-info h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 15px;
+}
+
+.car-info .basic {
+  margin-bottom: 10px;
+  color: #777;
+  font-size: 14px;
+}
+
+.car-info p {
+  margin: 5px 0;
+  font-size: 15px;
+  line-height: 1.6;
+  border-bottom: 1px dotted #eee;
+  padding-bottom: 4px;
+}
+
+/* 차량 설명 */
+.desc-box {
+  margin-top: 30px;
+}
+
+.desc-box label {
+  font-weight: 600;
+  font-size: 16px;
+  color: #212529;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.desc-box textarea {
+  width: 100%;
+  height: 180px;
+  padding: 12px;
+  resize: none;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fefefe;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* 버튼 영역 */
+.btns {
+  text-align: right;
+  margin-top: 30px;
+}
+
+.btns .btn {
+  margin-left: 8px;
+  padding: 6px 16px;
+  font-size: 14px;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+}
+
+/* 버튼 hover 시 */
+.btns .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 반응형 */
+@media (max-width: 900px) {
+  .main-wrap {
+    width: 95%;
+    padding: 20px;
+  }
+  .detail-top {
+    flex-direction: column;
+    align-items: center;
+  }
+  #usedCarousel {
+    width: 100%;
+    height: 300px;
+  }
+  .car-info {
+    width: 100%;
+  }
+}
+
+
+/* 블러 처리 */
+.carousel-item.is-sold img {
+  filter: blur(3px);
+  opacity: 0.6;
+}
+
+/* 오버레이 (판매완료 표시) */
+.sold-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+  border-radius: 10px;
+  pointer-events: none;
+}

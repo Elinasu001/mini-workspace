@@ -5,8 +5,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.spring.exception.AuthenticationException;
+import com.kh.spring.exception.BadRequestException;
 import com.kh.spring.exception.BoardSaveFailedException;
 import com.kh.spring.exception.InvalidArgumentsException;
+import com.kh.spring.exception.InvalidAttachmentException;
+import com.kh.spring.exception.PageNotFoundException;
 import com.kh.spring.exception.TooLargeValueException;
 import com.kh.spring.exception.UserIdNotFoundException;
 import com.kh.spring.exception.handleGeneralException;
@@ -60,6 +63,21 @@ public class ExceptionHandlingController {
 	// 게시판 / ResponseStatusException 처리
 	@ExceptionHandler(BoardSaveFailedException.class)
 	protected ModelAndView boardSaveFailedError(BoardSaveFailedException e) {
+		return createErrorResponse(e);
+	}
+	
+	@ExceptionHandler(BadRequestException.class)
+	protected ModelAndView BadRequestError(BadRequestException e) {
+		return createErrorResponse(e);
+	}
+	
+	@ExceptionHandler(PageNotFoundException.class)
+	protected ModelAndView PageNotFoundError(PageNotFoundException e) {
+		return createErrorResponse(e);
+	}
+	
+	@ExceptionHandler(InvalidAttachmentException.class)
+	protected ModelAndView InvalidAttachmentError(InvalidAttachmentException e) {
 		return createErrorResponse(e);
 	}
 

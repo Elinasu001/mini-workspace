@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.spring.used.model.mapper.UsedMapper">
+
+	<select id="selectUsedListAll"
+			parameterType="map" 
+			resultType="com.kh.spring.used.model.dto.UsedListDTO">
+		 SELECT
+		        *
+		   FROM (
+		       SELECT
+		              ROWNUM AS RNUM
+		            , B.*
+		         FROM     
+					  (		 
+		 			  SELECT
+						     U.USED_NO usedNo
+			        	   , U.USED_TITLE usedTitle
+			        	   , U.USED_PRICE usedPrice
+			        	   , U.STATUS status
+			        	   , U.ENROLL_DATE enrollDate
+			        	   , U.VIEW_COUNT viewCount
+			        	   , C.MANUFACTURER manufacturer
+					       , C.MODEL model
+					       , C.CAR_YEAR carYear
+					       , C.DISTANCE distance
+					       , C.TRANSMISSION transmission
+					       , C.FUEL_TYPE fuelType
+					       , C.REGION region
+					       , C.CAR_COLOR carColor
+					       , C.PHONE phone
+					       , CAT.CATEGORY_NAME categoryName          
+					       , U.THUMBNAIL thumbnail
+					    FROM
+					         CT_USED_LISTING U
+					    JOIN
+					         CT_CAR_INFO C ON U.USED_NO = C.USED_NO
+					    JOIN
+					         CT_USED_CATEGORY CAT ON U.CATEGORY = CAT.CATEGORY_NO
+					    LEFT
+					    JOIN
+		                     (
+		                     SELECT
+		                            REF_BNO
+		                          , FILE_PATH
+		                       FROM
+					                CT_USED_ATTACHMENT		          
+		                      WHERE
+		                            STATUS = 'Y'
+		                        AND
+		                            ROWNUM = 1         
+		                     ) ATT ON ATT.REF_BNO = U.USED_NO
+	<if test="keyword != null and keyword != ''">
+		                     WHERE
+		                           U.USED_TITLE LIKE '%' || #{keyword} || '%'
+	</if>
+		                     ORDER
+		                        BY
+		                           U.USED_NO DESC
+		                           ) B
+		                     )
+		                     WHERE
+			                       RNUM BETWEEN #{startRow} 
+	                           AND 
+	                               #{endRow}     
+	</select>
+	
+	<update id="increaseViewCount"
+			parameterType="_int">
+		UPDATE
+		       CT_USED_LISTING
+		   SET
+		       VIEW_COUNT = VIEW_COUNT + 1
+		 WHERE
+		       USED_NO = #{usedNo}
+	</update>
+	
+	<select id="selectListCount"
+			parameterType="string"
+			resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM
+		       CT_USED_LISTING
+	<if test="keyword != null and keyword != ''">
+		WHERE
+			  USED_TITLE LIKE '%' || #{keyword} || '%'
+	</if>     
+	</select>
+	
+	<select id="getNextUsedNo" resultType="_int">
+    	SELECT SEQ_USED.NEXTVAL FROM DUAL
+	</select>
+	
+	<insert id="insertUsed" 
+			parameterType="UsedDTO">
+  		INSERT 
+  		  INTO 
+  		  	   CT_USED_LISTING 
+  		  	   (
+		       USED_NO,
+		       USER_NO,
+		       USED_TITLE,
+		       USED_CONTENT,
+		       USED_PRICE,
+		       CATEGORY,
+		       STATUS,
+		       ENROLL_DATE,
+		       VIEW_COUNT,
+		       THUMBNAIL
+		       ) 
+	    VALUES 
+	    	   (
+		       #{usedNo},
+		       #{userNo},
+		       #{usedTitle},
+		       #{usedContent},
+		       #{usedPrice},
+		       #{category},
+		       '판매중',
+		       SYSDATE,
+		       DEFAULT,
+		       #{thumbnail}
+		       )
+      </insert>
+	
+	
+	<insert id="insertCarInfo"
+			parameterType="CarInfoDTO">
+		INSERT
+		  INTO
+		       CT_CAR_INFO
+		VALUES
+		       (
+		       SEQ_CAR_INFO.NEXTVAL
+		     , #{manufacturer}
+		     , #{model}
+		     , #{carYear}
+		     , #{distance}
+		     , #{fuelType}
+		     , #{transmission}
+		     , #{region}
+		     , #{carColor}
+		     , #{usedNo}
+		     , #{phone}
+		       )  
+	</insert>
+	
+	<insert id="insertAttachment"
+			parameterType="UsedAttachmentDTO">
+		INSERT
+		  INTO
+		       CT_USED_ATTACHMENT
+		VALUES
+		       (
+		       SEQ_USED_FILE_NO.NEXTVAL
+		     , #{refBno}
+		     , #{originName}
+		     , #{changeName}
+		     , #{filePath}
+		     , SYSDATE
+		     , 'Y'
+		       )       
+	</insert>
+	
+	<select id="selectUsedDetail"
+			parameterType="_int"
+			resultType="UsedListDTO">
+		SELECT
+			   U.USED_NO usedNo
+			 , U.USER_NO userNo
+			 , U.USED_TITLE usedTitle
+			 , U.USED_CONTENT usedContent
+			 , U.USED_PRICE usedPrice
+			 , U.STATUS status
+			 , U.ENROLL_DATE enrollDate
+			 , U.VIEW_COUNT viewCount
+			 , CAT.CATEGORY_NAME categoryName
+			 , U.THUMBNAIL thumbnail
+		  FROM
+		       CT_USED_LISTING U
+		  JOIN
+		       CT_USED_CATEGORY CAT ON U.CATEGORY = CAT.CATEGORY_NO
+		 WHERE
+		       U.USED_NO = #{usedNo}           	   
+	</select>
+	
+	<select id="selectCarInfo"
+			parameterType="_int"
+			resultType="UsedDTO">
+		SELECT
+			   MANUFACTURER manufacturer
+			 , MODEL model
+			 , CAR_YEAR carYear
+			 , DISTANCE distance
+			 , TRANSMISSION transmission
+			 , FUEL_TYPE fuelType
+			 , REGION region
+			 , CAR_COLOR carColor
+			 , PHONE
+		  FROM
+		       CT_CAR_INFO
+		 WHERE
+		       USED_NO = #{usedNo}      	   
+	</select>
+	
+	<select id="selectAttachments"
+			parameterType="_int"
+			resultType="UsedAttachmentDTO">
+		SELECT
+		       FILE_NO fileNo
+		     , REF_BNO refBno
+		     , ORIGIN_NAME originName
+		     , CHANGE_NAME changeName
+		     , FILE_PATH filePath
+		  FROM
+		       CT_USED_ATTACHMENT
+		 WHERE
+		       REF_BNO = #{usedNo}
+		   AND
+		       STATUS = 'Y'
+		 ORDER
+		    BY
+		       FILE_NO ASC                   
+	</select>
+	
+	<delete id="deleteAttachments"
+			parameterType="_int">
+		DELETE
+		  FROM
+		       CT_USED_ATTACHMENT
+		 WHERE
+		       REF_BNO = #{usedNo}      
+	</delete>
+	
+	<delete id="deleteCarInfo"
+			parameterType="_int">
+		DELETE
+		  FROM
+		       CT_CAR_INFO
+		 WHERE
+		       USED_NO = #{usedNo}      
+	</delete>
+	
+	<delete id="deleteUsed"
+			parameterType="_int">
+		DELETE
+		  FROM
+		       CT_USED_LISTING
+		 WHERE
+		       USED_NO = #{usedNo}      
+	</delete>
+	
+	
+	<select id="selectMyListCount"
+			parameterType="map"
+			resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM
+		       CT_USED_LISTING
+		 WHERE
+		       USER_NO = #{userNo}
+		<if test="status != null and status != '' and status != '전체'">
+			AND STATUS = #{status}
+		</if>           
+	</select>
+	
+	<select id="selectMyUsedList"
+			parameterType="map"
+			resultType="UsedListDTO">
+		SELECT 
+		       *
+		  FROM      
+		       (
+		  SELECT 
+		  		 ROWNUM AS RNUM, A.*
+		    FROM (
+		        SELECT
+					   U.USED_NO usedNo
+					 , U.USER_NO userNo
+					 , U.USED_TITLE usedTitle
+					 , U.USED_PRICE usedPrice
+					 , U.STATUS status
+					 , U.ENROLL_DATE enrollDate
+					 , U.VIEW_COUNT viewCount
+					 , CAT.CATEGORY_NAME categoryName
+					 , CAR.MANUFACTURER manufacturer
+					 , CAR.MODEL model
+					 , CAR.CAR_YEAR carYear
+					 , CAR.DISTANCE distance
+					 , CAR.TRANSMISSION transmission
+					 , CAR.FUEL_TYPE fuelType
+					 , U.THUMBNAIL thumbnail
+				  FROM
+				  	   CT_USED_LISTING U
+				  JOIN
+				  	   CT_USED_CATEGORY CAT ON U.CATEGORY = CAT.CATEGORY_NO
+				  JOIN
+				       CT_CAR_INFO CAR ON U.USED_NO = CAR.USED_NO
+				 WHERE
+				       U.USER_NO = #{userNo}
+				<if test="status != null and status != '' and status != '전체'">
+					AND U.STATUS = #{status}
+				</if>
+				 ORDER
+				    BY
+				       U.USED_NO DESC
+				  ) A
+				  WHERE ROWNUM &lt;= #{endRow}
+		       )
+		       WHERE RNUM &gt;= #{startRow}
+	</select>
+	
+	<update id="updateUsed"
+			parameterType="UsedDTO">
+		UPDATE
+			   CT_USED_LISTING
+	       SET
+	           USED_TITLE = #{usedTitle}
+	         , USED_CONTENT = #{usedContent}
+	         , USED_PRICE = #{usedPrice}
+	         , STATUS = #{status}
+	         , ENROLL_DATE = SYSDATE
+	     WHERE
+	           USED_NO = #{usedNo}  
+	</update>
+	
+	<update id="updateThumbnail"
+			parameterType="UsedDTO">
+		UPDATE
+		       CT_USED_LISTING
+		   SET
+		       THUMBNAIL = #{thumbnail}
+		 WHERE
+		       USED_NO = #{usedNo}      		
+	</update>
+	
+
+</mapper>

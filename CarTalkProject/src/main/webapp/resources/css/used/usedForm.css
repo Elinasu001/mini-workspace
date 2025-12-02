@@ -1,0 +1,213 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #f7f8fa;
+  margin: 0;
+  padding: 40px 0;
+}
+
+.container {
+  width: 600px;
+  max-width: 90%;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  padding: 40px 50px;
+}
+
+/* 제목 */
+h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2f50;
+  padding-left: 10px;
+  margin-bottom: 30px;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+/* ---------------- 업로드 구역 ---------------- */
+.section.upload-section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2f50;
+  margin-bottom: 12px;
+  padding-left: 8px;
+}
+
+.upload-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upload-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #d0d7e1;
+  border-radius: 8px;
+  background: #fafbff;
+  padding: 10px 15px;
+  transition: all 0.2s ease;
+}
+
+.upload-item:hover {
+  border-color: #c0c0c0;
+  background-color: #f3f8ff;
+}
+
+.upload-item input[type="file"] {
+  flex: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+.upload-item input[type="file"]::-webkit-file-upload-button {
+  background-color: #c0c0c0;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.upload-item input[type="file"]::-webkit-file-upload-button:hover {
+  background-color: #808080;
+}
+
+.upload-item span {
+  font-size: 14px;
+  color: #666;
+}
+
+/* ---------------- 입력 기본 ---------------- */
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  background-color: #fafafa;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #1a73e8;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(26, 115, 232, 0.3);
+  outline: none;
+}
+
+textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+/* ---------------- 거래 지역/자동차 분류 ---------------- */
+.section select {
+  background-color: #fff;
+}
+
+.section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2f50;
+  margin-bottom: 12px;
+  padding-left: 8px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+select {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  background-color: #fafafa;
+  transition: border-color 0.2s ease;
+}
+
+select:hover {
+  border-color: #1a73e8;
+}
+
+/* ---------------- 버튼 영역 ---------------- */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.button-group button {
+  width: auto;
+  min-width: 100px;
+  padding: 10px 18px;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.button-group button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------- 반응형 ---------------- */
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    padding: 25px;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .upload-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.preview-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.preview-box img {
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}

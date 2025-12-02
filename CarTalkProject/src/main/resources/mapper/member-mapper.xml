@@ -2,7 +2,121 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="memberMapper">
+<mapper namespace="com.kh.spring.member.model.mapper.MemberMapper">
 	
+	<select id="login" resultType="com.kh.spring.member.model.dto.MemberDTO" parameterType="com.kh.spring.member.model.dto.MemberDTO">
+		SELECT
+				USER_NO userNo
+			  ,	USER_ID userId
+		      , USER_PWD userPwd
+		      , USER_NAME userName
+		      , NICKNAME nickname
+		      , EMAIL email
+		      , ENROLL_DATE enrollDate
+		      , MANAGER manager
+		  FROM
+		        CT_MEMBER
+		 WHERE
+		        USER_ID = #{userId}
+		   AND
+		        USER_PWD = #{userPwd}
+		   AND  DEL_YN = 'N'
+	</select>
+	
+	<select id="selectMyInfo" resultType="com.kh.spring.member.model.dto.MemberDTO" parameterType="com.kh.spring.member.model.dto.MemberDTO">
+			SELECT 
+		 A.USER_NO AS userNo
+		,a.USER_ID as userId
+		,a.USER_PWD as userPwd
+		,a.USER_NAME as userName
+		,a.NICKNAME as nickname
+		,a.EMAIL as email
+		,to_char ( a.ENROLL_DATE, 'yyyymmdd hh24:mm:ss') as enrollDate
+		,a.MANAGER as manager
+		,NVL2(B.UPDATE_DATE, to_char ( B.UPDATE_DATE ,'yyyymmdd hh24:mm:ss') ,' ') AS updateDate
+		FROM CT_MEMBER A 
+		, CT_MEMBER_UPDATE B
+		WHERE A.USER_ID = #{userId}
+		AND A.DEL_YN = 'N'
+		AND A.USER_NO = B.USER_NO(+)
+	
+	</select>
+	
+	<insert id="signup" parameterType="com.kh.spring.member.model.dto.MemberDTO">
+		INSERT
+		  INTO
+		       CT_MEMBER ( USER_NO, USER_ID, USER_PWD , USER_NAME, NICKNAME ,  EMAIL, ENROLL_DATE)
+		VALUES
+		       (
+		       SEQ_MEMBER.NEXTVAL
+		     , #{userId}
+		     , #{userPwd}
+		     , #{userName}
+		     , #{nickName}
+		     , #{email}
+		     , SYSDATE
+		       )
+	</insert>
+	
+	<select id="selectMemberUpdate" parameterType="com.kh.spring.member.model.dto.MemberUpdateDTO">
+		select  
+		 UPDATE_NO as updateNo
+		,USER_NO as userNo
+		,CHANGE_PWD as changePwd
+		,UPDATE_DATE as updateDate
+		,STATUS as status
+		from CT_MEMBER_UPDATE where user_no = #{userNo}
 
+	</select>
+	
+	<update id="memberUpdate" parameterType="com.kh.spring.member.model.dto.MemberDTO">
+		UPDATE 
+				CT_MEMBER
+		   SET 
+		   		USER_PWD = #{userPwd}
+		WHERE  
+				USER_ID = #{userId} AND USER_NO = #{userNo}
+		  
+	</update>
+	
+	
+	<insert id="insertMemberUpdate" parameterType="com.kh.spring.member.model.dto.MemberUpdateDTO">
+		INSERT
+		  INTO
+		       CT_MEMBER_UPDATE ( 
+		         UPDATE_NO
+				,USER_NO
+				,CHANGE_PWD
+				,UPDATE_DATE
+				,STATUS)
+		VALUES
+		       (
+		       SEQ_MEMBER_UPDATE.NEXTVAL
+		     , #{userNo}
+		     , #{changePwd}
+		     , SYSDATE
+		     , 'N'
+		       )
+	</insert>
+	
+	
+	<update id="updateMemberUpdate" parameterType="com.kh.spring.member.model.dto.MemberUpdateDTO">
+		UPDATE 
+				CT_MEMBER_UPDATE
+		   SET 
+		   		 CHANGE_PWD = #{changePwd}
+		   		,UPDATE_DATE = SYSDATE
+		WHERE  
+				UPDATE_NO = #{updateNo} 
+		  
+	</update>
+	
+	<update id="deleteMemberInfo" parameterType="com.kh.spring.member.model.dto.MemberDTO">
+		UPDATE CT_MEMBER SET DEL_YN ='Y' WHERE USER_NO = #{userNo} AND USER_ID = #{userId}
+	</update>
+	
+	<delete id="deleteMemberUpdateInfo" parameterType="com.kh.spring.member.model.dto.MemberUpdateDTO">
+		DELETE FROM CT_MEMBER_UPDATE WHERE USER_NO = #{userNo}
+	</delete>
+	
 </mapper>

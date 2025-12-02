@@ -1,5 +1,31 @@
 package com.kh.spring.used.model.mapper;
 
+import java.util.List;
+import java.util.Map;
+
+import com.kh.spring.used.model.dto.CarInfoDTO;
+import com.kh.spring.used.model.dto.UsedAttachmentDTO;
+import com.kh.spring.used.model.dto.UsedDTO;
+import com.kh.spring.used.model.dto.UsedListDTO;
+
 public interface UsedMapper {
+
+	List<UsedListDTO> selectUsedListAll(Map<String, Object> map);
+	int selectListCount(String keyword);
+	int getNextUsedNo();
+	int insertUsed(UsedDTO used);
+	int insertCarInfo(CarInfoDTO car);
+	int insertAttachment(UsedAttachmentDTO attach);
+	UsedListDTO selectUsedDetail(int usedNo);
+	UsedDTO selectCarInfo(int usedNo);
+	List<UsedAttachmentDTO> selectAttachments(int usedNo);
+	void deleteAttachments(int usedNo);
+	void deleteCarInfo(int usedNo);
+	int deleteUsed(int usedNo);
+	int selectMyListCount(Map<String, Object> map);
+	List<UsedListDTO> selectMyUsedList(Map<String, Object> map);
+	int updateUsed(UsedDTO used);
+	int updateThumbnail(UsedDTO used);
+	void increaseViewCount(int usedNo);
 
 }
